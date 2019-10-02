@@ -1,4 +1,4 @@
-package de.fhdortmund.j2t.wise2019.storyframework;
+package de.fhdortmund.j2t2b.wise2019.storyframework;
 
 import java.util.HashMap;
 import java.util.Map;
