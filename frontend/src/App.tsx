@@ -1,19 +1,23 @@
 import React from 'react';
-import logo from './logo.svg';
 import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
-import { Container, Jumbotron } from 'reactstrap';
+import { MockComponent } from './components/MockComponent';
+import { Container } from 'reactstrap';
+import { Router, Switch, Route } from 'react-router';
+import { HashRouter } from 'react-router-dom';
 
 export class App extends React.Component<{}, {}> {
     
     render() {
-        return <Container>
-            <Jumbotron>
-                <h1 className="display-3">
-                    Hallo Welt :)
-                </h1>
-            </Jumbotron>
-        </Container>;
+       return <Container>
+       <HashRouter>
+           <Switch>
+               <Route path="/" exact>
+                   <MockComponent />
+               </Route>
+           </Switch>
+       </HashRouter>
+   </Container>
     }
 
 }
