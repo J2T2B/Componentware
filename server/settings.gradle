@@ -1,3 +1,5 @@
 rootProject.name = 'server'
 include(":storyframework")
 project(":storyframework").setProjectDir(file("../StoryFramework"))
+include(":frontend")
+project(":frontend").setProjectDir(file("../frontend"))

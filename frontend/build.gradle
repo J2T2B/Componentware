@@ -1,0 +1,20 @@
+plugins {
+    id "com.moowork.node" version "1.2.0"
+}
+
+apply plugin: 'base'
+apply plugin: "com.moowork.node"
+
+group 'de.fhdortmund.j2t.wise2019'
+version '1.0-SNAPSHOT'
+
+node {
+    version = "10.15.0"
+    download = true
+}
+
+task bundle(type: NpmTask, dependsOn: npmInstall) {
+    args = ['run', 'build']
+}
+
+assemble.dependsOn(bundle)
