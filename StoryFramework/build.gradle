@@ -2,7 +2,8 @@ plugins {
     id 'java'
 }
 
-group 'de.fh-dortmund.j2t.wise2019'
+group 'de.fhdortmund.j2t.wise2019'
+
 version '1.0-SNAPSHOT'
 
 sourceCompatibility = 1.8
