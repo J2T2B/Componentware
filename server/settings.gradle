@@ -1,5 +1,5 @@
 rootProject.name = 'server'
-include(":storyframework")
-project(":storyframework").setProjectDir(file("../StoryFramework"))
 include(":frontend")
 project(":frontend").setProjectDir(file("../frontend"))
+include(":gamelogic")
+project(":gamelogic").setProjectDir(file("../gamelogic"))
