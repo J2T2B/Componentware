@@ -4,7 +4,7 @@ import java.util.Collection;
 
 public interface Message {
     String getId();
-    String getTexT();
+    String getText();
     String getImage();
-    Collection<Answer> getAnswers();
+    Collection<? extends Answer> getAnswers();
 }

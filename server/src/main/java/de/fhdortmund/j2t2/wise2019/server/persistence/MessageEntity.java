@@ -12,8 +12,8 @@ public class MessageEntity implements Message {
     }
 
     @Override
-    public String getTexT() {
-        return null;
+    public String getText() {
+        throw new UnsupportedOperationException();
     }
 
     @Override
