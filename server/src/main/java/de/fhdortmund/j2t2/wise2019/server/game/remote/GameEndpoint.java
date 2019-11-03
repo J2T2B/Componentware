@@ -1,11 +1,13 @@
 package de.fhdortmund.j2t2.wise2019.server.game.remote;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
+import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
 import de.fhdortmund.j2t2.wise2019.server.game.local.GameManagerLocal;
 import de.fhdortmund.j2t2.wise2019.server.game.models.ChatRemoteModel;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketCommand;
+import de.fhdortmund.j2t2.wise2019.server.game.models.ChatpartnerRemoteModel;
 
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -29,8 +31,8 @@ public class GameEndpoint {
     }
 
     @OnMessage
-    public void onMessage(Session session){
-        throw new UnsupportedOperationException("OnMessage"); //TODO
+    public void onMessage(String message, Session session){
+        System.out.println(message);
     }
 
     @OnError
