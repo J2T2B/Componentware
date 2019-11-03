@@ -1,13 +1,13 @@
 package de.fhdortmund.j2t2.wise2019.server.game.remote;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
+import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
+import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
 import de.fhdortmund.j2t2.wise2019.server.game.local.GameManagerLocal;
 import de.fhdortmund.j2t2.wise2019.server.game.models.ChatRemoteModel;
+import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketCommand;
 
-import javax.websocket.EncodeException;
-import javax.websocket.OnError;
-import javax.websocket.OnOpen;
-import javax.websocket.Session;
+import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
@@ -22,22 +22,32 @@ public class GameEndpoint {
     private List<Chat> chats;
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("usertoken") String token) throws IOException {
+    public void onOpen(Session session, @PathParam("usertoken") String token) throws IOException, EncodeException {
         this.session = session;
         this.chats = gameManager.getChatsForUser(token).stream().map(ChatRemoteModel::new).collect(Collectors.toList());
-        reply(chats);
+        reply(new WebSocketCreatedCommand());
+    }
+
+    @OnMessage
+    public void onMessage(Session session){
+        throw new UnsupportedOperationException("OnMessage"); //TODO
     }
 
     @OnError
     public void onError(Throwable throwable){
-
+        try {
+            reply(new ErrorWebSocketCommand());
+        } catch (IOException | EncodeException e) {
+            e.printStackTrace();  //TODO error handling
+        }
     }
 
-    private void reply(Object replyObject) throws IOException {
-        try {
+    @OnClose
+    public void onClose(Session session){
+        throw new UnsupportedOperationException("OnClose"); //TODO
+    }
+
+    private void reply(AbstractWebSocketCommand replyObject) throws IOException, EncodeException {
             session.getBasicRemote().sendObject(replyObject);
-        } catch (EncodeException e) {
-            onError(e);
-        }
     }
 }
