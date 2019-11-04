@@ -1,21 +1,21 @@
-import { Chat } from "./Chat";
-import { Message } from "./Message";
+import { IChat } from "./Chat";
+import { IMessage } from "./Message";
 import { Answer } from "./Answer";
 
 export type SocketMessage =
 {
     command: "CreateChat"
-    chat: Chat
+    chat: IChat
 } |
 {
     command: "AddMessage"
     chatId: number
-    message: Message
+    message: IMessage
 } |
 {
     command: "AddAnswer",
     chatId: number,
-    messageId: number,
+    messageId: string,
     answer: Answer
 } | 
 {
@@ -24,4 +24,8 @@ export type SocketMessage =
 } |
 {
     command: "Reinit"
+} |
+{
+    command: "ReadMessage",
+    messageId: string
 }
