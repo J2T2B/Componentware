@@ -31,6 +31,8 @@ export default abstract class AChatsHandler {
         if (chat !== undefined) {
             this.chatListener.forEach(c => c.onChatChange(this._currentChat!));
         }
+
+        this.chatsListener.forEach(c => c.onCurrentChatChange(this._currentChat));
     }
 
     /**
@@ -139,7 +141,10 @@ export default abstract class AChatsHandler {
             }
         }
 
-        // TODO: Benachrichtigungston!!
+        // Notification
+        let audio = new Audio("eventually.mp3");
+        audio.play().then(()=>audio.remove());
+
         this.chatsListener.forEach(c => c.onChatChange(this.chats));
     }
 

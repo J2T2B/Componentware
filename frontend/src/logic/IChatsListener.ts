@@ -12,6 +12,12 @@ export default interface IChatsListener {
      * @param chats Alle bekannten Chats
      */
     onChatChange(chats: Chat[]): VoidLike;
+
+    /**
+     * Wird aufgerufen, wenn ein Chat ausgewählt wird
+     * @param currentChat Aktueller Chat
+     */
+    onCurrentChatChange(currentChat?: Chat): VoidLike;
 }
 
 export function isIChatsListener(obj: any) : obj is IChatsListener {

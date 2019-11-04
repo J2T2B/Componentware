@@ -14,8 +14,13 @@ export class MockChatsHandler extends AChatsHandler {
         console.log("Nachricht an Server", socketMessage);
     }
 
-    public simulateMessage(message: SocketMessage) {
-        this.onSocketMessage(message);
+    public simulateMessage(message: SocketMessage | SocketMessage[]) {
+        if (Array.isArray(message)) {
+            message.forEach(m => this.onSocketMessage(m));
+        }
+        else {
+            this.onSocketMessage(message);
+        }
     }
 
 }

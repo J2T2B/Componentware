@@ -24,6 +24,6 @@ export class Message implements IMessage {
         this.image = init.image;
         this.answers = init.answers;
         this.userHasRead = init.userHasRead;
-        this.created = moment(init.created);
+        this.created = moment(init.created).locale("de");
     }
 }

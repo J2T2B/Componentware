@@ -5,21 +5,19 @@ import { MockComponent } from './components/MockComponent';
 import { Container, Col, Row, Navbar, NavbarBrand } from 'reactstrap';
 import { Router, Switch, Route } from 'react-router';
 import { HashRouter } from 'react-router-dom';
-import { ChatListComponent } from './components/ChatListComponent';
-import { Chat } from './models/Chat';
-
-const chats = [
-    new Chat({
-        imageUrl: "https://via.placeholder.com/35",
-        name: "Max Mustermann"
-    }),
-    new Chat({
-        imageUrl: "https://via.placeholder.com/35",
-        name: "William Walker"
-    })
-];
+import { ChatsListComponent } from './components/ChatListComponent';
+import AChatsHandler from './logic/AChatsHandler';
+import { MockChatsHandler } from './logic/MockChatsHandler';
 
 export class App extends React.Component<{}, {}> {
+
+    private chatsHandler: AChatsHandler;
+
+    constructor(props: {}) {
+        super(props);
+        this.chatsHandler = new MockChatsHandler();
+        this.chatsHandler.connect();
+    }
 
     render() {
         return <>
@@ -34,7 +32,7 @@ export class App extends React.Component<{}, {}> {
             <Container fluid>
                 <Row>
                     <Col md={4}>
-                        <ChatListComponent chats={chats} />
+                        <ChatsListComponent chatsHandler={this.chatsHandler} />
                     </Col>
                     <Col md={8}>
                         <HashRouter>

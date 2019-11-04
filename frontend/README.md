@@ -1,5 +1,49 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+## Beispiel Skript für den MockChatsHandler
+```js
+simulateMessage([
+    {
+        command: "CreateChat",
+        chat: {
+            chatId: 1,
+            partner: {
+                name: "Hans Müller",
+                imageUrl: "",
+            },
+            messages: []
+        }
+    },
+    {
+        command: "AddMessage",
+        chatId: 1,
+        message: {
+            id: 1,
+            text: "Hallo Will",
+            image: "",
+            answers: [],
+            userHasRead: false,
+            created: (new Date().getTime() - 60000)
+        }
+    }
+]);
+
+// Mit Interval (!!Achtung!!)
+let mid = 2;
+setInterval(() => simulateMessage({
+    command: "AddMessage",
+    chatId: 1,
+    message: {
+        id: mid++,
+        text: mid,
+        image: "",
+        answers: [],
+        userHasRead: false,
+        created: (new Date().getTime())
+    }
+}), 1000);
+```
+
 ## Available Scripts
 
 In the project directory, you can run:
