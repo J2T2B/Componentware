@@ -8,6 +8,7 @@ import { HashRouter } from 'react-router-dom';
 import { ChatsListComponent } from './components/ChatListComponent';
 import AChatsHandler from './logic/AChatsHandler';
 import { MockChatsHandler } from './logic/MockChatsHandler';
+import {ChatMessageComponent} from "./components/ChatMessageComponent";
 
 export class App extends React.Component<{}, {}> {
 
@@ -38,9 +39,7 @@ export class App extends React.Component<{}, {}> {
                         <HashRouter>
                             <Switch>
                                 <Route path="/" exact>
-                                    <div className="messages">
-                                        <MockComponent />
-                                    </div>
+                                    <ChatMessageComponent chatsHandler={this.chatsHandler} />
                                 </Route>
                             </Switch>
                         </HashRouter>
