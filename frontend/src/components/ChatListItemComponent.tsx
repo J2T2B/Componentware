@@ -22,13 +22,17 @@ export class ChatListItemComponent extends React.Component<ChatListItemProps, Ch
         this.interval = window.setInterval(this.setDifference.bind(this), 60000);
     }
 
+    componentWillReceiveProps() {
+        this.setDifference();
+    }
+
     componentWillUnmount() {
         window.clearInterval(this.interval);
     }
 
     private setDifference() {
         let lastMessage = this.props.chat.getLastMessage();
-        if (lastMessage !== undefined) {
+        if (lastMessage) {
             this.setState({ lastMessageDifference: lastMessage!.created.fromNow() });
         }
     }
