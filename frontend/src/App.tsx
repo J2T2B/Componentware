@@ -21,9 +21,7 @@ export class App extends React.Component<{}, {}> {
 
     render() {
         return <>
-            <Navbar color="faded" dark style={{
-                backgroundColor: "#c3c3c3"
-            }} className="mb-3">
+            <Navbar color="faded" dark className="mb-3">
                 <NavbarBrand href="/" className="mr-auto">
                     Telekilo
                 </NavbarBrand>

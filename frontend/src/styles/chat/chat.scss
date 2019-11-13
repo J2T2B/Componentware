@@ -1,0 +1,40 @@
+.messages {
+    height: auto;
+    min-height: calc(100% - 93px);
+    max-height: calc(100% - 93px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    padding: 10px;
+    background: $lightgrey;
+}
+
+.message {
+    width: 100%;
+    margin: 10px 0;
+    padding: 0 25px;
+
+    .bubble {
+        width: 85%;
+        max-width: 400px;
+        color: $black;
+        border-radius: 3px;
+        padding: 5px 15px;
+
+        &.receive {
+            background: $received;
+            float: left;
+        }
+
+        &.reply {
+            background: $reply;
+            float: right;
+        }
+
+        .time {
+            margin: 0;
+            float: right;
+            font-style: italic;
+            font-size: 12px;
+        }
+    }
+}

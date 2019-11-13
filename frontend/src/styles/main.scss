@@ -1,5 +1,6 @@
 @import "variables";
 @import "gloabal";
-@import "elements/profiles";
-@import "elements/chat";
-@import "elements/sidebar";
+@import "elements/nav";
+@import "chat/profiles";
+@import "chat/sidebar";
+@import "chat/chat";
