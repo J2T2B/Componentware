@@ -1,5 +1,4 @@
 import React from 'react';
-import './App.css';
 import 'bootstrap/dist/css/bootstrap.min.css';
 import { MockComponent } from './components/MockComponent';
 import { Container, Col, Row, Navbar, NavbarBrand } from 'reactstrap';
