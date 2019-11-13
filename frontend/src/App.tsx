@@ -8,6 +8,7 @@ import { ChatsListComponent } from './components/ChatListComponent';
 import AChatsHandler from './logic/AChatsHandler';
 import { MockChatsHandler } from './logic/MockChatsHandler';
 import { ChatMessageComponent } from "./components/ChatMessageComponent";
+import { LoginComponent } from './components/login/LoginComponent';
 
 interface AppStates {
     isChatListOpen: boolean;
@@ -53,20 +54,24 @@ export class App extends React.Component<{}, AppStates> {
             </Navbar>
 
             <Container fluid>
-                <Row>
-                    <Col md={4}>
-                        <ChatsListComponent chatsHandler={this.chatsHandler} isOpen={this.state.isChatListOpen} />
-                    </Col>
-                    <Col md={8}>
-                        <HashRouter>
-                            <Switch>
-                                <Route path="/" exact>
+                <HashRouter>
+                    <Switch>
+                       
+                        <Route path="/" exact>
+                            <Row>
+                                <Col md={4}>
+                                    <ChatsListComponent chatsHandler={this.chatsHandler} isOpen={this.state.isChatListOpen} />
+                                </Col>
+                                <Col md={8}>
                                     <ChatMessageComponent chatsHandler={this.chatsHandler} />
-                                </Route>
-                            </Switch>
-                        </HashRouter>
-                    </Col>
-                </Row>
+                                </Col>
+                            </Row>
+                        </Route>
+
+                        <Route path="/login" exact render={()=><LoginComponent chatsHandler={this.chatsHandler} />} />
+
+                    </Switch>
+                </HashRouter>
             </Container>
         </>
     }
