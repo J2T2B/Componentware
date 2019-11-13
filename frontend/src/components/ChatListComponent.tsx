@@ -6,21 +6,24 @@ import IChatsListener from "../logic/IChatsListener";
 import { VoidLike } from "../logic/VoidLike";
 import { ChatListItemComponent } from "./ChatListItemComponent";
 
+export interface ChatListProps extends DefaultComponentProps {
+    isOpen: boolean;
+}
+
 export interface ChatListStates {
     chats: Chat[]
     currentChat?: Chat
 }
 
-export class ChatsListComponent extends React.Component<DefaultComponentProps, ChatListStates> implements IChatsListener {
+export class ChatsListComponent extends React.Component<ChatListProps, ChatListStates> implements IChatsListener {
     
-    constructor(props: DefaultComponentProps) {
+    constructor(props: ChatListProps) {
         super(props);
         this.state = {
             chats: [],
             currentChat: undefined
         };
     }
-    
 
     onCurrentChatChange(currentChat?: Chat): VoidLike {
         this.setState({ currentChat });
@@ -39,6 +42,9 @@ export class ChatsListComponent extends React.Component<DefaultComponentProps, C
     }
 
     render() {
+        
+        if (!this.props.isOpen) return <></>;
+
         return <Card>
             <CardBody>
                 <CardTitle>William Walker</CardTitle>
