@@ -1,7 +1,5 @@
 .messages {
-    height: auto;
-    min-height: calc(100% - 93px);
-    max-height: calc(100% - 93px);
+    height: calc(100vh - 200px);
     overflow-y: scroll;
     overflow-x: hidden;
     padding: 10px;
@@ -37,4 +35,8 @@
             font-size: 12px;
         }
     }
+}
+
+.message-input {
+    background: $grey;
 }
