@@ -56,7 +56,7 @@ export class ChatListItemComponent extends React.Component<ChatListItemProps, Ch
             text = <strong>{text}</strong>
         }
 
-        return <ListGroupItem onClick={this.setCurrentChat.bind(this)}>
+        return <ListGroupItem onClick={this.setCurrentChat.bind(this)} active={this.props.chatsHandler.currentChat === this.props.chat}>
             <div className="d-flex w-100 justify-content-between">
                 <ListGroupItemHeading>{this.props.chat.partner.name}</ListGroupItemHeading>
                 <small>{this.state.lastMessageDifference}</small>
