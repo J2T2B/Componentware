@@ -1,6 +1,7 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic.gameloader;
 
 import com.google.gson.Gson;
+import com.sun.javaws.exceptions.InvalidArgumentException;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.models.MessageJson;
 
@@ -17,6 +18,9 @@ public class GameLoader {
     private List<MessageJson> cachedMessages;
 
     public GameLoader(String gameJsonPath) {
+        if(gameJsonPath == null){
+            throw new NullPointerException("gameJsonPath may not be null!");
+        }
         this.gameJsonPath = gameJsonPath;
     }
 

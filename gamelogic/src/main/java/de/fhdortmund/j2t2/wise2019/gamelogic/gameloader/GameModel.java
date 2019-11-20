@@ -7,4 +7,5 @@ import java.util.List;
 
 public class GameModel {
     List<Chatpartner> chatpartners;
-    List<Message> messages;}
+    List<Message> messages;
+}
