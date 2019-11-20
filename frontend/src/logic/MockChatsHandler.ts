@@ -35,7 +35,7 @@ export class MockChatsHandler extends AChatsHandler {
                         chatId: i,
                         partner: {
                             name: "Kunde " + (i + 1),
-                            imageUrl: "",
+                            imageUrl: "http://emilcarlsson.se/assets/harveyspecter.png",
                         },
                         messages: [],
                     }
@@ -47,16 +47,16 @@ export class MockChatsHandler extends AChatsHandler {
                     chatId: i,
                     message: {
                         id: ((i*10)+j).toString(),
-                        text: "Hallo Will "+j,
+                        text: "Hallo Will "+((i*10)+j).toString(),
                         image: "",
                         answers: [],
                         userHasRead: false,
                         created: (new Date().getTime() - 60000),
-                        isAnswer: false
+                        isAnswer: (Math.random() < 0.5)
                     }
                 });
             }
-        }        
+        }
     }
 
 }
