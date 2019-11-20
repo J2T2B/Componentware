@@ -5,9 +5,11 @@ import { DefaultComponentProps } from "../DefaultComponentProps";
 import IChatsListener from "../logic/IChatsListener";
 import { VoidLike } from "../logic/VoidLike";
 import { ChatListItemComponent } from "./ChatListItemComponent";
+import AChatsHandler from "../logic/AChatsHandler";
 
 export interface ChatListProps extends DefaultComponentProps {
     isOpen: boolean;
+    chatsHandler: AChatsHandler;
 }
 
 export interface ChatListStates {
@@ -51,7 +53,7 @@ export class ChatsListComponent extends React.Component<ChatListProps, ChatListS
             </CardBody>
             <ListGroup>
                 {
-                    this.state.chats.map(c => <ChatListItemComponent chat={c} key={c.chatId} />)
+                    this.state.chats.map(c => <ChatListItemComponent chat={c} key={c.chatId} chatsHandler={this.props.chatsHandler} />)
                 }
             </ListGroup>
         </Card>;
