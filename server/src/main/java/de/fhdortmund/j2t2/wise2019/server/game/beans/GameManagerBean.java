@@ -10,8 +10,7 @@ import java.util.List;
 @Startup
 @Singleton
 public class GameManagerBean implements GameManagerLocal {
-
-
+    
     @Override
     public List<Chat> getChatsForUser(String token) {
         return null;

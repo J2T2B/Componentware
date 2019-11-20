@@ -1,13 +1,15 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.models;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
+import de.fhdortmund.j2t2.wise2019.gamelogic.AnswerDetailed;
+import de.fhdortmund.j2t2.wise2019.gamelogic.MessageDetailed;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
 
 import java.io.Serializable;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 
-public class MessageJson implements Message, Serializable {
+public class MessageJson implements MessageDetailed, Serializable {
 
     private String id;
     private int delay;
@@ -36,7 +38,7 @@ public class MessageJson implements Message, Serializable {
     }
 
     @Override
-    public List<AnswerJson> getAnswers() {
+    public Collection<? extends AnswerDetailed> getAnswers() {
         if(cachedAnswers == null){
             cachedAnswers = Arrays.asList(answers);
         }

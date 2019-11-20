@@ -1,8 +1,8 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.models;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
+import de.fhdortmund.j2t2.wise2019.gamelogic.AnswerDetailed;
 
-public class AnswerJson implements Answer {
+public class AnswerJson implements AnswerDetailed {
 
     private int id;
     private String text;

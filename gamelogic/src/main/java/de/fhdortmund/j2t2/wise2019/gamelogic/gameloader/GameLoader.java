@@ -2,6 +2,7 @@ package de.fhdortmund.j2t2.wise2019.gamelogic.gameloader;
 
 import com.google.gson.Gson;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
+import de.fhdortmund.j2t2.wise2019.gamelogic.MessageDetailed;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.models.MessageJson;
 
 import java.io.FileReader;
@@ -23,7 +24,7 @@ public class GameLoader {
         this.gameJsonPath = gameJsonPath;
     }
 
-    public List<? extends Message> loadGame() throws GameLoadingException {
+    public List<? extends MessageDetailed> loadGame() throws GameLoadingException {
         if (cachedMessages == null) {
             try (FileReader reader = new FileReader(gameJsonPath)) {
                 MessageJson[] messages = gson.fromJson(reader, MessageJson[].class);

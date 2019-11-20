@@ -1,10 +1,11 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic.gameloader;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
+import de.fhdortmund.j2t2.wise2019.gamelogic.*;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.models.AnswerJson;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.models.MessageJson;
 import org.junit.Test;
 
+import java.util.Collection;
 import java.util.List;
 import java.util.Objects;
 
@@ -17,11 +18,11 @@ public class GameLoaderTest {
     @Test
     public void loadGame() throws GameLoadingException {
         GameLoader gameLoader = new GameLoader(testJsonReadable);
-        List<MessageJson> messages = gameLoader.loadGame();
+        List<? extends MessageDetailed> messages = gameLoader.loadGame();
 
         assertSame(messages, gameLoader.loadGame());
 
-        MessageJson maximalConfiguration = messages.get(0);
+        MessageDetailed maximalConfiguration = messages.get(0);
             assertNotNull(maximalConfiguration);
             assertEquals("Open the pod bay doors, Hal.", maximalConfiguration.getText());
             assertEquals("test1", maximalConfiguration.getId());
@@ -35,21 +36,21 @@ public class GameLoaderTest {
             assertEquals(0, points.getChefSatisfaction());
             assertEquals(0, points.getCustomerExperience());
 
-        List<AnswerJson> answers = maximalConfiguration.getAnswers();
-        AnswerJson toTest = answers.get(0);
+        AnswerDetailed[] answers = maximalConfiguration.getAnswers().toArray(new AnswerDetailed[0]);
+        AnswerDetailed toTest = answers[0];
             assertEquals(1, toTest.getId());
             assertEquals("Stäckt der Stecker?", toTest.getText());
             assertArrayEquals(new String[]{"test2-1", "test2-2"}, toTest.getTargets());
 
-        toTest = answers.get(1);
+        toTest = answers[1];
             assertEquals(2, toTest.getId());
             assertEquals("I'm sorry Dave, I'm afraid I can't do that", toTest.getText());
             assertArrayEquals(new String[]{"test3"}, toTest.getTargets());
 
 
-        MessageJson minimalConfiguration = messages.get(1);
+        MessageDetailed minimalConfiguration = messages.get(1);
             assertEquals("test2", minimalConfiguration.getId());
             assertEquals("What is the answer to the Ultimate Question of Life, the Universe, and Everything", minimalConfiguration.getText());
-            assertArrayEquals(new AnswerJson[0], minimalConfiguration.getAnswers().toArray(new AnswerJson[0]));
+            assertArrayEquals(new AnswerJson[0], minimalConfiguration.getAnswers().toArray(new AnswerDetailed[0]));
     }
 }
