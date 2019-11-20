@@ -29,6 +29,7 @@ export default abstract class AChatsHandler {
     public set currentChat(chat: Chat | undefined) {
         this._currentChat = chat;
         if (chat !== undefined) {
+            this.readAllMessages();
             this.chatListener.forEach(c => c.onChatChange(this._currentChat!));
         }
 

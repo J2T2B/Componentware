@@ -3,6 +3,7 @@ import React from "react";
 import { FormGroup, Form, Label, Input, Button, CardBody, Card } from "reactstrap";
 import "../../styles/elements/login.scss";
 import { LoginCardComponent } from "./LoginCard";
+import { SmartInputComponent } from "./SmartInputComponent";
 
 export interface LoginStates {
     username: string;
@@ -18,37 +19,36 @@ export class LoginComponent extends React.Component<DefaultComponentProps, Login
             password: ""
         };
 
-        this.onUserInput = this.onUserInput.bind(this);
+        this.onInput = this.onInput.bind(this);
     }
 
-    componentDidMount() {
-        document.getElementsByTagName("body")[0].classList.add("login-register-background");
-    }
-
-    componentWillUnmount() {
-        document.getElementsByTagName("body")[0].classList.remove("login-register-background");
-    }
-
-    onUserInput(event: React.ChangeEvent<HTMLInputElement>) {
-        let target = event.target;
-        let field = target.name as "username" | "password";
-        let nState: LoginStates = Object.assign({}, this.state); // Kopie erstellen
-        nState[field] = target.value;
-        this.setState(nState);
+    onInput(nValue: Partial<LoginStates>) {
+        this.setState(nValue as LoginStates);
     }
 
     render() {
         return <LoginCardComponent mode="login">
-            <FormGroup>
-                <Label>Username</Label>
-                <Input type="text" placeholder="william.walker1" value={this.state.username} onChange={this.onUserInput} name="username" />
-            </FormGroup>
-            <FormGroup>
-                <Label>Passwort</Label>
-                <Input type="password" placeholder="passwort" value={this.state.password} onChange={this.onUserInput} name="password" />
-            </FormGroup>
+
+            <SmartInputComponent
+                label="Username"
+                onValue={this.onInput}
+                name="username"
+                placeholder="william.walker1"
+                value={this.state.username}
+                type="text"
+            />
+
+            <SmartInputComponent
+                label="Passwort"
+                onValue={this.onInput}
+                name="password"
+                placeholder="132456789"
+                value={this.state.password}
+                type="password"
+            />
+
             <Button>
-                Login and Work!
+                Login and go to Work!
             </Button>
         </LoginCardComponent>
     }
