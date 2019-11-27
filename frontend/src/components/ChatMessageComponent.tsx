@@ -1,24 +1,31 @@
 import React from "react";
-import {Button, Container} from "reactstrap";
+import {Button, Container, ListGroup, ListGroupItem} from "reactstrap";
 import { Chat } from "../models/Chat";
 import IChatListener from "../logic/IChatListener";
 import {DefaultComponentProps} from "../DefaultComponentProps";
 import {Message} from "../models/Message";
 import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faPaperPlane} from "@fortawesome/free-regular-svg-icons";
+import {faPaperPlane, faSmile} from "@fortawesome/free-regular-svg-icons";
 
 export interface ChatMessageStates {
     chat?: Chat;
+    openAnswers: boolean;
+    chosenAnswer?: number;
 }
 
 export class ChatMessageComponent extends React.Component<DefaultComponentProps, ChatMessageStates> implements IChatListener {
 
+    private messagesEnd: any;
+
     constructor(props: DefaultComponentProps) {
         super(props);
         this.state = {
-            chat: undefined
+            chat: undefined,
+            openAnswers: false,
         };
+        this.openAnswers = this.openAnswers.bind(this)
+        this.onAnswerChoose = this.onAnswerChoose.bind(this)
     }
 
     onChatChange(chat: Chat): void | Promise<void> {
@@ -29,12 +36,34 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
         this.setState({ chat });
     }
 
+    scrollToBottom() {
+        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    }
+
     componentDidMount() {
         this.props.chatsHandler.attach(this);
+        this.scrollToBottom();
     }
 
     componentWillUnmount() {
         this.props.chatsHandler.detatch(this);
+        this.scrollToBottom();
+    }
+
+    openAnswers() {
+        // let answers = this.state.chat!.getLastMessage()!.answers;
+        // ('div.messages').
+        this.setState(o => {
+            return {openAnswers: !o.openAnswers};
+        });
+        if (this.state.chosenAnswer === undefined) {
+            this.setState({chosenAnswer: 1});
+        }
+    }
+
+    onAnswerChoose(id: number) {
+        console.log(id);
+       this.setState({chosenAnswer: id, openAnswers: false});
     }
 
     render() {
@@ -51,6 +80,9 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                         <div className="message">
                             <em>Keine Nachrichten</em>
                         </div>
+                    </div>
+                    <div style={{ float:"left", clear: "both" }}
+                         ref={(el) => { this.messagesEnd = el; }}>
                     </div>
                 </div>
             </Container>
@@ -79,12 +111,47 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                             </div>
                         })
                     }
+                    <div style={{ float:"left", clear: "both" }}
+                         ref={(el) => { this.messagesEnd = el; }}>
+                    </div>
+                    {
+                        this.state.openAnswers ?
+                            <div className="row">
+                                <div className="col-md-1">&nbsp;</div>
+                                <div className="col-md-10">
+                                    <ListGroup>
+                                        <ListGroupItem tag="button" className={this.state.chosenAnswer === 1 ? 'active' : ''} onClick={() => this.onAnswerChoose(1)}>
+                                            Antwort 1
+                                        </ListGroupItem>
+                                        <ListGroupItem tag="button" className={this.state.chosenAnswer === 2 ? 'active' : ''} onClick={() => this.onAnswerChoose(2)}>
+                                            Antwort 2
+                                        </ListGroupItem>
+                                        <ListGroupItem tag="button" className={this.state.chosenAnswer === 3 ? 'active' : ''} onClick={() => this.onAnswerChoose(3)}>
+                                            Antwort 3
+                                        </ListGroupItem>
+                                    </ListGroup>
+                                </div>
+                                <div className="col-md-1">&nbsp;</div>
+                            </div>
+                            :
+                            ''
+                        // && this.state.chat.getLastMessage() && this.state.chat.getLastMessage().answers.map()
+                    }
                 </div>
                 <div className="message-input">
                     <div className="row text-center">
-                        <div className="col-md-1">&nbsp;</div>
+                        <div className="col-md-1">
+                            <Button>
+                                <FontAwesomeIcon icon={faSmile} />
+                            </Button>
+                        </div>
                         <div className="col-md-10">
-                            <div className="form-control"></div>
+                            <div className="form-control" onClick={this.openAnswers}>
+                                {
+                                    // todo: get chosen answer
+                                    !this.state.chosenAnswer ? '' : (this.state.chosenAnswer === 1 ? 'Antwort 1' : 'was anderes')
+                                }
+                            </div>
                         </div>
                         <div className="col-md-1">
                             <Button color="primary">

@@ -51,7 +51,7 @@ export class MockChatsHandler extends AChatsHandler {
                         image: "",
                         answers: [],
                         userHasRead: false,
-                        created: (new Date().getTime() - 60000),
+                        created: (new Date().getTime() - 99999999),
                         isAnswer: (Math.random() < 0.5)
                     }
                 });
