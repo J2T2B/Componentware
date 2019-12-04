@@ -24,8 +24,9 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
             chat: undefined,
             openAnswers: false,
         };
-        this.openAnswers = this.openAnswers.bind(this)
-        this.onAnswerChoose = this.onAnswerChoose.bind(this)
+        this.openAnswers = this.openAnswers.bind(this);
+        this.onAnswerChoose = this.onAnswerChoose.bind(this);
+        this.onSendMessage = this.onSendMessage.bind(this);
     }
 
     onChatChange(chat: Chat): void | Promise<void> {
@@ -56,14 +57,23 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
             return {openAnswers: !o.openAnswers};
         });
         if (this.state.chosenAnswer === undefined) {
-            let id = (answer === undefined) ? 0 : answer.id;
+            let id = (answer === undefined) ? undefined : answer.id;
             this.setState({chosenAnswer: id});
         }
     }
 
     onAnswerChoose(id: number) {
-        console.log(id);
        this.setState({chosenAnswer: id, openAnswers: false});
+    }
+
+    onSendMessage() {
+        if (this.state.chosenAnswer !== undefined) {
+            console.log(this.state.chosenAnswer);
+            let answer = this.state.chat!.getLastMessage()!.answers.find(a => a.id === this.state.chosenAnswer);
+            console.log("sending answer ("+answer!.id+"): "+answer!.text);
+        } else {
+            console.log("no answer chosen.")
+        }
     }
 
     render() {
@@ -147,15 +157,17 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                             <div className="form-control" onClick={this.openAnswers}>
                                 {
                                     // todo: get chosen answer
-                                    !this.state.chosenAnswer ?
-                                        <i>Bitte Antwort wählen</i>
-                                        :
-                                        this.state.chat.getLastMessage()!.answers.find(a => a.id === this.state.chosenAnswer)!.text
+                                    this.state.chat.getLastMessage()!.isAnswer ? '' : (
+                                        !this.state.chosenAnswer ?
+                                            <i>Bitte Antwort wählen</i>
+                                            :
+                                            this.state.chat.getLastMessage()!.answers.find(a => a.id === this.state.chosenAnswer)!.text
+                                    )
                                 }
                             </div>
                         </div>
                         <div className="col-md-1">
-                            <Button color="primary">
+                            <Button color="primary" onClick={this.onSendMessage}>
                                 <FontAwesomeIcon icon={faPaperPlane} />
                             </Button>
                         </div>
