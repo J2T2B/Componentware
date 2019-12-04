@@ -27,8 +27,8 @@ export class LoginComponent extends React.Component<DefaultComponentProps, Login
         this.setState(nValue as LoginStates);
     }
 
-    async onSubmit() : Promise<void> {
-        
+    async onSubmit(): Promise<void> {
+
         let login = {
             username: this.state.username,
             password: this.state.password
@@ -62,8 +62,12 @@ export class LoginComponent extends React.Component<DefaultComponentProps, Login
                 autoComplete="current-password"
             />
 
-            <Button onClick={this.onSubmit}>
-                Anmelden und arbeiten
+            <Button
+                onClick={this.onSubmit}
+                color="success"
+                disabled={this.state.username.length === 0 || this.state.password.length === 0}
+            >
+                Anmelden
             </Button>
         </LoginCardComponent>
     }

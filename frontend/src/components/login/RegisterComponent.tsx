@@ -38,14 +38,14 @@ export class RegisterComponent extends React.Component<DefaultComponentProps, Re
     }
 
     onInput(nValue: Partial<RegisterStates>) {
-        
+
         nValue.repeatPasswordError = undefined;
         nValue.passwordError = undefined;
         nValue.usernameError = undefined;
 
         // Warnung wenn Passwörter nicht matchen
         if (
-            (nValue.password !== undefined && nValue.password !== this.state.repeatPassword) 
+            (nValue.password !== undefined && nValue.password !== this.state.repeatPassword)
             || (nValue.repeatPassword !== undefined && nValue.repeatPassword !== this.state.password)
         ) {
             nValue.repeatPasswordError = ERRORS.passwordMatch;
@@ -79,7 +79,7 @@ export class RegisterComponent extends React.Component<DefaultComponentProps, Re
 
             <FormGroup>
                 <Label>Name</Label>
-                <Input type="text" value={this.state.name} autoComplete="off" readOnly/>
+                <Input type="text" value={this.state.name} autoComplete="off" readOnly />
             </FormGroup>
 
             <SmartInputComponent
@@ -115,11 +115,11 @@ export class RegisterComponent extends React.Component<DefaultComponentProps, Re
                 autoComplete="new-password"
             />
 
-            <Button 
-                color="success" 
+            <Button
+                color="success"
                 onClick={this.onSubmit}
                 disabled={!checkUndefined(this.state.repeatPasswordError, this.state.passwordError, this.state.usernameError)}
-                >
+            >
                 Registrieren
             </Button>
 
@@ -128,7 +128,7 @@ export class RegisterComponent extends React.Component<DefaultComponentProps, Re
 
 }
 
-function checkUndefined(...items: any[]) : boolean {
+function checkUndefined(...items: any[]): boolean {
     for (let item of items) {
         if (item !== undefined) {
             return false;
