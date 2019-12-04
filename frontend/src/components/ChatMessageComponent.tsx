@@ -51,13 +51,13 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
     }
 
     openAnswers() {
-        // let answers = this.state.chat!.getLastMessage()!.answers;
-        // ('div.messages').
+        let answer = this.state.chat!.getLastMessage()!.answers[0];
         this.setState(o => {
             return {openAnswers: !o.openAnswers};
         });
         if (this.state.chosenAnswer === undefined) {
-            this.setState({chosenAnswer: 1});
+            let id = (answer === undefined) ? 0 : answer.id;
+            this.setState({chosenAnswer: id});
         }
     }
 
@@ -115,28 +115,26 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                          ref={(el) => { this.messagesEnd = el; }}>
                     </div>
                     {
-                        this.state.openAnswers ?
+                        this.state.openAnswers && this.state.chat.getLastMessage() ?
                             <div className="row">
                                 <div className="col-md-1">&nbsp;</div>
                                 <div className="col-md-10">
                                     <ListGroup>
-                                        <ListGroupItem tag="button" className={this.state.chosenAnswer === 1 ? 'active' : ''} onClick={() => this.onAnswerChoose(1)}>
-                                            Antwort 1
-                                        </ListGroupItem>
-                                        <ListGroupItem tag="button" className={this.state.chosenAnswer === 2 ? 'active' : ''} onClick={() => this.onAnswerChoose(2)}>
-                                            Antwort 2
-                                        </ListGroupItem>
-                                        <ListGroupItem tag="button" className={this.state.chosenAnswer === 3 ? 'active' : ''} onClick={() => this.onAnswerChoose(3)}>
-                                            Antwort 3
-                                        </ListGroupItem>
+                                        {
+                                            this.state.chat.getLastMessage()!.answers.map(a => {
+                                                return <ListGroupItem tag="button" className={this.state.chosenAnswer === a.id ? 'active' : ''} onClick={() => this.onAnswerChoose(a.id)} id={"answer-"+a.id}>
+                                                    {a.text}
+                                                </ListGroupItem>
+                                            })
+                                        }
                                     </ListGroup>
                                 </div>
                                 <div className="col-md-1">&nbsp;</div>
                             </div>
                             :
                             ''
-                        // && this.state.chat.getLastMessage() && this.state.chat.getLastMessage().answers.map()
                     }
+
                 </div>
                 <div className="message-input">
                     <div className="row text-center">
@@ -149,7 +147,10 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                             <div className="form-control" onClick={this.openAnswers}>
                                 {
                                     // todo: get chosen answer
-                                    !this.state.chosenAnswer ? '' : (this.state.chosenAnswer === 1 ? 'Antwort 1' : 'was anderes')
+                                    !this.state.chosenAnswer ?
+                                        <i>Bitte Antwort wählen</i>
+                                        :
+                                        this.state.chat.getLastMessage()!.answers.find(a => a.id === this.state.chosenAnswer)!.text
                                 }
                             </div>
                         </div>
