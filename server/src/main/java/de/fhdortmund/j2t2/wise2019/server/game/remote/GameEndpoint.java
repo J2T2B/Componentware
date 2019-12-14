@@ -4,11 +4,14 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
+import de.fhdortmund.j2t2.wise2019.server.game.beans.GameManagerBean;
 import de.fhdortmund.j2t2.wise2019.server.game.local.GameManagerLocal;
 import de.fhdortmund.j2t2.wise2019.server.game.models.ChatRemoteModel;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.game.models.ChatpartnerRemoteModel;
+import de.fhdortmund.j2t2.wise2019.server.user.UserManager;
 
+import javax.inject.Inject;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
@@ -20,13 +23,14 @@ import java.util.stream.Collectors;
 public class GameEndpoint {
 
     private Session session;
-    private GameManagerLocal gameManager;
+    @Inject
+    private UserManager userManager;
     private List<Chat> chats;
 
     @OnOpen
     public void onOpen(Session session, @PathParam("usertoken") String token) throws IOException, EncodeException {
         this.session = session;
-        this.chats = gameManager.getChatsForUser(token).stream().map(ChatRemoteModel::new).collect(Collectors.toList());
+        this.chats = userManager.getChatsForUser(token).stream().map(ChatRemoteModel::new).collect(Collectors.toList());
         reply(new WebSocketCreatedCommand());
     }
 
