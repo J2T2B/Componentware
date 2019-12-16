@@ -10,22 +10,29 @@ export interface ChatListItemProps {
 
 interface ChatListItemStates {
     lastMessageDifference: string;
+    messageId?: string
 }
 
 export class ChatListItemComponent extends React.Component<ChatListItemProps, ChatListItemStates> {
 
     private interval: number = 0;
 
-    state = {
-        lastMessageDifference: ""
+    constructor(props: ChatListItemProps) {
+        super(props);
+        this.state = {
+            lastMessageDifference: ""
+        };
     }
 
     componentDidMount() {
         this.interval = window.setInterval(this.setDifference.bind(this), 60000);
     }
 
-    componentWillReceiveProps() {
-        this.setDifference();
+    componentDidUpdate(oldProps: ChatListItemProps, oldStates: ChatListItemStates) {
+        // Nur wenn es nicht im Zuge von lastMessageDifference ist
+        if (oldStates.messageId !== this.props.chat.getLastMessage()!.id) {
+            this.setDifference();
+        }
     }
 
     componentWillUnmount() {
@@ -39,14 +46,17 @@ export class ChatListItemComponent extends React.Component<ChatListItemProps, Ch
     private setDifference() {
         let lastMessage = this.props.chat.getLastMessage();
         if (lastMessage) {
-            this.setState({ lastMessageDifference: lastMessage!.created.fromNow() });
+            this.setState({
+                lastMessageDifference: lastMessage!.created.fromNow(),
+                messageId: lastMessage.id
+            });
         }
     }
 
     render() {
         let message = this.props.chat.getLastMessage();
-        
-        let text : string | JSX.Element = message === null ? "Keine Nachricht" : message!.text;
+
+        let text: string | JSX.Element = message === null ? "Keine Nachricht" : message!.text;
 
         let unreadMessages = this.props.chat.unreadMessages;
         let unreadBadge = <></>;

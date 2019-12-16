@@ -42,6 +42,17 @@ export class MockChatsHandler extends AChatsHandler {
                 });
 
             for (let j = 0; j < 10; j++) {
+                let isAnswer = (Math.random() < 0.5);
+                let answers = [];
+                if (!isAnswer) {
+                    let a = Math.random() * 4 + 1;
+                    for (let k = 0; k < a; k++) {
+                        answers.push({
+                            id: j*10+k,
+                            text: "Antwort "+j+''+k
+                        });
+                    }
+                }
                 this.simulateMessage({
                     command: "AddMessage",
                     chatId: i,
@@ -49,10 +60,10 @@ export class MockChatsHandler extends AChatsHandler {
                         id: ((i*10)+j).toString(),
                         text: "Hallo Will "+((i*10)+j).toString(),
                         image: "",
-                        answers: [],
+                        answers: answers,
                         userHasRead: false,
-                        created: (new Date().getTime() - 60000),
-                        isAnswer: (Math.random() < 0.5)
+                        created: (new Date().getTime() - 99999999),
+                        isAnswer: isAnswer
                     }
                 });
             }

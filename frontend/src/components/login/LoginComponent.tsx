@@ -1,6 +1,6 @@
 import { DefaultComponentProps } from "../../DefaultComponentProps";
 import React from "react";
-import { FormGroup, Form, Label, Input, Button, CardBody, Card } from "reactstrap";
+import { Button } from "reactstrap";
 import "../../styles/elements/login.scss";
 import { LoginCardComponent } from "./LoginCard";
 import { SmartInputComponent } from "./SmartInputComponent";
@@ -20,10 +20,23 @@ export class LoginComponent extends React.Component<DefaultComponentProps, Login
         };
 
         this.onInput = this.onInput.bind(this);
+        this.onSubmit = this.onSubmit.bind(this);
     }
 
     onInput(nValue: Partial<LoginStates>) {
         this.setState(nValue as LoginStates);
+    }
+
+    async onSubmit(): Promise<void> {
+
+        let login = {
+            username: this.state.username,
+            password: this.state.password
+        };
+
+        console.log(
+            "Login mit", login
+        );
     }
 
     render() {
@@ -36,6 +49,7 @@ export class LoginComponent extends React.Component<DefaultComponentProps, Login
                 placeholder="william.walker1"
                 value={this.state.username}
                 type="text"
+                autoComplete="username"
             />
 
             <SmartInputComponent
@@ -45,10 +59,15 @@ export class LoginComponent extends React.Component<DefaultComponentProps, Login
                 placeholder="132456789"
                 value={this.state.password}
                 type="password"
+                autoComplete="current-password"
             />
 
-            <Button>
-                Login and go to Work!
+            <Button
+                onClick={this.onSubmit}
+                color="success"
+                disabled={this.state.username.length === 0 || this.state.password.length === 0}
+            >
+                Anmelden
             </Button>
         </LoginCardComponent>
     }
