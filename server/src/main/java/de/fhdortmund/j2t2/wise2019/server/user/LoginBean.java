@@ -12,6 +12,7 @@ import javax.security.enterprise.credential.Password;
 import javax.security.enterprise.credential.UsernamePasswordCredential;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.ws.rs.GET;
 import javax.ws.rs.PUT;
 import javax.ws.rs.Path;
 import java.security.NoSuchAlgorithmException;
@@ -36,6 +37,11 @@ public class LoginBean {
         );
         eraseCharArray(loginCredentials.getPassword());
         return "token"; //TODO
+    }
+
+    @GET
+    public String getPage(){
+        return "Hello World";
     }
 
     private void eraseCharArray(char[] password){
