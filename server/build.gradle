@@ -35,5 +35,5 @@ dependencies {
 }
 
 war{
-
+    from '../frontend/build/'
 }
