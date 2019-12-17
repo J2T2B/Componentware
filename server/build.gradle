@@ -37,3 +37,10 @@ dependencies {
 war{
 
 }
+
+//build.dependsOn "includeFrontend"
+/*task includeFrontend{
+    from project(":frontend").getBuildDir().toString()
+    include "*"
+    into "./src/main/java/webapp/"
+}*/
