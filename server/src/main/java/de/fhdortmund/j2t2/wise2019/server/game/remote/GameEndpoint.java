@@ -19,7 +19,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ServerEndpoint(value = "/game/{usertoken}")
+@ServerEndpoint(value = "/api/game/{usertoken}")
 public class GameEndpoint {
 
     private Session session;
