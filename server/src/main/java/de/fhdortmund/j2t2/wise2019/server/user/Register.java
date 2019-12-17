@@ -1,6 +1,5 @@
 package de.fhdortmund.j2t2.wise2019.server.user;
 
-import javax.annotation.PostConstruct;
 import javax.inject.Inject;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -8,11 +7,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-@Path("/register")
+@Path("/api/register")
 public class Register {
 
     @Inject
-    private UserDAO userDAO;
+    private UserEntity userEntity;
     @POST
     public void registerUser(NewUserData user){
 
