@@ -3,7 +3,7 @@
     overflow-y: scroll;
     overflow-x: hidden;
     padding: 10px;
-    background: $lightgrey;
+    background: $gray-400;
 }
 
 .message {
@@ -12,6 +12,7 @@
     padding: 0 25px;
 
     .bubble {
+        z-index: 5;
         width: 85%;
         max-width: 400px;
         color: $black;
@@ -68,5 +69,6 @@
 }
 
 .message-input {
-    background: $grey;
+    background: $gray-500;
+    border-radius: 0 0 .25rem .25rem;
 }
