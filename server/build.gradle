@@ -35,7 +35,7 @@ dependencies {
 }
 
 war{
-
+    from '../frontend/build/'
 }
 
 //build.dependsOn "includeFrontend"
