@@ -1,8 +1,6 @@
 // colors https://mycolor.space/?hex=%2332465A&sub=1
 $primary: #32465a;
-$_primary: #32465a;
 $secondary: #1B6C83;
-$_secondary: #1B6C83;
 $third: #009598;
 $background: #D5F4FF;
 $highlight: #E39E21;
@@ -14,14 +12,12 @@ $color-background: $background;
 $color-highlight: $highlight;
 
 $theme-colors: (
-    "primary":    $_primary,
-    "secondary":  $_secondary,
+    "primary":    $primary,
+    "secondary":  $secondary,
     "third":      $third,
     "background": $background,
     "highlight":  $highlight
 );
-
-@import "~bootstrap/scss/bootstrap";
 
 $received: $third;
 $reply: #95DE81;
