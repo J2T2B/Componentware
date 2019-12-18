@@ -15,7 +15,7 @@ import javax.ws.rs.Path;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
-@Path("/api/login")
+@Path("login")
 public class LoginBean {
 
     @Inject

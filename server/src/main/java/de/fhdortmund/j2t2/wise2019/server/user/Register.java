@@ -7,7 +7,7 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Arrays;
 
-@Path("/api/register")
+@Path("register")
 public class Register {
 
     @Inject
