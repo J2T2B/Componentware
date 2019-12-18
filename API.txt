@@ -1,0 +1,8 @@
+/api/login 
+  Body: Nutzername, Passwort 
+  return: usertoken
+  
+/api/register 
+  Body: Nutzername, Passwort
+/api/game/{usertoken}
+  erstellt einen WebSocket mit dem Client

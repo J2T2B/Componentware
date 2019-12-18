@@ -1,0 +1,402 @@
+[
+  {
+    "delay": 0,
+    "id": "m1",
+    "text": "Hallo ich habe ein Problem mit meinem Computer",
+    "answers": [
+      {
+        "text": "Steckt der Stecker?",
+        "targets": [
+          "m2-1",
+          "m2-2"
+        ]
+      },
+      {
+        "text": "Was für einen Computer haben Sie?",
+        "targets": [
+          "m3"
+        ]
+      },
+      {
+        "text": "Können Sie den Computer einschalten?",
+        "targets": [
+          "m5-1",
+          "m5-2"
+        ]
+      }
+    ],
+    "points": {
+      "chefSatisfaction": 0,
+      "customerExperience": 0,
+      "budget": 0
+    },
+    "isRoot": true
+  },
+  {
+    "delay": 0,
+    "probably": 0.5,
+    "text": "Ja natürlich. Ich bin ja nicht doof.",
+    "id": "m2-1",
+    "answers": [
+      {
+        "text": "Was für einen Computer haben Sie?",
+        "targets": [
+          "m3"
+        ]
+      },
+      {
+        "text": "Können Sie den Computer einschalten?",
+        "targets": [
+          "m5-1",
+          "m5-2"
+        ]
+      }
+    ],
+    "points": {
+      "chefSatisfaction": -5,
+      "customerExperience": -10,
+      "budget": 0
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 1,
+    "probably": 0.5,
+    "text": "Oh tatsächlich. Vielen Dank!",
+    "id": "m2-2",
+    "answers": [],
+    "points": {
+      "chefSatisfaction": 2.5,
+      "customerExperience": 5,
+      "budget": 0
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 0,
+    "id": "m3",
+    "text": "Ich habe einen weißen Computer.",
+    "answers": [
+      {
+        "text": "Können Sie mir sagen was auf dem Computer steht?",
+        "targets": [
+          "m4"
+        ]
+      },
+      {
+        "text": "Können Sie den Computer einschalten?",
+        "targets": [
+          "m5-1",
+          "m5-2"
+        ]
+      },
+      {
+        "text": "Steht auf dem Computer eine Blume?",
+        "targets": [
+          "m4"
+        ]
+      }
+    ],
+    "points": {
+      "chefSatisfaction": 0,
+      "customerExperience": 0,
+      "budget": 0
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 0,
+    "id": "m4",
+    "text": "Auf dem Computer steht eine weiße Blume.",
+    "answers": [
+      {
+        "text": "Computer mit Blumen unterstützen wir leider nicht",
+        "targets": [
+          "notHelpfull"
+        ]
+      },
+      {
+        "text": "Können Sie den Computer einschalten?",
+        "targets": [
+          "m5-1",
+          "m5-2"
+        ]
+      }
+    ],
+    "points": {
+      "chefSatisfaction": 0,
+      "customerExperience": 0,
+      "budget": 0
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 0,
+    "id": "m5-1",
+    "text": "Nein, der Computer geht nicht mehr an",
+    "answers": [
+      {
+        "text": "Bitte senden Sie uns das Gerät zu.",
+        "targets": [
+          "m6"
+        ]
+      },
+      {
+        "text": "Ich sende Ihnen ein Ersatzgerät. Bitte senden Sie uns anschließend das alte Gerät zu.",
+        "targets": [
+          "m7"
+        ]
+      },
+      {
+        "text": "Ich fahre sofort los und werde mich darum kümmern.",
+        "targets": [
+          "toHelpfull"
+        ]
+      }
+    ],
+    "points": {
+      "chefSatisfaction": 0,
+      "customerExperience": 0,
+      "budget": 0
+    },
+    "isRoot": false,
+    "probably": 0.7
+  },
+  {
+    "delay": 0,
+    "probably": 0.3,
+    "text": "Ja, der Computer startet und zeigt dann einen blauen Bildschirm an",
+    "id": "m5-2",
+    "answers": [
+      {
+        "targets": [
+          "notHelpfull"
+        ],
+        "text": "Das ist ein Problem Ihres Betriebsystems. Bitte wenden Sie sich an Microsoft."
+      },
+      {
+        "targets": [
+          "m7"
+        ],
+        "text": "Also eigentlich kümmern wir uns nicht darum, aber ich werde Ihnen einen Techniker vorbei senden"
+      }
+    ],
+    "points": {
+      "chefSatisfaction": 0,
+      "customerExperience": 0,
+      "budget": 0
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 0,
+    "id": "m6",
+    "text": "Ich werde Ihnen das Gerät zusenden. Ich finde es aber doof, dass ich dann eine Zeit lang keinen Computer habe!",
+    "answers": [],
+    "points": {
+      "chefSatisfaction": -2,
+      "customerExperience": 1,
+      "budget": -1
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 0,
+    "id": "m7",
+    "text": "Vielen Dank!",
+    "answers": [],
+    "points": {
+      "chefSatisfaction": -8,
+      "customerExperience": 10,
+      "budget": -5
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 0,
+    "id": "toHelpfull",
+    "text": "Das ist ein super Kundenservice! Danke",
+    "answers": [],
+    "points": {
+      "chefSatisfaction": -10,
+      "customerExperience": 15,
+      "budget": -10
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 0,
+    "id": "acceptableHelpfull",
+    "text": "Vielen Dank!",
+    "answers": [],
+    "points": {
+      "chefSatisfaction": 5,
+      "customerExperience": 5,
+      "budget": 0
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 0,
+    "id": "notHelpfull",
+    "text": "Ich finde Ihren Kundenservice sehr unfreundlich und nicht hilfreich. Ich werde mich über Sie beschweren!",
+    "answers": [],
+    "points": {
+      "chefSatisfaction": -3,
+      "customerExperience": -8,
+      "budget": 0
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 0,
+    "id": "goodHelpfull",
+    "text": "Vielen Dank für Ihre Hilfe!",
+    "answers": [],
+    "points": {
+      "chefSatisfaction": 10,
+      "customerExperience": 10,
+      "budget": 5
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 1,
+    "id": "okGoodHelpfull",
+    "text": "Ok das nehme ich so. Vielen Dank für Ihre Hilfe!",
+    "answers": [],
+    "points": {
+      "chefSatisfaction": 10,
+      "customerExperience": 10,
+      "budget": 5
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 0,
+    "id": "m9",
+    "text": "Ich würde gerne etwas bestellen",
+    "answers": [
+      {
+        "targets": [
+          "m10-1",
+          "m10-2"
+        ],
+        "text": "Was möchten Sie denn bestellen?"
+      },
+      {
+        "targets": [
+          "notHelpfull"
+        ],
+        "text": "Bitte wenden Sie sich an den Verkauf."
+      }
+    ],
+    "points": {
+      "chefSatisfaction": 0,
+      "customerExperience": 0,
+      "budget": 0
+    },
+    "isRoot": true
+  },
+  {
+    "delay": 1,
+    "probably": 0.5,
+    "text": "Ich möchte gerne einen Döner mit Cocktail-Sauce und eine Pommes",
+    "id": "m10-1",
+    "answers": [
+      {
+        "targets": [
+          "notHelpfull"
+        ],
+        "text": "Wir führen keine Essensbestellungen durch."
+      },
+      {
+        "targets": [
+          "toHelpfull"
+        ],
+        "text": "Ich werde Ihre Bestellung an einen Essensdienstleister weiterleiten."
+      },
+      {
+        "targets": [
+          "m11"
+        ],
+        "text": "Wir beginnen jetzt mit der Verarbeitung Ihrer Bestellung *Nur den Anschein erwecken*"
+      }
+    ],
+    "points": {
+      "chefSatisfaction": 0,
+      "customerExperience": 0,
+      "budget": 0
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 0,
+    "probably": 0.5,
+    "text": "Ich würde gerne einen Computer bestellen.",
+    "id": "m10-2",
+    "answers": [
+      {
+        "targets": [
+          "okGoodHelpfull"
+        ],
+        "text": "Der Computer kostet 899 €. Möchten Sie diesen Bestellen?"
+      },
+      {
+        "targets": [
+          "toHelpfull"
+        ],
+        "text": "Der Computer kostet 20 €. Möchten Sie diesen Bestellen?"
+      },
+      {
+        "targets": [
+          "notHelpfull"
+        ],
+        "text": "Bitte wenden Sie sich an den Vertrieb."
+      }
+    ],
+    "points": {
+      "chefSatisfaction": 0,
+      "customerExperience": 0,
+      "budget": 0
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 5,
+    "id": "m11",
+    "text": "Ich habe meine Bestellung immer noch nicht erhalten! Ich werde meinen Supportvertrag bei Ihnen Kündigen!",
+    "answers": [],
+    "points": {
+      "chefSatisfaction": -15,
+      "customerExperience": -15,
+      "budget": -10
+    },
+    "isRoot": false
+  },
+  {
+    "delay": 0,
+    "id": "m12",
+    "text": "hallo was ist letzte preis für computer",
+    "answers": [
+      {
+        "targets": [
+          "okGoodHelpfull"
+        ],
+        "text": "Der Computer kostet 899 €."
+      },
+      {
+        "targets": [
+          "toHelpfull"
+        ],
+        "text": "Der Computer kostet 20 €."
+      }
+    ],
+    "points": {
+      "chefSatisfaction": 0,
+      "customerExperience": 0,
+      "budget": 0
+    },
+    "isRoot": false
+  }
+]
