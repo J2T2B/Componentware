@@ -6,6 +6,6 @@ import javax.ejb.Local;
 import java.util.List;
 
 @Local
-public interface LocalUserManager extends UserManager {
+public interface UserManagerLocal extends UserManager {
     public List<Chat> getChatsForUser(String token);
 }

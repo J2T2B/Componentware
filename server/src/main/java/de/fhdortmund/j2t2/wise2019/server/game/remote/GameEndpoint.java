@@ -5,7 +5,7 @@ import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
 import de.fhdortmund.j2t2.wise2019.server.game.models.ChatRemoteModel;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketCommand;
-import de.fhdortmund.j2t2.wise2019.server.user.UserManagerBean;
+import de.fhdortmund.j2t2.wise2019.server.user.UserManagerLocal;
 
 import javax.inject.Inject;
 import javax.websocket.*;
@@ -20,7 +20,7 @@ public class GameEndpoint {
 
     private Session session;
     @Inject
-    private UserManagerBean userManager;
+    private UserManagerLocal userManager;
     private List<Chat> chats;
 
     @OnOpen
