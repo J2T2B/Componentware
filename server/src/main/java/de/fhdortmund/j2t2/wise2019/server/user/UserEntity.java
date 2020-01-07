@@ -9,12 +9,7 @@ import javax.persistence.Table;
 @Table(name = "user")
 @ApplicationScoped
 public class UserEntity {
-
     @Id
     private String username;
     private String hash;
-
-    public void addUser(String name, String hash){
-
-    }
 }
