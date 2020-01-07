@@ -12,6 +12,7 @@ import javax.ejb.Startup;
 import javax.ejb.Stateful;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ServiceLoader;
 
 @Startup
 @Stateful
@@ -19,7 +20,13 @@ public class GameManagerBean implements GameManagerLocal {
     List<Game> games;
     @PostConstruct
     private void loadGames(){
-        Reflections gameScanner = new Reflections(Game.class, new SubTypesScanner());    }
+        ServiceLoader<Game> loadedGames = ServiceLoader.load(Game.class);
+        this.games = new ArrayList<>();
+        for(Game game : loadedGames) {
+            this.games.add(game);
+        }
+    }
+
     @Override
     public List<Chat> getChatsForUser(String token) {
         return new ArrayList<>();
