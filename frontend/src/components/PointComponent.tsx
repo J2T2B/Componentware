@@ -24,6 +24,8 @@ export function PointComponent({label, score}: PointProps) : JSX.Element {
 
     return <div>
         {label}
-        <Progress color={color} value={score} />
+        <Progress color={color} value={score}>
+            {score}
+        </Progress>
     </div>;
 }
