@@ -1,0 +1,13 @@
+version: '3'
+
+services:
+  game-server:
+    build: .
+    ports:
+      - "9990:9990"
+      - "8080:8080"
+    links:
+      - "mysql:database"
+
+  mysql:
+    image: mysql/mysql-server

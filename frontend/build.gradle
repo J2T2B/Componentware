@@ -1,0 +1,62 @@
+plugins {
+    id "com.moowork.node" version "1.2.0"
+}
+
+apply plugin: 'base'
+apply plugin: "com.moowork.node"
+
+group 'de.fhdortmund.j2t.wise2019'
+version '1.0-SNAPSHOT'
+
+node {
+    version = "10.15.0"
+    npmVersion = "6.4.1"
+    download = true
+}
+
+task bundle(type: NpmTask, dependsOn: npmInstall) {
+    args = ['run', 'build']
+}
+
+assemble.dependsOn "packageNpmApp"
+
+npm_run_build {
+    inputs.files fileTree("public")
+    inputs.files fileTree("src")
+    inputs.file 'package.json'
+    inputs.file 'package-lock.json'
+    outputs.dir 'build'
+
+}
+
+
+
+task packageNpmApp(type: Zip) {
+    dependsOn npm_run_build
+    baseName 'frontend'
+    extension 'ear'
+    destinationDir file("${projectDir}/build_packageNpmApp")
+    from('build') {
+        // optional path under which output will be visible in Java classpath, e.g. static resources path
+        into 'static'
+
+    }
+}
+
+configurations {
+    npmResources
+}
+configurations.default.extendsFrom(configurations.npmResources)
+
+artifacts {
+    npmResources(packageNpmApp.archivePath) {
+        builtBy packageNpmApp
+        type "ear"
+    }
+}
+
+clean {
+    delete packageNpmApp.archivePath
+}
+
+assemble.dependsOn packageNpmApp
