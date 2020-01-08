@@ -68,7 +68,6 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
 
     onSendMessage() {
         if (this.state.chosenAnswer !== undefined) {
-            console.log(this.state.chosenAnswer);
             let answer = this.state.chat!.getLastMessage()!.answers.find(a => a.id === this.state.chosenAnswer);
             console.log("sending answer ("+answer!.id+"): "+answer!.text);
         } else {
@@ -149,7 +148,7 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                 <div className="message-input">
                     <div className="row text-center">
                         <div className="col-md-1">
-                            <Button>
+                            <Button color="primary">
                                 <FontAwesomeIcon icon={faSmile} />
                             </Button>
                         </div>
