@@ -8,6 +8,7 @@ import { ChatListItemComponent } from "./ChatListItemComponent";
 import AChatsHandler from "../logic/AChatsHandler";
 import { Points } from "../models/Points";
 import setWindowTitle from "../logic/setWindowTitle";
+import { PointComponent } from "./PointComponent";
 
 export interface ChatListProps extends DefaultComponentProps {
     isOpen: boolean;
@@ -71,18 +72,9 @@ export class ChatsListComponent extends React.Component<ChatListProps, ChatListS
                     </div>
                 </CardBody>
                 <CardBody>
-                    <div>
-                        Kundenerfahrungen
-                        <Progress value={currentPoints.customerExperience} />
-                    </div>
-                    <div>
-                        Chefzufriedenheit
-                        <Progress value={currentPoints.chefSatisfaction} />
-                    </div>
-                    <div>
-                        Firmenbudget
-                        <Progress value={currentPoints.budget} />
-                    </div>
+                    <PointComponent label="Kundenerfahrung" score={currentPoints.customerExperience} />
+                    <PointComponent label="Chefzufriedenheit" score={currentPoints.chefSatisfaction} />
+                    <PointComponent label="Firmenbudget" score={currentPoints.budget} />
                 </CardBody>
             </Card>
             <ListGroup>

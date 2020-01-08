@@ -32,4 +32,7 @@ export type SocketMessage =
     } |
     ({
         command: "ChangePoints",
-    } & Points) // Enthält alle Felder aus Points 
+    } & Points) | // Enthält alle Felder aus Points 
+    {
+        command: "GameOver"
+    }
