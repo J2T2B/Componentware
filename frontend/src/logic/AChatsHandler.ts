@@ -189,6 +189,9 @@ export default abstract class AChatsHandler {
             case "AddAnswer":
                 this.onAnswer(message.chatId, message.messageId, message.answer);
                 break;
+            case "ChangePoints":
+                this.chatsListener.forEach(c => c.onPointsChange(message));
+                break;
             default:
                 throw new Error(`The Command ${message.command} is unknown`);
         }

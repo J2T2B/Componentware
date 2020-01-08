@@ -8,6 +8,8 @@ import { MockChatsHandler } from './logic/MockChatsHandler';
 import { ChatMessageComponent } from "./components/ChatMessageComponent";
 import { LoginComponent } from './components/login/LoginComponent';
 import { RegisterComponent } from './components/login/RegisterComponent';
+import { GameOverPage } from './components/gameover/GameOverPage';
+import { NavbarComponent } from './components/NavbarComponent';
 
 interface AppStates {
     isChatListOpen: boolean;
@@ -37,18 +39,7 @@ export class App extends React.Component<{}, AppStates> {
 
     render() {
         return <>
-            <Navbar color="faded" dark className="mb-3">
-                <NavbarBrand href="/" className="mr-auto">
-                    Telekilo
-                </NavbarBrand>
-                <Nav>
-                    <NavItem className="d-md-none">
-                        <Button color="primary" onClick={this.toggleChatsList.bind(this)}>
-                            Chatliste
-                        </Button>
-                    </NavItem>
-                </Nav>
-            </Navbar>
+            <NavbarComponent toggleChatsList={this.toggleChatsList.bind(this)} />
 
             <Container fluid>
                 <HashRouter>
@@ -68,6 +59,8 @@ export class App extends React.Component<{}, AppStates> {
                         <Route path="/login" exact render={() => <LoginComponent chatsHandler={this.chatsHandler} />} />
 
                         <Route path="/register" exact render={() => <RegisterComponent chatsHandler={this.chatsHandler} />} />
+
+                        <Route path="/gameover" exact render={() => <GameOverPage />} />
 
                     </Switch>
                 </HashRouter>

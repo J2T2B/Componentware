@@ -4,6 +4,7 @@ import { Button } from "reactstrap";
 import "../../styles/elements/login.scss";
 import { LoginCardComponent } from "./LoginCard";
 import { SmartInputComponent } from "./SmartInputComponent";
+import setWindowTitle from "../../logic/setWindowTitle";
 
 export interface LoginStates {
     username: string;
@@ -25,6 +26,10 @@ export class LoginComponent extends React.Component<DefaultComponentProps, Login
 
     onInput(nValue: Partial<LoginStates>) {
         this.setState(nValue as LoginStates);
+    }
+
+    componentDidMount() {
+        setWindowTitle("Login");
     }
 
     async onSubmit(): Promise<void> {
