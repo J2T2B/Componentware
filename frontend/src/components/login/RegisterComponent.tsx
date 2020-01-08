@@ -3,6 +3,7 @@ import React from "react";
 import { LoginCardComponent } from "./LoginCard";
 import { FormGroup, Input, Label, Button } from "reactstrap";
 import { SmartInputComponent } from "./SmartInputComponent";
+import setWindowTitle from "../../logic/setWindowTitle";
 
 const ERRORS = {
     usernameToShort: "Nutzername darf nicht leer sein",
@@ -35,6 +36,10 @@ export class RegisterComponent extends React.Component<DefaultComponentProps, Re
 
         this.onInput = this.onInput.bind(this);
         this.onSubmit = this.onSubmit.bind(this);
+    }
+
+    componentDidMount() {
+        setWindowTitle("Registrieren");
     }
 
     onInput(nValue: Partial<RegisterStates>) {

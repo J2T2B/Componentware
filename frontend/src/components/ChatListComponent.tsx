@@ -7,6 +7,7 @@ import { VoidLike } from "../logic/VoidLike";
 import { ChatListItemComponent } from "./ChatListItemComponent";
 import AChatsHandler from "../logic/AChatsHandler";
 import { Points } from "../models/Points";
+import setWindowTitle from "../logic/setWindowTitle";
 
 export interface ChatListProps extends DefaultComponentProps {
     isOpen: boolean;
@@ -20,7 +21,6 @@ export interface ChatListStates {
 }
 
 export class ChatsListComponent extends React.Component<ChatListProps, ChatListStates> implements IChatsListener {
-
 
     constructor(props: ChatListProps) {
         super(props);
@@ -48,6 +48,7 @@ export class ChatsListComponent extends React.Component<ChatListProps, ChatListS
     }
 
     componentDidMount() {
+        setWindowTitle("Chats von William Walker");
         this.props.chatsHandler.attach(this);
     }
 
