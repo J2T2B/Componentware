@@ -68,7 +68,6 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
 
     onSendMessage() {
         if (this.state.chosenAnswer !== undefined) {
-            console.log(this.state.chosenAnswer);
             let answer = this.state.chat!.getLastMessage()!.answers.find(a => a.id === this.state.chosenAnswer);
             console.log("sending answer ("+answer!.id+"): "+answer!.text);
         } else {
@@ -110,12 +109,14 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                             return <div className="row">
                                 <div className="message">
                                     <div className={"bubble" + (m.isAnswer ? " reply" : " receive")}>
-                                        <p>{m.text}</p>
-                                        <p className="time">
-                                            {m.created.isBefore(moment().startOf('day')) && m.created.format('L')}
-                                            &nbsp;
-                                            {m.created.format('HH:mm')}
-                                        </p>
+                                        <div className="content">
+                                            <p>{m.text}</p>
+                                            <p className="time">
+                                                {m.created.isBefore(moment().startOf('day')) && m.created.format('L')}
+                                                &nbsp;
+                                                {m.created.format('HH:mm')}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -149,7 +150,7 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                 <div className="message-input">
                     <div className="row text-center">
                         <div className="col-md-1">
-                            <Button>
+                            <Button color="primary">
                                 <FontAwesomeIcon icon={faSmile} />
                             </Button>
                         </div>

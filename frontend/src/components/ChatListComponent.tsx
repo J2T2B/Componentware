@@ -1,6 +1,6 @@
 import React from "react";
 import { Chat } from "../models/Chat";
-import { Card, CardBody, ListGroup, CardTitle } from "reactstrap";
+import {Card, CardBody, ListGroup, CardTitle, Container} from "reactstrap";
 import { DefaultComponentProps } from "../DefaultComponentProps";
 import IChatsListener from "../logic/IChatsListener";
 import { VoidLike } from "../logic/VoidLike";
@@ -47,15 +47,22 @@ export class ChatsListComponent extends React.Component<ChatListProps, ChatListS
         
         if (!this.props.isOpen) return <></>;
 
-        return <Card>
-            <CardBody>
-                <CardTitle>William Walker</CardTitle>
-            </CardBody>
+        return <Container>
+            <Card color="secondary">
+                <CardBody>
+                    <div className="contact-profile">
+                        <img className="contact-picture" src="http://emilcarlsson.se/assets/harveyspecter.png" alt="William Walker profile picture" />
+                        <div className="contact-name">
+                            William Walker
+                        </div>
+                    </div>
+                </CardBody>
+            </Card>
             <ListGroup>
                 {
                     this.state.chats.map(c => <ChatListItemComponent chat={c} key={c.chatId} chatsHandler={this.props.chatsHandler} />)
                 }
             </ListGroup>
-        </Card>;
+        </Container>;
     }
 }

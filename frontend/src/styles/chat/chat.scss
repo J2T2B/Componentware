@@ -3,7 +3,7 @@
     overflow-y: scroll;
     overflow-x: hidden;
     padding: 10px;
-    background: $lightgrey;
+    background: $gray-400;
 }
 
 .message {
@@ -17,15 +17,47 @@
         color: $black;
         border-radius: 3px;
         padding: 5px 15px;
+        display: inline-block;
+        position: relative;
 
         &.receive {
             background: $received;
             float: left;
+
+            &::after {
+                content: '';
+                position: absolute;
+                left: 10%;
+                bottom: -12px;
+                width: 0;
+                height: 0;
+                border: 12px solid transparent;
+                border-left-color: $received;
+                border-right: 0;
+                border-top: 0;
+                margin-top: -25px;
+                margin-left: -20px;
+            }
         }
 
         &.reply {
             background: $reply;
             float: right;
+
+            &::after {
+                content: '';
+                position: absolute;
+                left: 90%;
+                bottom: -12px;
+                width: 0;
+                height: 0;
+                border: 12px solid transparent;
+                border-right-color: #95DE81;
+                border-left: 0;
+                border-top: 0;
+                margin-top: -25px;
+                margin-right: -20px;
+            }
         }
 
         .time {
@@ -38,5 +70,10 @@
 }
 
 .message-input {
-    background: $grey;
+    background: $gray-500;
+    border-radius: 0 0 .25rem .25rem;
+}
+
+div.form-control:hover {
+    cursor: pointer;
 }

@@ -1,6 +1,4 @@
 import React from 'react';
-import 'bootstrap/dist/css/bootstrap.min.css';
-import { MockComponent } from './components/MockComponent';
 import { Container, Col, Row, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button } from 'reactstrap';
 import { Router, Switch, Route } from 'react-router';
 import { HashRouter } from 'react-router-dom';
