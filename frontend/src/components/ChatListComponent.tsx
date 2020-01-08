@@ -49,10 +49,12 @@ export class ChatsListComponent extends React.Component<ChatListProps, ChatListS
 
         return <Container>
             <Card color="secondary">
-                <CardBody className="contact-profile">
-                    <img className="contact-picture" src="http://emilcarlsson.se/assets/harveyspecter.png" alt="William Walker profile picture" />
-                    <div className="contact-name">
-                        William Walker
+                <CardBody>
+                    <div className="contact-profile">
+                        <img className="contact-picture" src="http://emilcarlsson.se/assets/harveyspecter.png" alt="William Walker profile picture" />
+                        <div className="contact-name">
+                            William Walker
+                        </div>
                     </div>
                 </CardBody>
             </Card>

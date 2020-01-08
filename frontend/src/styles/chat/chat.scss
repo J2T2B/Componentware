@@ -12,25 +12,26 @@
     padding: 0 25px;
 
     .bubble {
-        z-index: 5;
         width: 85%;
         max-width: 400px;
         color: $black;
         border-radius: 3px;
         padding: 5px 15px;
+        display: inline-block;
+        position: relative;
 
         &.receive {
             background: $received;
             float: left;
 
-            &:after {
+            &::after {
                 content: '';
-                position: relative;
+                position: absolute;
                 left: 10%;
-                top: 50%;
+                bottom: -12px;
                 width: 0;
                 height: 0;
-                border: 20px solid transparent;
+                border: 12px solid transparent;
                 border-left-color: $received;
                 border-right: 0;
                 border-top: 0;
@@ -43,14 +44,14 @@
             background: $reply;
             float: right;
 
-            &:after {
+            &::after {
                 content: '';
-                position: relative;
+                position: absolute;
                 left: 90%;
-                top: 50%;
+                bottom: -12px;
                 width: 0;
                 height: 0;
-                border: 20px solid transparent;
+                border: 12px solid transparent;
                 border-right-color: #95DE81;
                 border-left: 0;
                 border-top: 0;
@@ -71,4 +72,8 @@
 .message-input {
     background: $gray-500;
     border-radius: 0 0 .25rem .25rem;
+}
+
+div.form-control:hover {
+    cursor: pointer;
 }

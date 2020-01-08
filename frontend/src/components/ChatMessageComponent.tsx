@@ -109,12 +109,14 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                             return <div className="row">
                                 <div className="message">
                                     <div className={"bubble" + (m.isAnswer ? " reply" : " receive")}>
-                                        <p>{m.text}</p>
-                                        <p className="time">
-                                            {m.created.isBefore(moment().startOf('day')) && m.created.format('L')}
-                                            &nbsp;
-                                            {m.created.format('HH:mm')}
-                                        </p>
+                                        <div className="content">
+                                            <p>{m.text}</p>
+                                            <p className="time">
+                                                {m.created.isBefore(moment().startOf('day')) && m.created.format('L')}
+                                                &nbsp;
+                                                {m.created.format('HH:mm')}
+                                            </p>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
