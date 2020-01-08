@@ -72,11 +72,11 @@ export class ChatsListComponent extends React.Component<ChatListProps, ChatListS
                             William Walker
                         </div>
                     </div>
-                </CardBody>
-                <CardBody>
-                    <PointComponent label="Kundenerfahrung" score={currentPoints.customerExperience} />
-                    <PointComponent label="Chefzufriedenheit" score={currentPoints.chefSatisfaction} />
-                    <PointComponent label="Firmenbudget" score={currentPoints.budget} />
+                    <div className="progressbars">
+                        <PointComponent label="Kundenerfahrung" score={currentPoints.customerExperience} />
+                        <PointComponent label="Chefzufriedenheit" score={currentPoints.chefSatisfaction} />
+                        <PointComponent label="Firmenbudget" score={currentPoints.budget} />
+                    </div>
                 </CardBody>
             </Card>
             <ListGroup>
