@@ -148,7 +148,7 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                 <div className="message-input">
                     <div className="row text-center">
                         <div className="col-md-1">
-                            <Button>
+                            <Button color="primary">
                                 <FontAwesomeIcon icon={faSmile} />
                             </Button>
                         </div>
