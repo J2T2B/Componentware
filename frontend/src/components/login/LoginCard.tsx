@@ -40,7 +40,7 @@ export class LoginCardComponent extends React.Component<React.PropsWithChildren<
     }
 
     render() {
-        return <Card className={this.state.width > 992 ? "mx-auto w-50" : "mx-auto"} style={{ backdropFilter: "blur(10px)", backgroundColor: "#FFFFFF88" }}>
+        return <Card className={(this.state.width > 992 ? "mx-auto w-50" : "mx-auto") + " transparent"}>
             <CardHeader>
                 <CardTitle>
                     <h5 className="">

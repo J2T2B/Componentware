@@ -9,6 +9,7 @@ import { MockChatsHandler } from './logic/MockChatsHandler';
 import { ChatMessageComponent } from "./components/ChatMessageComponent";
 import { LoginComponent } from './components/login/LoginComponent';
 import { RegisterComponent } from './components/login/RegisterComponent';
+import { GameOverPage } from './components/gameover/GameOverPage';
 
 interface AppStates {
     isChatListOpen: boolean;
@@ -69,6 +70,8 @@ export class App extends React.Component<{}, AppStates> {
                         <Route path="/login" exact render={() => <LoginComponent chatsHandler={this.chatsHandler} />} />
 
                         <Route path="/register" exact render={() => <RegisterComponent chatsHandler={this.chatsHandler} />} />
+
+                        <Route path="/gameover" exact render={() => <GameOverPage />} />
 
                     </Switch>
                 </HashRouter>
