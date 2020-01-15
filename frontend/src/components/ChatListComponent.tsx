@@ -79,7 +79,7 @@ export class ChatsListComponent extends React.Component<ChatListProps, ChatListS
                     </div>
                 </CardBody>
             </Card>
-            <ListGroup>
+            <ListGroup className="chat-list">
                 {
                     chats.map(c => <ChatListItemComponent chat={c} key={c.chatId} chatsHandler={this.props.chatsHandler} />)
                 }
