@@ -5,6 +5,7 @@ import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
 import de.fhdortmund.j2t2.wise2019.server.game.models.ChatRemoteModel;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketCommand;
+import de.fhdortmund.j2t2.wise2019.server.user.UserManagerBean;
 import de.fhdortmund.j2t2.wise2019.server.user.UserManagerLocal;
 
 import javax.inject.Inject;
@@ -15,12 +16,11 @@ import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
 
-@ServerEndpoint(value = "/api/game/{usertoken}")
+@ServerEndpoint(value = "/game/{usertoken}")
 public class GameEndpoint {
 
     private Session session;
-    @Inject
-    private UserManagerLocal userManager;
+    private UserManagerLocal userManager = UserManagerBean.getInstance();
     private List<Chat> chats;
 
     @OnOpen

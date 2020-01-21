@@ -3,6 +3,8 @@ package de.fhdortmund.j2t2.wise2019.server.user.register;
 import de.fhdortmund.j2t2.wise2019.server.commons.util.HashUtil;
 import de.fhdortmund.j2t2.wise2019.server.user.UserEntity;
 import de.fhdortmund.j2t2.wise2019.server.user.UserManager;
+import de.fhdortmund.j2t2.wise2019.server.user.UserManagerBean;
+import de.fhdortmund.j2t2.wise2019.server.user.login.LoginCredentials;
 
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
@@ -14,12 +16,11 @@ import java.util.Arrays;
 @Path("register")
 public class Register {
 
-    @Inject
-    private UserManager userManager;
+    private UserManager userManager = UserManagerBean.getInstance();
 
     @POST
     @Consumes("application/json")
-    public void registerUser(NewUserData user) throws NoSuchAlgorithmException {
+    public void registerUser(LoginCredentials user) throws NoSuchAlgorithmException {
         userManager.createUser(user);
         user.clean();
     }

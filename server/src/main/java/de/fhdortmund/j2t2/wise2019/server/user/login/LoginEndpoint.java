@@ -1,5 +1,6 @@
 package de.fhdortmund.j2t2.wise2019.server.user.login;
 
+import de.fhdortmund.j2t2.wise2019.server.user.UserManagerBean;
 import de.fhdortmund.j2t2.wise2019.server.user.UserManagerRemote;
 import de.fhdortmund.j2t2.wise2019.server.user.sessionmanager.SessionManager;
 
@@ -9,8 +10,7 @@ import javax.ws.rs.*;
 @Path("login")
 public class LoginEndpoint {
 
-    @Inject
-    UserManagerRemote userManager;
+    UserManagerRemote userManager = UserManagerBean.getInstance();
 
     @Inject
     SessionManager sessionManager;
