@@ -5,7 +5,6 @@
     "text": "Open the pod bay doors, Hal.",
     "answers": [
       {
-        "id": 1,
         "text": "Stäckt der Stecker?",
         "targets": [
           "test2-1",
@@ -13,7 +12,6 @@
         ]
       },
       {
-        "id": 2,
         "text": "I'm sorry Dave, I'm afraid I can't do that",
         "targets": [
           "test3"
