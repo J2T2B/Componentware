@@ -1,6 +1,6 @@
 import React from 'react';
-import { Container, Col, Row, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button } from 'reactstrap';
-import { Router, Switch, Route } from 'react-router';
+import { Container, Col, Row } from 'reactstrap';
+import { Switch, Route } from 'react-router';
 import { HashRouter } from 'react-router-dom';
 import { ChatsListComponent } from './components/sidebar/ChatListComponent';
 import AChatsHandler from './logic/AChatsHandler';

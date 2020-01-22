@@ -81,7 +81,7 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
         if (this.state.chat === undefined) {
             return <Container>
                 <div className="contact-profile">
-                    <img className="contact-picture" />
+                    <img className="contact-picture" alt="" />
                     <div className="contact-name">
                         <em>Kein Chat ausgewählt</em>
                     </div>
@@ -101,8 +101,7 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
         else {
             return <Container>
                 <div className="contact-profile">
-                    <img className="contact-picture" src={this.state.chat!.partner.imageUrl}
-                         alt={this.state.chat!.partner.name}/>
+                    <img className="contact-picture" src={this.state.chat!.partner.imageUrl} alt={this.state.chat!.partner.name}/>
                     <div className="contact-name">{this.state.chat!.partner.name}</div>
                 </div>
                 <div className="messages col-md-12">

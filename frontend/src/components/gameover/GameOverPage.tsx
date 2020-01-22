@@ -11,7 +11,7 @@ export function GameOverPage(): JSX.Element {
     return <Container>
         <Jumbotron className="transparent">
             <h1 className="display-3">
-                GameOver ☠️
+                GameOver <span role="img">☠</span>
             </h1>
             Du wurdest entlassen. <br/>
             <p className="lead">

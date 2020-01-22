@@ -1,6 +1,6 @@
 import React from "react";
 import { Chat } from "../../models/Chat";
-import { Card, CardBody, ListGroup, Container, Progress } from "reactstrap";
+import { Card, CardBody, ListGroup, Container } from "reactstrap";
 import { DefaultComponentProps } from "../../DefaultComponentProps";
 import IChatsListener from "../../logic/IChatsListener";
 import { VoidLike } from "../../logic/VoidLike";
@@ -67,7 +67,7 @@ export class ChatsListComponent extends React.Component<ChatListProps, ChatListS
             <Card color="secondary">
                 <CardBody>
                     <div className="contact-profile">
-                        <img className="contact-picture" src="http://emilcarlsson.se/assets/harveyspecter.png" alt="William Walker profile picture" />
+                        <img className="contact-picture" src="http://emilcarlsson.se/assets/harveyspecter.png" alt="William Walker" />
                         <div className="contact-name">
                             William Walker
                         </div>
