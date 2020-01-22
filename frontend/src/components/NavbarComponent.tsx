@@ -1,11 +1,11 @@
-import { Navbar, NavbarBrand, Nav, NavItem, Button, NavLink } from "reactstrap";
+import {Button, Nav, Navbar, NavbarBrand, NavItem} from "reactstrap";
 import React from "react";
 
 export interface NavbarProps {
     toggleChatsList: () => void;
 }
 
-export function NavbarComponent({ toggleChatsList }: NavbarProps): JSX.Element {
+export function NavbarComponent({toggleChatsList}: NavbarProps): JSX.Element {
     return <Navbar color="faded" dark className="mb-3">
         <NavbarBrand href="#" className="mr-auto">
             Telekilo
@@ -16,19 +16,6 @@ export function NavbarComponent({ toggleChatsList }: NavbarProps): JSX.Element {
                     Chatliste
                 </Button>
             </NavItem>
-            {
-                process.env.NODE_ENV === "development" && <>
-                    <NavItem>
-                        <NavLink href="#/login">Login</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href="#/register">Registrieren</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href="#/gameover">GameOver</NavLink>
-                    </NavItem>
-                </>
-            }
         </Nav>
     </Navbar>;
 }

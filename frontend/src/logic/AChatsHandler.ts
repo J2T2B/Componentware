@@ -5,6 +5,7 @@ import { SocketMessage } from "../models/SocketMessage";
 import { VoidLike } from "./VoidLike";
 import { IMessage, Message } from "../models/Message";
 import { Answer } from "../models/Answer";
+import IConnectionListener from "./IConnectionListener";
 
 /**
  * Verwaltet alle Chats und Nachrichten und kommuniziert über die angehangenden Listener
@@ -13,13 +14,15 @@ export default abstract class AChatsHandler {
 
     private chatsListener: IChatsListener[];
     private chatListener: IChatListener[];
-    private chats: Chat[]
-    private _currentChat?: Chat
+    private chats: Chat[];
+    private _currentChat?: Chat;
+    protected connectionListener: IConnectionListener;
 
-    constructor() {
+    constructor(connectionListener: IConnectionListener) {
         this.chatListener = [];
         this.chatsListener = [];
         this.chats = [];
+        this.connectionListener = connectionListener;
     }
 
     public get currentChat(): Chat | undefined {

@@ -12,6 +12,7 @@ export class MockChatsHandler extends AChatsHandler {
 
         window.setTimeout(this.quereMessage.bind(this), 2000);
 
+        this.connectionListener.onConnect(this);
         return true;
     }
 

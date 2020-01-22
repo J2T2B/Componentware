@@ -1,32 +1,53 @@
 import React from 'react';
-import { Container, Col, Row, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button } from 'reactstrap';
-import { Router, Switch, Route } from 'react-router';
-import { HashRouter } from 'react-router-dom';
-import { ChatsListComponent } from './components/ChatListComponent';
+import {Col, Container, Row} from 'reactstrap';
+import {Route, Switch} from 'react-router';
+import {HashRouter} from 'react-router-dom';
+import {ChatsListComponent} from './components/ChatListComponent';
 import AChatsHandler from './logic/AChatsHandler';
-import { MockChatsHandler } from './logic/MockChatsHandler';
-import { ChatMessageComponent } from "./components/ChatMessageComponent";
-import { LoginComponent } from './components/login/LoginComponent';
-import { RegisterComponent } from './components/login/RegisterComponent';
-import { GameOverPage } from './components/gameover/GameOverPage';
-import { NavbarComponent } from './components/NavbarComponent';
+import {ChatMessageComponent} from "./components/ChatMessageComponent";
+import {LoginComponent} from './components/login/LoginComponent';
+import {RegisterComponent} from './components/login/RegisterComponent';
+import {GameOverPage} from './components/gameover/GameOverPage';
+import {NavbarComponent} from './components/NavbarComponent';
+import {AppStateMode} from "./models/AppStateMode";
+import IConnectionListener from "./logic/IConnectionListener";
+import {Connector} from "./logic/Connector";
 
 interface AppStates {
     isChatListOpen: boolean;
+    chatsHandler?: AChatsHandler;
+    mode: AppStateMode;
+    connector: Connector;
 }
 
-export class App extends React.Component<{}, AppStates> {
-
-    private chatsHandler: AChatsHandler;
+export class App extends React.Component<{}, AppStates> implements IConnectionListener {
 
     constructor(props: {}) {
         super(props);
-        this.chatsHandler = new MockChatsHandler();
-        this.chatsHandler.connect();
 
         this.state = {
-            isChatListOpen: true
+            isChatListOpen: true,
+            connector: new Connector("http://localhost:8080/server-1.0-SNAPSHOT", this, true),
+            mode: AppStateMode.LOGIN
         };
+
+        this.renderGameOverBody = this.renderGameOverBody.bind(this);
+        this.renderLoginBody = this.renderLoginBody.bind(this);
+        this.renderNormalBody = this.renderNormalBody.bind(this);
+    }
+
+    onConnect(chatsHandler: AChatsHandler): void {
+        this.setState({
+            chatsHandler,
+            mode: AppStateMode.GAME
+        });
+    }
+
+    onDisconnect(): void {
+        this.setState({
+            chatsHandler: undefined,
+            mode: AppStateMode.CONNECTING
+        });
     }
 
     toggleChatsList() {
@@ -37,31 +58,44 @@ export class App extends React.Component<{}, AppStates> {
         })
     }
 
+    private renderLoginBody() {
+        return <>
+            <Route path="/" exact render={() => <LoginComponent connector={this.state.connector}/>}/>
+
+            <Route path="/login" exact render={() => <LoginComponent connector={this.state.connector}/>}/>
+
+            <Route path="/register" exact render={() => <RegisterComponent connector={this.state.connector}/>}/>
+        </>;
+    }
+
+    private renderGameOverBody() {
+        return <GameOverPage/>;
+    }
+
+    private renderNormalBody() {
+        return <Route path="/" exact>
+            <Row>
+                <Col md={4}>
+                    <ChatsListComponent chatsHandler={this.state.chatsHandler!} isOpen={this.state.isChatListOpen}/>
+                </Col>
+                <Col md={8}>
+                    <ChatMessageComponent chatsHandler={this.state.chatsHandler!}/>
+                </Col>
+            </Row>
+        </Route>;
+    }
+
     render() {
         return <>
-            <NavbarComponent toggleChatsList={this.toggleChatsList.bind(this)} />
+            <NavbarComponent toggleChatsList={this.toggleChatsList.bind(this)}/>
 
             <Container fluid>
                 <HashRouter>
                     <Switch>
-
-                        <Route path="/" exact>
-                            <Row>
-                                <Col md={4}>
-                                    <ChatsListComponent chatsHandler={this.chatsHandler} isOpen={this.state.isChatListOpen} />
-                                </Col>
-                                <Col md={8}>
-                                    <ChatMessageComponent chatsHandler={this.chatsHandler} />
-                                </Col>
-                            </Row>
-                        </Route>
-
-                        <Route path="/login" exact render={() => <LoginComponent chatsHandler={this.chatsHandler} />} />
-
-                        <Route path="/register" exact render={() => <RegisterComponent chatsHandler={this.chatsHandler} />} />
-
-                        <Route path="/gameover" exact render={() => <GameOverPage />} />
-
+                        {this.state.mode === AppStateMode.LOGIN && <this.renderLoginBody/>}
+                        {this.state.mode === AppStateMode.GAME && <this.renderNormalBody/>}
+                        {this.state.mode === AppStateMode.GAMEOVER && <this.renderGameOverBody/>}
+                        {this.state.mode === AppStateMode.CONNECTING && "Connecting..."}
                     </Switch>
                 </HashRouter>
             </Container>
@@ -69,5 +103,3 @@ export class App extends React.Component<{}, AppStates> {
     }
 
 }
-
-// Idee: https://bootsnipp.com/snippets/exR5v

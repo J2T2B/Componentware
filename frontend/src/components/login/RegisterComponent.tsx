@@ -1,9 +1,11 @@
-import { DefaultComponentProps } from "../../DefaultComponentProps";
 import React from "react";
-import { LoginCardComponent } from "./LoginCard";
-import { FormGroup, Input, Label, Button } from "reactstrap";
-import { SmartInputComponent } from "./SmartInputComponent";
+import {LoginCardComponent} from "./LoginCard";
+import {Alert, Button, FormGroup, Input, Label} from "reactstrap";
+import {SmartInputComponent} from "./SmartInputComponent";
 import setWindowTitle from "../../logic/setWindowTitle";
+import {LoginRegisterProps} from "../../models/LoginRegisterProps";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSync} from "@fortawesome/free-solid-svg-icons";
 
 const ERRORS = {
     usernameToShort: "Nutzername darf nicht leer sein",
@@ -12,6 +14,8 @@ const ERRORS = {
 };
 
 interface RegisterStates {
+    error?: string
+    busy: boolean
     name: string
     username: string
     usernameError: string
@@ -21,11 +25,12 @@ interface RegisterStates {
     repeatPasswordError?: string
 }
 
-export class RegisterComponent extends React.Component<DefaultComponentProps, RegisterStates> {
+export class RegisterComponent extends React.Component<LoginRegisterProps, RegisterStates> {
 
-    constructor(props: DefaultComponentProps) {
+    constructor(props: LoginRegisterProps) {
         super(props);
         this.state = {
+            busy: false,
             name: "William Walker",
             username: "",
             usernameError: ERRORS.usernameToShort,
@@ -70,21 +75,31 @@ export class RegisterComponent extends React.Component<DefaultComponentProps, Re
     }
 
     async onSubmit() {
+        this.setState({busy: true, error: undefined});
 
-        let register = {
-            username: this.state.username,
-            password: this.state.password
-        };
+        const {username, password} = this.state;
 
-        console.log("Register with ", register);
+        try {
+            await this.props.connector.register(username, password);
+            window.location.href = "#/";
+        } catch (e) {
+            this.setState({
+                busy: false,
+                error: e.message
+            });
+        }
     }
 
     render() {
         return <LoginCardComponent mode="register">
 
+            {this.state.error && <Alert color="danger">
+                {this.state.error}
+            </Alert>}
+
             <FormGroup>
                 <Label>Name</Label>
-                <Input type="text" value={this.state.name} autoComplete="off" readOnly />
+                <Input type="text" value={this.state.name} autoComplete="off" readOnly/>
             </FormGroup>
 
             <SmartInputComponent
@@ -125,6 +140,7 @@ export class RegisterComponent extends React.Component<DefaultComponentProps, Re
                 onClick={this.onSubmit}
                 disabled={!checkUndefined(this.state.repeatPasswordError, this.state.passwordError, this.state.usernameError)}
             >
+                {this.state.busy && <FontAwesomeIcon icon={faSync} spin/>}
                 Registrieren
             </Button>
 
