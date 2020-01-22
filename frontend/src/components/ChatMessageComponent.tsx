@@ -1,5 +1,5 @@
 import React from "react";
-import {Button, Container, ListGroup, ListGroupItem} from "reactstrap";
+import {Button, Container, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
 import { Chat } from "../models/Chat";
 import IChatListener from "../logic/IChatListener";
 import {DefaultComponentProps} from "../DefaultComponentProps";
@@ -66,6 +66,10 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
        this.setState({chosenAnswer: id, openAnswers: false});
     }
 
+    toggleModal() {
+        this.setState({openAnswers: !this.openAnswers});
+    }
+
     onSendMessage() {
         if (this.state.chosenAnswer !== undefined) {
             let answer = this.state.chat!.getLastMessage()!.answers.find(a => a.id === this.state.chosenAnswer);
@@ -124,21 +128,26 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                          ref={(el) => { this.messagesEnd = el; }}>
                     </div>
                     {
-                        this.state.openAnswers && this.state.chat.getLastMessage() ?
+                        this.state.chat.getLastMessage() && (this.state.chat.getLastMessage()!.answers.length > 0) ?
                             <div className="row">
-                                <div className="col-md-1">&nbsp;</div>
-                                <div className="col-md-10">
-                                    <ListGroup>
-                                        {
-                                            this.state.chat.getLastMessage()!.answers.map(a => {
-                                                return <ListGroupItem tag="button" className={this.state.chosenAnswer === a.id ? 'active' : ''} onClick={() => this.onAnswerChoose(a.id)} id={"answer-"+a.id}>
-                                                    {a.text}
-                                                </ListGroupItem>
-                                            })
-                                        }
-                                    </ListGroup>
-                                </div>
-                                <div className="col-md-1">&nbsp;</div>
+                                <Modal isOpen={this.state.openAnswers} toggle={() => this.toggleModal()}>
+                                    <ModalHeader toggle={() => this.toggleModal()}>Ihre Antwortmöglichkeiten</ModalHeader>
+                                    <ModalBody>
+                                        <ListGroup>
+                                            {
+                                                this.state.chat.getLastMessage()!.answers.map(a => {
+                                                    return <ListGroupItem tag="button" className={this.state.chosenAnswer === a.id ? 'active' : ''} onClick={() => this.onAnswerChoose(a.id)} id={"answer-"+a.id}>
+                                                        {a.text}
+                                                    </ListGroupItem>
+                                                })
+                                            }
+                                        </ListGroup>
+                                    </ModalBody>
+                                    <ModalFooter>
+                                        <Button color="secondary" onClick={() => this.toggleModal()}>Abbrechen
+                                        </Button>
+                                    </ModalFooter>
+                                </Modal>
                             </div>
                             :
                             ''
@@ -148,14 +157,13 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                 <div className="message-input">
                     <div className="row text-center">
                         <div className="col-md-1">
-                            <Button color="primary">
+                            <Button color="primary" onClick={() => console.log("I am useless. :^)") }>
                                 <FontAwesomeIcon icon={faSmile} />
                             </Button>
                         </div>
                         <div className="col-md-10">
                             <div className="form-control" onClick={this.openAnswers}>
                                 {
-                                    // todo: get chosen answer
                                     this.state.chat.getLastMessage()!.isAnswer ? '' : (
                                         !this.state.chosenAnswer ?
                                             <i>Bitte Antwort wählen</i>
