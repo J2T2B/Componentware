@@ -1,0 +1,7 @@
+.chat-list {
+    height: calc(100vh - 325px);
+    overflow-y: scroll;
+    overflow-x: hidden;
+    border-radius: 0.25rem;
+    margin-bottom: 20px;
+}

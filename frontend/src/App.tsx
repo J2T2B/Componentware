@@ -1,19 +1,19 @@
 import React from 'react';
-import {Col, Container, Row} from 'reactstrap';
-import {Route, Switch} from 'react-router';
-import {HashRouter} from 'react-router-dom';
-import {ChatsListComponent} from './components/ChatListComponent';
-import AChatsHandler from './logic/AChatsHandler';
-import {ChatMessageComponent} from "./components/ChatMessageComponent";
-import {LoginComponent} from './components/login/LoginComponent';
-import {RegisterComponent} from './components/login/RegisterComponent';
-import {GameOverPage} from './components/gameover/GameOverPage';
-import {NavbarComponent} from './components/NavbarComponent';
+import AChatsHandler from "./logic/AChatsHandler";
 import {AppStateMode} from "./models/AppStateMode";
-import IConnectionListener from "./logic/IConnectionListener";
 import {Connector} from "./logic/Connector";
+import IConnectionListener from "./logic/IConnectionListener";
+import {LoginComponent} from "./components/login/LoginComponent";
+import {RegisterComponent} from "./components/login/RegisterComponent";
+import {Route, Switch} from "react-router";
+import {ChatsListComponent} from "./components/sidebar/ChatListComponent";
+import {Col, Container, Row} from "reactstrap";
+import {ChatMessageComponent} from "./components/chat/ChatMessageComponent";
+import {NavbarComponent} from "./components/globals/NavbarComponent";
+import {HashRouter} from "react-router-dom";
 import Error404Component from "./components/Error404Component";
 import ReconnectingComponent from "./components/ReconnectingComponent";
+import {GameOverPage} from "./components/gameover/GameOverPage";
 
 interface AppStates {
     isChatListOpen: boolean;
@@ -33,7 +33,6 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
             mode: AppStateMode.LOGIN
         };
 
-        this.renderGameOverBody = this.renderGameOverBody.bind(this);
         this.renderLoginBody = this.renderLoginBody.bind(this);
         this.renderNormalBody = this.renderNormalBody.bind(this);
     }
@@ -70,10 +69,6 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
         </>;
     }
 
-    private renderGameOverBody() {
-        return <GameOverPage/>;
-    }
-
     private renderNormalBody() {
         return <Route path="/" exact>
             <Row>
@@ -96,9 +91,9 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
                     <Switch>
                         {this.state.mode === AppStateMode.LOGIN && <this.renderLoginBody/>}
                         {this.state.mode === AppStateMode.GAME && <this.renderNormalBody/>}
-                        {this.state.mode === AppStateMode.GAMEOVER && <this.renderGameOverBody/>}
-                        {this.state.mode === AppStateMode.CONNECTING && <ReconnectingComponent />}
-                        <Route component={()=><Error404Component />} />
+                        {this.state.mode === AppStateMode.GAMEOVER && <GameOverPage/>}
+                        {this.state.mode === AppStateMode.CONNECTING && <ReconnectingComponent/>}
+                        <Route component={() => <Error404Component/>}/>
                     </Switch>
                 </HashRouter>
             </Container>

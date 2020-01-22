@@ -2,7 +2,9 @@
 $primary: #32465a;
 $secondary: #1B6C83;
 $third: #009598;
-$background: #D5F4FF;
+$background: #CCCCCC;
+$background2: #100e1f;
+$bg-gradient: linear-gradient(135deg, $background 10%, $background2 90%);
 $highlight: #E39E21;
 
 $color-primary: $primary;

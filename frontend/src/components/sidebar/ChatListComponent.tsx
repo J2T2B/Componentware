@@ -1,13 +1,13 @@
 import React from "react";
-import { Chat } from "../models/Chat";
-import { Card, CardBody, ListGroup, Container, Progress } from "reactstrap";
-import { DefaultComponentProps } from "../DefaultComponentProps";
-import IChatsListener from "../logic/IChatsListener";
-import { VoidLike } from "../logic/VoidLike";
+import { Chat } from "../../models/Chat";
+import { Card, CardBody, ListGroup, Container } from "reactstrap";
+import { DefaultComponentProps } from "../../DefaultComponentProps";
+import IChatsListener from "../../logic/IChatsListener";
+import { VoidLike } from "../../logic/VoidLike";
 import { ChatListItemComponent } from "./ChatListItemComponent";
-import AChatsHandler from "../logic/AChatsHandler";
-import { Points } from "../models/Points";
-import setWindowTitle from "../logic/setWindowTitle";
+import AChatsHandler from "../../logic/AChatsHandler";
+import { Points } from "../../models/Points";
+import setWindowTitle from "../../logic/setWindowTitle";
 import { PointComponent } from "./PointComponent";
 
 export interface ChatListProps extends DefaultComponentProps {
@@ -67,7 +67,7 @@ export class ChatsListComponent extends React.Component<ChatListProps, ChatListS
             <Card color="secondary">
                 <CardBody>
                     <div className="contact-profile">
-                        <img className="contact-picture" src="http://emilcarlsson.se/assets/harveyspecter.png" alt="William Walker profile picture" />
+                        <img className="contact-picture" src="http://emilcarlsson.se/assets/harveyspecter.png" alt="William Walker" />
                         <div className="contact-name">
                             William Walker
                         </div>
@@ -79,7 +79,7 @@ export class ChatsListComponent extends React.Component<ChatListProps, ChatListS
                     </div>
                 </CardBody>
             </Card>
-            <ListGroup>
+            <ListGroup className="chat-list">
                 {
                     chats.map(c => <ChatListItemComponent chat={c} key={c.chatId} chatsHandler={this.props.chatsHandler} />)
                 }
