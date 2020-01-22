@@ -6,6 +6,7 @@ export class ServerChatsHandler extends AChatsHandler {
 
     private readonly baseUrl: string;
     private readonly token: string;
+    private wsConnection?: WebSocket;
 
     constructor(connectionListener: IConnectionListener, baseUrl: string, token: string) {
         super(connectionListener);
@@ -14,15 +15,45 @@ export class ServerChatsHandler extends AChatsHandler {
     }
 
     connect(): Promise<boolean> {
-        // TODO: Connect to Server
-        alert("Connect to WebSocket: " + this.baseUrl + "/game/" + this.token);
-        return new Promise<boolean>((res, rej) => rej(true));
+        const url = new URL("/game/"+this.token, this.baseUrl);
+        url.protocol = "ws:";
+
+        const error = this.onCloseOrError.bind(this);
+
+        return new Promise<boolean>((res) => {
+            this.wsConnection = new WebSocket(url.toString());
+            this.wsConnection.onclose = error;
+            this.wsConnection.onerror = error;
+            this.wsConnection.onmessage = this.onWebSocketMessage.bind(this);
+            this.wsConnection.onopen = () => {
+                console.log("Websocket verbunden!");
+                res(true);
+                this.connectionListener.onConnect(this);
+            };
+        });
     }
 
     protected sendMessage(socketMessage: SocketMessage): void | Promise<void> {
-        return undefined;
+        // Socket steht nicht bereit. Try later again
+        if (this.wsConnection === undefined || this.wsConnection.readyState !== 1) {
+            window.setTimeout(() => this.sendMessage(socketMessage), 1000);
+        }
+        else {
+            this.wsConnection.send(JSON.stringify(socketMessage));
+        }
     }
 
-    // Call onSocketMessage(MESSAGE)
+    private onCloseOrError() {
+        this.connectionListener.onDisconnect();
+        console.log("Websocket getrennt. Versuche erneute Verbindung...");
+        // Nicht rekursiv starten...
+        window.setTimeout(this.connect, 0);
+    }
+
+    private onWebSocketMessage(ev: MessageEvent) {
+        const plainData = ev.data as string;
+        const message = JSON.parse(plainData) as SocketMessage;
+        this.onSocketMessage(message);
+    }
 
 }
