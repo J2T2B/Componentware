@@ -12,6 +12,8 @@ import {NavbarComponent} from './components/NavbarComponent';
 import {AppStateMode} from "./models/AppStateMode";
 import IConnectionListener from "./logic/IConnectionListener";
 import {Connector} from "./logic/Connector";
+import Error404Component from "./components/Error404Component";
+import ReconnectingComponent from "./components/ReconnectingComponent";
 
 interface AppStates {
     isChatListOpen: boolean;
@@ -95,7 +97,8 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
                         {this.state.mode === AppStateMode.LOGIN && <this.renderLoginBody/>}
                         {this.state.mode === AppStateMode.GAME && <this.renderNormalBody/>}
                         {this.state.mode === AppStateMode.GAMEOVER && <this.renderGameOverBody/>}
-                        {this.state.mode === AppStateMode.CONNECTING && "Connecting..."}
+                        {this.state.mode === AppStateMode.CONNECTING && <ReconnectingComponent />}
+                        <Route component={()=><Error404Component />} />
                     </Switch>
                 </HashRouter>
             </Container>
