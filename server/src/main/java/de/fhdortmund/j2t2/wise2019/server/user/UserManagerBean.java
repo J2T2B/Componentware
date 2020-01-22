@@ -3,9 +3,11 @@ package de.fhdortmund.j2t2.wise2019.server.user;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.server.user.login.LoginCredentials;
 import de.fhdortmund.j2t2.wise2019.server.user.register.NewUserData;
+import de.fhdortmund.j2t2.wise2019.server.user.register.UserAlreadyExistsException;
 
 import javax.ejb.Stateful;
 import javax.enterprise.inject.Default;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,11 +21,14 @@ public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
     Map<String, User> users = new HashMap<>();
 
     public List<Chat> getChatsForUser(String token) {
-        return null;
+        return new ArrayList<>(); // TODO
     }
 
     @Override
-    public void createUser(LoginCredentials user) {
+    public void createUser(LoginCredentials user) throws UserAlreadyExistsException {
+        if(users.containsKey(user.getUsername())){
+            throw new UserAlreadyExistsException("User with name " + user.getUsername() + "already exists");
+        }
         users.put(user.getUsername(), new DefaultUserImpl(user.getUsername(), hashUserData(user)));
     }
 
