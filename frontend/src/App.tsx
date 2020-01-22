@@ -2,14 +2,14 @@ import React from 'react';
 import { Container, Col, Row, Navbar, NavbarBrand, Nav, NavItem, NavLink, Button } from 'reactstrap';
 import { Router, Switch, Route } from 'react-router';
 import { HashRouter } from 'react-router-dom';
-import { ChatsListComponent } from './components/ChatListComponent';
+import { ChatsListComponent } from './components/sidebar/ChatListComponent';
 import AChatsHandler from './logic/AChatsHandler';
 import { MockChatsHandler } from './logic/MockChatsHandler';
-import { ChatMessageComponent } from "./components/ChatMessageComponent";
+import { ChatMessageComponent } from "./components/chat/ChatMessageComponent";
 import { LoginComponent } from './components/login/LoginComponent';
 import { RegisterComponent } from './components/login/RegisterComponent';
 import { GameOverPage } from './components/gameover/GameOverPage';
-import { NavbarComponent } from './components/NavbarComponent';
+import { NavbarComponent } from './components/globals/NavbarComponent';
 
 interface AppStates {
     isChatListOpen: boolean;

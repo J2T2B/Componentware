@@ -1,13 +1,13 @@
 import React from "react";
-import { Chat } from "../models/Chat";
+import { Chat } from "../../models/Chat";
 import { Card, CardBody, ListGroup, Container, Progress } from "reactstrap";
-import { DefaultComponentProps } from "../DefaultComponentProps";
-import IChatsListener from "../logic/IChatsListener";
-import { VoidLike } from "../logic/VoidLike";
+import { DefaultComponentProps } from "../../DefaultComponentProps";
+import IChatsListener from "../../logic/IChatsListener";
+import { VoidLike } from "../../logic/VoidLike";
 import { ChatListItemComponent } from "./ChatListItemComponent";
-import AChatsHandler from "../logic/AChatsHandler";
-import { Points } from "../models/Points";
-import setWindowTitle from "../logic/setWindowTitle";
+import AChatsHandler from "../../logic/AChatsHandler";
+import { Points } from "../../models/Points";
+import setWindowTitle from "../../logic/setWindowTitle";
 import { PointComponent } from "./PointComponent";
 
 export interface ChatListProps extends DefaultComponentProps {

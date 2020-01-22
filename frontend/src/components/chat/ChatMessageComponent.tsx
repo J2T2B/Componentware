@@ -1,9 +1,9 @@
 import React from "react";
 import {Button, Container, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
-import { Chat } from "../models/Chat";
-import IChatListener from "../logic/IChatListener";
-import {DefaultComponentProps} from "../DefaultComponentProps";
-import {Message} from "../models/Message";
+import { Chat } from "../../models/Chat";
+import IChatListener from "../../logic/IChatListener";
+import {DefaultComponentProps} from "../../DefaultComponentProps";
+import {Message} from "../../models/Message";
 import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPaperPlane, faSmile} from "@fortawesome/free-regular-svg-icons";
