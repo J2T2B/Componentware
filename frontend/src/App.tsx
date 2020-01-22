@@ -5,7 +5,7 @@ import {Connector} from "./logic/Connector";
 import IConnectionListener from "./logic/IConnectionListener";
 import {LoginComponent} from "./components/login/LoginComponent";
 import {RegisterComponent} from "./components/login/RegisterComponent";
-import {Route, Switch} from "react-router";
+import {Redirect, Route, Switch} from "react-router";
 import {ChatsListComponent} from "./components/sidebar/ChatListComponent";
 import {Col, Container, Row} from "reactstrap";
 import {ChatMessageComponent} from "./components/chat/ChatMessageComponent";
@@ -61,11 +61,9 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
 
     private renderLoginBody() {
         return <>
-            <Route path="/" exact render={() => <LoginComponent connector={this.state.connector}/>}/>
-
             <Route path="/login" exact render={() => <LoginComponent connector={this.state.connector}/>}/>
-
             <Route path="/register" exact render={() => <RegisterComponent connector={this.state.connector}/>}/>
+            <Redirect from="*" to="/login" />
         </>;
     }
 
@@ -93,7 +91,8 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
                         {this.state.mode === AppStateMode.GAME && <this.renderNormalBody/>}
                         {this.state.mode === AppStateMode.GAMEOVER && <GameOverPage/>}
                         {this.state.mode === AppStateMode.CONNECTING && <ReconnectingComponent/>}
-                        <Route component={() => <Error404Component/>}/>
+                        <Route path="/404" exact component={() => <Error404Component/>}/>
+                        <Redirect from="*" to="/404" />
                     </Switch>
                 </HashRouter>
             </Container>
