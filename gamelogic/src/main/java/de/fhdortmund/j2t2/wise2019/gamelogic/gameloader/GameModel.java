@@ -3,24 +3,26 @@ package de.fhdortmund.j2t2.wise2019.gamelogic.gameloader;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chatpartner;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
+import java.util.*;
 
 public class GameModel {
     private List<Chatpartner> chatpartners = new ArrayList<>();
-    private List<Message> messages = new ArrayList<>();
+    private Map<String, Message> messages = new HashMap<>();
 
-    public void addMessages(Collection<? extends Message> messages){
-        this.messages.addAll(messages);
+    public void addMessages(Map<String, ? extends Message> messages){
+        this.messages.putAll(messages);
     }
 
     public void addChatpartners(Collection<? extends Chatpartner> chatpartners){
         this.chatpartners.addAll(chatpartners);
     }
 
-    public ArrayList<Message> getMessages(){
-        return new ArrayList<>(messages);
+    public Map<String, Message> getMessages(){
+        return new HashMap<>(messages);
+    }
+
+    public Message getMessage(String id) {
+        return messages.get(id);
     }
 
     public ArrayList<Chatpartner> getChatpartners(){

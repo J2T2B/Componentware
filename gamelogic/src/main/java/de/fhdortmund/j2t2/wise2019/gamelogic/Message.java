@@ -6,5 +6,10 @@ public interface Message {
     String getId();
     String getText();
     String getImage();
+
+    int getDelay();
+    boolean isRoot();
+    Points getPoints();
+    double getProbably();
     Collection<? extends Answer> getAnswers();
 }
