@@ -51,6 +51,7 @@ export class ChatsListComponent extends React.Component<ChatListProps, ChatListS
     componentDidMount() {
         setWindowTitle("Chats von William Walker");
         this.props.chatsHandler.attach(this);
+        this.props.chatsHandler.initMessages();
     }
 
     componentWillUnmount() {

@@ -40,6 +40,15 @@ export default abstract class AChatsHandler {
     }
 
     /**
+     * Bittet den Server, alle Nachrichten neu zu senden
+     */
+    public initMessages() {
+        this.sendMessage({
+            command: "Reinit"
+        });
+    }
+
+    /**
      * Verbindet mit dem Server (oder dem Mock Server)
      */
     public abstract connect(): Promise<boolean>;
