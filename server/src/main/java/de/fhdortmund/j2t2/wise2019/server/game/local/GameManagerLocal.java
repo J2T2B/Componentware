@@ -8,5 +8,5 @@ import java.util.List;
 
 @Local
 public interface GameManagerLocal extends GameManager {
-    List<Chat> getChatsForUser(String token);
+    List<Chat> getChatsForUser(String username);
 }

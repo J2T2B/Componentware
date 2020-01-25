@@ -32,10 +32,6 @@ public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
         users.put(user.getUsername(), new DefaultUserImpl(user.getUsername(), hashUserData(user)));
     }
 
-    private String hashUserData(LoginCredentials user) {
-        return new String(user.getPassword());
-    }
-
     @Override
     public User getUser(String name) {
         return users.get(name);
@@ -46,6 +42,10 @@ public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
         User target = users.get(credentials.getUsername());
 
         return hashUserData(credentials).equals(target.getHash());
+    }
+
+    private String hashUserData(LoginCredentials user) {
+        return new String(user.getPassword());
     }
 
     public static UserManagerBean getInstance(){
