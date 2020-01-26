@@ -5,8 +5,7 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.models.*;
 
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,21 +13,21 @@ import java.util.Map;
 
 public class GameLoader {
 
-    private String gameJsonPath;
+    private InputStream gameJsonStream;
     private Gson gson = new Gson();
 
     private Map<String, Message> cachedMessages;
 
-    public GameLoader(String gameJsonPath) {
-        if(gameJsonPath == null){
-            throw new NullPointerException("gameJsonPath may not be null!");
+    public GameLoader(InputStream gameJsonStream) {
+        if(gameJsonStream == null){
+            throw new NullPointerException("gameJsonStream may not be null!");
         }
-        this.gameJsonPath = gameJsonPath;
+        this.gameJsonStream = gameJsonStream;
     }
 
     public synchronized Map<String, ? extends Message> loadGame() throws GameLoadingException {
         if (cachedMessages == null) {
-            try (FileReader reader = new FileReader(gameJsonPath)) {
+            try (Reader reader = new InputStreamReader(gameJsonStream)) {
                 MessageJson[] messages = gson.fromJson(reader, MessageJson[].class);
 
                 cachedMessages = new HashMap<>();

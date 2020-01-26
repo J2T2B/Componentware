@@ -8,6 +8,8 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameModel;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.*;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.List;
 
 public class DetectivGame implements Game {
@@ -18,7 +20,13 @@ public class DetectivGame implements Game {
      */
     GameState<Void> state = new GameState<>();
     public DetectivGame() throws GameLoadingException {
-        GameLoader gameLoader = new GameLoader(DetectivGame.class.getClassLoader().getResource("gameDefinition.json").getPath());
+        InputStream gameDefinition;
+        try {
+            gameDefinition = DetectivGame.class.getClassLoader().getResource("gameDefinition.json").openStream();
+        } catch (IOException | NullPointerException e) {
+            throw new GameLoadingException("Unable to load gameDefinition.json", e);
+        }
+        GameLoader gameLoader = new GameLoader(gameDefinition);
         model.addMessages(gameLoader.loadGame());
     }
     @Override

@@ -19,9 +19,6 @@ import java.util.Map;
 @Named
 @Dependent
 public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
-
-    private static UserManagerBean that;
-
     Map<String, User> users = new HashMap<>();
 
     public List<Chat> getChatsForUser(String token) {
