@@ -5,15 +5,15 @@ import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketComman
 
 public class CreateChatWebSocketCommand extends AbstractWebSocketCommand {
 
-    private static final String COMMAND = "CreateChat";
-    private final Chat chat;
+private static final String COMMAND = "CreateChat";
+private final Chat chat;
 
-    public CreateChatWebSocketCommand(Chat chat) {
+public CreateChatWebSocketCommand(Chat chat) {
         super(COMMAND);
         this.chat = chat;
-    }
+        }
 
-    public Chat getChat() {
+public Chat getChat() {
         return chat;
-    }
-}
+        }
+        }

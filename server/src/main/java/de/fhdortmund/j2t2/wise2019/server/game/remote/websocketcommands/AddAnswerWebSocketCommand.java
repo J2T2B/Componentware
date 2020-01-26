@@ -30,4 +30,3 @@ public class AddAnswerWebSocketCommand extends AbstractWebSocketCommand {
         return answer;
     }
 }
-
