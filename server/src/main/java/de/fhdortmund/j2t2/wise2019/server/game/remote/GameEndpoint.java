@@ -20,7 +20,8 @@ import java.util.stream.Collectors;
 public class GameEndpoint {
 
     private Session session;
-    private UserManagerLocal userManager = UserManagerBean.getInstance();
+    @Inject
+    private UserManagerLocal userManager;
     private List<Chat> chats;
 
     @OnOpen

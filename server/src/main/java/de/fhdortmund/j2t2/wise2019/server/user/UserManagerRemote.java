@@ -8,5 +8,4 @@ import javax.ejb.Remote;
 @Remote
 public interface UserManagerRemote extends UserManager{
 
-    boolean login(LoginCredentials credentials);
 }

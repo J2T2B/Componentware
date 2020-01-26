@@ -5,6 +5,7 @@ import de.fhdortmund.j2t2.wise2019.server.user.register.NewUserData;
 import de.fhdortmund.j2t2.wise2019.server.user.register.UserAlreadyExistsException;
 
 public interface UserManager {
-    void createUser(LoginCredentials user) throws UserAlreadyExistsException;
+    void createUser(NewUserData user) throws UserAlreadyExistsException;
     User getUser(String name);
+    boolean login(LoginCredentials credentials);
 }
