@@ -4,12 +4,15 @@ import { VoidLike } from "./VoidLike";
 
 export class MockChatsHandler extends AChatsHandler {
 
+    private intervalId: number | undefined;
+
     public async connect(): Promise<boolean> {
         (window as any).simulateMessage = this.simulateMessage.bind(this);
         console.log("Globale Funktion simulateMessage(...) hinzugefügt");
 
         window.setTimeout(this.quereMessage.bind(this), 2000);
 
+        this.connectionListener.onConnect(this);
         return true;
     }
 
@@ -48,8 +51,8 @@ export class MockChatsHandler extends AChatsHandler {
                     let a = Math.random() * 4 + 1;
                     for (let k = 0; k < a; k++) {
                         answers.push({
-                            id: j*10+k,
-                            text: "Antwort "+j+''+k
+                            id: j * 10 + k,
+                            text: "Antwort " + j + '' + k
                         });
                     }
                 }
@@ -57,8 +60,8 @@ export class MockChatsHandler extends AChatsHandler {
                     command: "AddMessage",
                     chatId: i,
                     message: {
-                        id: ((i*10)+j).toString(),
-                        text: "Hallo Will "+((i*10)+j).toString(),
+                        id: ((i * 10) + j).toString(),
+                        text: "Hallo Will " + ((i * 10) + j).toString(),
                         image: "",
                         answers: answers,
                         userHasRead: false,
@@ -68,6 +71,18 @@ export class MockChatsHandler extends AChatsHandler {
                 });
             }
         }
+
+        this.intervalId = window.setInterval(this.upgradePoints.bind(this), 5000);
+    }
+
+    private upgradePoints() {
+        const rand = () => Math.round(Math.random() * 100);
+        this.simulateMessage({
+            command: "ChangePoints",
+            budget: rand(),
+            chefSatisfaction: rand(),
+            customerExperience: rand()
+        })
     }
 
 }

@@ -1,20 +1,26 @@
-import { DefaultComponentProps } from "../../DefaultComponentProps";
 import React from "react";
-import { Button } from "reactstrap";
+import {Alert, Button} from "reactstrap";
 import "../../styles/elements/login.scss";
-import { LoginCardComponent } from "./LoginCard";
-import { SmartInputComponent } from "./SmartInputComponent";
+import {LoginCardComponent} from "./LoginCard";
+import {SmartInputComponent} from "./SmartInputComponent";
+import setWindowTitle from "../../logic/setWindowTitle";
+import {LoginRegisterProps} from "../../models/LoginRegisterProps";
+import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
+import {faSync} from "@fortawesome/free-solid-svg-icons";
 
 export interface LoginStates {
+    error?: string;
+    busy: boolean;
     username: string;
     password: string;
 }
 
-export class LoginComponent extends React.Component<DefaultComponentProps, LoginStates> {
+export class LoginComponent extends React.Component<LoginRegisterProps, LoginStates> {
 
-    constructor(props: DefaultComponentProps) {
+    constructor(props: LoginRegisterProps) {
         super(props);
         this.state = {
+            busy: false,
             username: "",
             password: ""
         };
@@ -27,20 +33,32 @@ export class LoginComponent extends React.Component<DefaultComponentProps, Login
         this.setState(nValue as LoginStates);
     }
 
+    componentDidMount() {
+        setWindowTitle("Login");
+    }
+
     async onSubmit(): Promise<void> {
+        this.setState({busy: true, error: undefined});
 
-        let login = {
-            username: this.state.username,
-            password: this.state.password
-        };
+        const {username, password} = this.state;
 
-        console.log(
-            "Login mit", login
-        );
+        try {
+            await this.props.connector.login(username, password);
+            window.location.href = "#/";
+        } catch (e) {
+            this.setState({
+                busy: false,
+                error: e.message
+            });
+        }
     }
 
     render() {
         return <LoginCardComponent mode="login">
+
+            {this.state.error && <Alert color="danger">
+                {this.state.error}
+            </Alert>}
 
             <SmartInputComponent
                 label="Username"
@@ -67,6 +85,7 @@ export class LoginComponent extends React.Component<DefaultComponentProps, Login
                 color="success"
                 disabled={this.state.username.length === 0 || this.state.password.length === 0}
             >
+                {this.state.busy && <FontAwesomeIcon icon={faSync} spin/>}
                 Anmelden
             </Button>
         </LoginCardComponent>

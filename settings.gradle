@@ -1,5 +1,5 @@
 rootProject.name = 'project'
 include 'gamelogic'
 include 'server'
-include 'frontend'
+//include 'frontend'
 include 'detectivgame'

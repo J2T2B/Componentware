@@ -1,6 +1,10 @@
-@import "variables";
+@import "var";
+@import "~bootstrap/scss/bootstrap";
 @import "gloabal";
 @import "elements/nav";
 @import "chat/profiles";
 @import "chat/sidebar";
 @import "chat/chat";
+@import "elements/gameover";
+@import "elements/transparent";
+@import "elements/scrollbar";

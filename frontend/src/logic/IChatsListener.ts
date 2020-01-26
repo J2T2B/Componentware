@@ -1,5 +1,6 @@
 import { VoidLike } from "./VoidLike";
 import { Chat } from "../models/Chat";
+import { Points } from "../models/Points";
 
 /**
  * Beobachtet alle Chats
@@ -18,6 +19,12 @@ export default interface IChatsListener {
      * @param currentChat Aktueller Chat
      */
     onCurrentChatChange(currentChat?: Chat): VoidLike;
+
+    /**
+     * Wird aufgerufen, wenn sich die Punkte für den Kundensupport ändern
+     * @param currentPoints Aktuelle Punkte
+     */
+    onPointsChange(currentPoints: Points): VoidLike;
 }
 
 export function isIChatsListener(obj: any) : obj is IChatsListener {

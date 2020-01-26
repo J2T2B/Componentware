@@ -1,7 +1,7 @@
-import { Chat } from "../models/Chat";
+import { Chat } from "../../models/Chat";
 import { ListGroupItem, ListGroupItemHeading, ListGroupItemText, Badge } from "reactstrap";
 import React from "react";
-import AChatsHandler from "../logic/AChatsHandler";
+import AChatsHandler from "../../logic/AChatsHandler";
 
 export interface ChatListItemProps {
     chat: Chat;

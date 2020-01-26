@@ -5,6 +5,7 @@ import { SocketMessage } from "../models/SocketMessage";
 import { VoidLike } from "./VoidLike";
 import { IMessage, Message } from "../models/Message";
 import { Answer } from "../models/Answer";
+import IConnectionListener from "./IConnectionListener";
 
 /**
  * Verwaltet alle Chats und Nachrichten und kommuniziert über die angehangenden Listener
@@ -13,13 +14,15 @@ export default abstract class AChatsHandler {
 
     private chatsListener: IChatsListener[];
     private chatListener: IChatListener[];
-    private chats: Chat[]
-    private _currentChat?: Chat
+    private chats: Chat[];
+    private _currentChat?: Chat;
+    protected connectionListener: IConnectionListener;
 
-    constructor() {
+    constructor(connectionListener: IConnectionListener) {
         this.chatListener = [];
         this.chatsListener = [];
         this.chats = [];
+        this.connectionListener = connectionListener;
     }
 
     public get currentChat(): Chat | undefined {
@@ -34,6 +37,15 @@ export default abstract class AChatsHandler {
         }
 
         this.chatsListener.forEach(c => c.onCurrentChatChange(this._currentChat));
+    }
+
+    /**
+     * Bittet den Server, alle Nachrichten neu zu senden
+     */
+    public initMessages() {
+        this.sendMessage({
+            command: "Reinit"
+        });
     }
 
     /**
@@ -188,6 +200,9 @@ export default abstract class AChatsHandler {
                 break;
             case "AddAnswer":
                 this.onAnswer(message.chatId, message.messageId, message.answer);
+                break;
+            case "ChangePoints":
+                this.chatsListener.forEach(c => c.onPointsChange(message));
                 break;
             default:
                 throw new Error(`The Command ${message.command} is unknown`);

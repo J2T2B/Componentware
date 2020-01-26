@@ -10,7 +10,7 @@
 |Body: Login Credentials |
 | 204  |
 
-| POST *`/api/register`*  |
+| PUT *`/api/login`*  |
 |---|
 |Body: Login Credentials |
 | 200: Session Token  |
