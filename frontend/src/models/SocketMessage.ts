@@ -27,7 +27,7 @@ export type SocketMessage =
         command: "Reinit"
     } |
     {
-        command: "ReadMessage",
+        command: "ReadMessage", //TODO was der Sinn ?
         messageId: string
     } |
     ({
@@ -35,4 +35,8 @@ export type SocketMessage =
     } & Points) | // Enthält alle Felder aus Points 
     {
         command: "GameOver"
+    } |
+    {
+        command: "HandleError",
+        message: String
     }

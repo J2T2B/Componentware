@@ -11,5 +11,9 @@ public class ReadMessageWebSocketCommand extends AbstractWebSocketCommand {
         super(COMMAND);
         this.messageId = messageId;
     }
+
+    public String getMessageId() {
+        return messageId;
+    }
 }
 
