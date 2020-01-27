@@ -91,7 +91,7 @@ export default abstract class AChatsHandler {
             this.chatsListener = this.detatchListener(listener, this.chatsListener);
         }
         else if (isIErrorHandler(listener)) {
-            this.detatchListener(listener, this.errorHandlers);
+            this.errorHandlers = this.detatchListener(listener, this.errorHandlers);
         }
     }
 
