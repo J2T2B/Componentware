@@ -6,6 +6,7 @@ import { VoidLike } from "./VoidLike";
 import { IMessage, Message } from "../models/Message";
 import { Answer } from "../models/Answer";
 import IConnectionListener from "./IConnectionListener";
+import {IErrorHandler, isIErrorHandler} from "./IErrorHandler";
 
 /**
  * Verwaltet alle Chats und Nachrichten und kommuniziert über die angehangenden Listener
@@ -16,12 +17,14 @@ export default abstract class AChatsHandler {
     private chatListener: IChatListener[];
     private chats: Chat[];
     private _currentChat?: Chat;
+    private errorHandlers: IErrorHandler[];
     protected connectionListener: IConnectionListener;
 
     constructor(connectionListener: IConnectionListener) {
         this.chatListener = [];
         this.chatsListener = [];
         this.chats = [];
+        this.errorHandlers = [];
         this.connectionListener = connectionListener;
     }
 
@@ -63,12 +66,15 @@ export default abstract class AChatsHandler {
      * Hängt den Listener an den Handler. Sollte in componentDidMount() aufgerufen werden
      * @param listener Listener
      */
-    public attach(listener: IChatListener | IChatsListener): void {
+    public attach(listener: IChatListener | IChatsListener | IErrorHandler): void {
         if (isIChatListener(listener)) {
             this.chatListener.push(listener);
         }
         else if (isIChatsListener(listener)) {
             this.chatsListener.push(listener);
+        }
+        else if (isIErrorHandler(listener)) {
+            this.errorHandlers.push(listener);
         }
     }
 
@@ -76,12 +82,15 @@ export default abstract class AChatsHandler {
      * Entfernt den Listener vom Handler. Sollte in componentWillUnmount() aufgerufen werden
      * @param listener Listener
      */
-    public detatch(listener: IChatsListener | IChatListener): void {
+    public detatch(listener: IChatsListener | IChatListener | IErrorHandler): void {
         if (isIChatListener(listener)) {
             this.chatListener = this.detatchListener(listener, this.chatListener)
         }
         else if (isIChatsListener(listener)) {
             this.chatsListener = this.detatchListener(listener, this.chatsListener);
+        }
+        else if (isIErrorHandler(listener)) {
+            this.detatchListener(listener, this.errorHandlers);
         }
     }
 
@@ -204,6 +213,9 @@ export default abstract class AChatsHandler {
                 break;
             case "ChangePoints":
                 this.chatsListener.forEach(c => c.onPointsChange(message));
+                break;
+            case "HandleError":
+                this.errorHandlers.forEach(e=>e.onError(message.message));
                 break;
             default:
                 throw new Error(`The Command ${message.command} is unknown`);
