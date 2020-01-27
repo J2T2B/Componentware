@@ -1,12 +1,13 @@
 import React from "react";
-import {Alert, Button} from "reactstrap";
+import { Alert, Button } from "reactstrap";
 import "../../styles/elements/login.scss";
-import {LoginCardComponent} from "./LoginCard";
-import {SmartInputComponent} from "./SmartInputComponent";
+import { LoginCardComponent } from "./LoginCard";
+import { SmartInputComponent } from "./SmartInputComponent";
 import setWindowTitle from "../../logic/setWindowTitle";
-import {LoginRegisterProps} from "../../models/LoginRegisterProps";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSync} from "@fortawesome/free-solid-svg-icons";
+import { LoginRegisterProps } from "../../models/LoginRegisterProps";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSync } from "@fortawesome/free-solid-svg-icons";
+import OnEnterPress from "../../logic/OnEnterPress";
 
 export interface LoginStates {
     error?: string;
@@ -38,9 +39,9 @@ export class LoginComponent extends React.Component<LoginRegisterProps, LoginSta
     }
 
     async onSubmit(): Promise<void> {
-        this.setState({busy: true, error: undefined});
+        this.setState({ busy: true, error: undefined });
 
-        const {username, password} = this.state;
+        const { username, password } = this.state;
 
         try {
             await this.props.connector.login(username, password);
@@ -78,6 +79,7 @@ export class LoginComponent extends React.Component<LoginRegisterProps, LoginSta
                 value={this.state.password}
                 type="password"
                 autoComplete="current-password"
+                onKeyPress={OnEnterPress(this.onSubmit)}
             />
 
             <Button
@@ -85,7 +87,7 @@ export class LoginComponent extends React.Component<LoginRegisterProps, LoginSta
                 color="success"
                 disabled={this.state.username.length === 0 || this.state.password.length === 0}
             >
-                {this.state.busy && <FontAwesomeIcon icon={faSync} spin/>}
+                {this.state.busy && <FontAwesomeIcon icon={faSync} spin />}
                 Anmelden
             </Button>
         </LoginCardComponent>
