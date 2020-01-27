@@ -100,7 +100,8 @@ export default abstract class AChatsHandler {
 
         this.sendMessage({
             command: "SubmitAnswer",
-            answerId
+            answerId,
+            chatId: "drölf"
         });
     }
 

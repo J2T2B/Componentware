@@ -1,5 +1,6 @@
 package de.fhdortmund.j2t2.wise2019.server.user.sessionmanager;
 
+import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.GameManager;
 import de.fhdortmund.j2t2.wise2019.server.game.local.GameManagerLocal;
 import de.fhdortmund.j2t2.wise2019.server.user.User;
@@ -12,6 +13,7 @@ import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
 
@@ -31,5 +33,10 @@ public class SessionManagerBean implements LocalSessionManager, RemoteSessionMan
         Session session = new Session(sessionId, user.getName(), gameManager.getChatsForUser(user.getName()));
 
         return sessionId;
+    }
+
+    @Override
+    public List<Chat> getChatsForToken(String token) {
+        return gameManager.getChatsForUser(sessions.get(token).getUsername());
     }
 }

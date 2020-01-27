@@ -21,7 +21,8 @@ export type SocketMessage =
     } |
     {
         command: "SubmitAnswer",
-        answerId: number
+        answerId: number,
+        chatId: string
     } |
     {
         command: "Reinit"
