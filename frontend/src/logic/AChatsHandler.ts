@@ -98,7 +98,7 @@ export default abstract class AChatsHandler {
      * Sendet die Antwort an den Server
      * @param answer Antwort
      */
-    public submitAnswer(answer: Answer | number, chatId: number) : void {
+    public submitAnswer(answer: Answer | number, chatId: string) : void {
         let answerId : number;
         if (typeof(answer) === "number") {
             answerId = answer;
@@ -147,7 +147,7 @@ export default abstract class AChatsHandler {
      * @param chatId Betroffene ChatId
      * @param message Neue Nachricht
      */
-    private onMessage(chatId: number, message: IMessage) {
+    private onMessage(chatId: string, message: IMessage) {
         let useMessage = new Message(message);
 
         if (this._currentChat !== undefined && chatId === this._currentChat.chatId) {
@@ -177,7 +177,7 @@ export default abstract class AChatsHandler {
      * @param messageId Betroffene Nachricht
      * @param answer Gegebene Antwort
      */
-    private onAnswer(chatId: number, messageId: string, answer: Answer) {
+    private onAnswer(chatId: string, messageId: string, answer: Answer) {
         let targetChat = this.chats.find(c => c.chatId === chatId);
         if (targetChat === undefined) {
             throw new Error(`Chat ${chatId} not found. Fatal Error`);

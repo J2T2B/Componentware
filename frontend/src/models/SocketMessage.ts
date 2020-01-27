@@ -10,19 +10,19 @@ export type SocketMessage =
     } |
     {
         command: "AddMessage"
-        chatId: number
+        chatId: string
         message: IMessage
     } |
     {
         command: "AddAnswer",
-        chatId: number,
+        chatId: string,
         messageId: string,
         answer: Answer
     } |
     {
         command: "SubmitAnswer",
         answerId: number,
-        chatId: number
+        chatId: string
     } |
     {
         command: "Reinit"
