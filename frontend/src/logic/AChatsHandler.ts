@@ -162,11 +162,13 @@ export default abstract class AChatsHandler {
         }
 
         targetChat.addMessage(useMessage);
-        
-        // Notification
-        NotificationHandler.Instance.sendNotification(targetChat.partner.name, message.text);
-        let audio = new Audio("eventually.mp3");
-        audio.play().then(() => audio.remove());
+
+        // Nur Benachrichtigen, wenn Nachricht neu ist
+        if (!message.userHasRead) {
+            NotificationHandler.Instance.sendNotification(targetChat.partner.name, message.text);
+            let audio = new Audio("eventually.mp3");
+            audio.play().then(() => audio.remove());
+        }
 
         if (this._currentChat !== undefined && chatId === this._currentChat.chatId) {
             this.chatListener.forEach(c => c.onMessage(this._currentChat!, useMessage));
