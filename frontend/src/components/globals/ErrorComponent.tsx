@@ -8,6 +8,7 @@ interface ErrorStates {
 }
 
 export class ErrorComponent extends React.Component<DefaultComponentProps, ErrorStates> implements IErrorHandler{
+
     constructor(props: DefaultComponentProps) {
         super(props);
 

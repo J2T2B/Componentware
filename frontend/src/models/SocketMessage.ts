@@ -22,7 +22,7 @@ export type SocketMessage =
     {
         command: "SubmitAnswer",
         answerId: number,
-        chatId: string
+        chatId: number
     } |
     {
         command: "Reinit"

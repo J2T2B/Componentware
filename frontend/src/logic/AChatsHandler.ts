@@ -98,7 +98,7 @@ export default abstract class AChatsHandler {
      * Sendet die Antwort an den Server
      * @param answer Antwort
      */
-    public submitAnswer(answer: Answer | number) : void {
+    public submitAnswer(answer: Answer | number, chatId: number) : void {
         let answerId : number;
         if (typeof(answer) === "number") {
             answerId = answer;
@@ -110,7 +110,7 @@ export default abstract class AChatsHandler {
         this.sendMessage({
             command: "SubmitAnswer",
             answerId,
-            chatId: "drölf" //TODO mit echtem Wert füllen
+            chatId
         });
     }
 
