@@ -6,7 +6,8 @@ import { VoidLike } from "./VoidLike";
 import { IMessage, Message } from "../models/Message";
 import { Answer } from "../models/Answer";
 import IConnectionListener from "./IConnectionListener";
-import {IErrorHandler, isIErrorHandler} from "./IErrorHandler";
+import { IErrorHandler, isIErrorHandler } from "./IErrorHandler";
+import { NotificationHandler } from "./NotificationHandler";
 
 /**
  * Verwaltet alle Chats und Nachrichten und kommuniziert über die angehangenden Listener
@@ -98,9 +99,9 @@ export default abstract class AChatsHandler {
      * Sendet die Antwort an den Server
      * @param answer Antwort
      */
-    public submitAnswer(answer: Answer | number, chatId: string) : void {
-        let answerId : number;
-        if (typeof(answer) === "number") {
+    public submitAnswer(answer: Answer | number, chatId: string): void {
+        let answerId: number;
+        if (typeof (answer) === "number") {
             answerId = answer;
         }
         else {
@@ -149,25 +150,27 @@ export default abstract class AChatsHandler {
      */
     private onMessage(chatId: string, message: IMessage) {
         let useMessage = new Message(message);
+        let targetChat: Chat;
 
-        if (this._currentChat !== undefined && chatId === this._currentChat.chatId) {
-            this._currentChat.addMessage(useMessage);
-            this.chatListener.forEach(c => c.onMessage(this._currentChat!, useMessage));
+        const chat = this.chats.find(c => c.chatId === chatId);
+
+        if (chat === undefined) {
+            throw new Error(`Chat ${chatId} not found. Fatal Error`);
         }
         else {
-            let targetChat = this.chats.find(c => c.chatId === chatId);
-            if (targetChat !== undefined) {
-                targetChat.addMessage(useMessage);
-            }
-            else {
-                throw new Error(`Chat ${chatId} not found. Fatal Error`);
-            }
+            targetChat = chat;
         }
 
+        targetChat.addMessage(useMessage);
+        
         // Notification
+        NotificationHandler.Instance.sendNotification(targetChat.partner.name, message.text);
         let audio = new Audio("eventually.mp3");
-        audio.play().then(()=>audio.remove());
+        audio.play().then(() => audio.remove());
 
+        if (this._currentChat !== undefined && chatId === this._currentChat.chatId) {
+            this.chatListener.forEach(c => c.onMessage(this._currentChat!, useMessage));
+        }
         this.chatsListener.forEach(c => c.onChatChange(this.chats));
     }
 
@@ -215,7 +218,7 @@ export default abstract class AChatsHandler {
                 this.chatsListener.forEach(c => c.onPointsChange(message));
                 break;
             case "HandleError":
-                this.errorHandlers.forEach(e=>e.onError(message.message));
+                this.errorHandlers.forEach(e => e.onError(message.message));
                 break;
             default:
                 throw new Error(`The Command ${message.command} is unknown`);
