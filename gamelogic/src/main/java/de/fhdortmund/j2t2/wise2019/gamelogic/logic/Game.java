@@ -15,5 +15,7 @@ public interface Game {
      */
     PlayResult playAnswer(Answer answer);
 
+    PlayResult playAnswer(int answerId);
+
     GameState getGameState();
 }

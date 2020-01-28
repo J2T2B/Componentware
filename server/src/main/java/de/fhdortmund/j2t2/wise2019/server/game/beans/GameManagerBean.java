@@ -30,7 +30,7 @@ public class GameManagerBean implements GameManagerLocal {
     }
 
     @Override
-    public List<Chat> getChatsForUser(String username) {
-        return new ArrayList<>();
+    public List<Game> getGamesForUser(String session) {
+        return null;
     }
 }

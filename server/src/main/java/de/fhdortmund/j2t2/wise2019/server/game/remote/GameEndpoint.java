@@ -3,15 +3,15 @@ package de.fhdortmund.j2t2.wise2019.server.game.remote;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
+import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
 import de.fhdortmund.j2t2.wise2019.server.game.models.ChatRemoteModel;
-import de.fhdortmund.j2t2.wise2019.server.game.remote.websocketcommands.AbstractWebsocketCommandAdapter;
-import de.fhdortmund.j2t2.wise2019.server.game.remote.websocketcommands.CreateChatWebSocketCommand;
-import de.fhdortmund.j2t2.wise2019.server.game.remote.websocketcommands.ReadMessageWebSocketCommand;
-import de.fhdortmund.j2t2.wise2019.server.game.remote.websocketcommands.SubmitAnswerWebSocketCommand;
-import de.fhdortmund.j2t2.wise2019.server.user.UserManagerLocal;
+import de.fhdortmund.j2t2.wise2019.server.game.remote.websocketcommands.*;
+import de.fhdortmund.j2t2.wise2019.server.user.UserManager;
 import de.fhdortmund.j2t2.wise2019.server.user.sessionmanager.SessionManager;
 
 import javax.inject.Inject;
@@ -19,21 +19,21 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 @ServerEndpoint(value = "/game/{usertoken}")
 public class GameEndpoint {
 
     private Session session;
+
     @Inject
     private SessionManager sessionManager;
     @Inject
-    private UserManagerLocal userManager;
-    private Map<String, Chat> chats = new HashMap<>();
+    private UserManager userManager;
+    @Inject
+    private RemoteGameManager gameManager;
+
+    private List<Game> games;
     private final Gson gson;
 
     public GameEndpoint() {
@@ -45,12 +45,12 @@ public class GameEndpoint {
     @OnOpen
     public void onOpen(Session session, @PathParam("usertoken") String token) throws IOException, EncodeException {
         this.session = session;
-        this.chats = sessionManager.getChatsForToken(token).stream().map(ChatRemoteModel::new).collect(Collectors.toMap(ChatRemoteModel::getId, it -> it));
-        reply(new WebSocketCreatedCommand());
+        this.games = sessionManager.getGamesForToken(token);
+        send(new WebSocketCreatedCommand());
     }
 
     @OnMessage
-    public void onMessage(String message, Session session){
+    public void onMessage(String message, Session session) throws IOException, EncodeException {
 
         AbstractWebSocketCommand command = gson.fromJson(message, AbstractWebSocketCommand.class);
         switch (command.getCommand()){
@@ -74,7 +74,7 @@ public class GameEndpoint {
     @OnError
     public void onError(Throwable throwable){
         try {
-            reply(new ErrorWebSocketCommand());
+            send(new ErrorWebSocketCommand());
         } catch (IOException | EncodeException e) {
             e.printStackTrace();  //TODO error handling
         }
@@ -85,24 +85,27 @@ public class GameEndpoint {
         throw new UnsupportedOperationException("OnClose"); //TODO
     }
 
-    private void reply(AbstractWebSocketCommand replyObject) throws IOException, EncodeException {
-            session.getBasicRemote().sendObject(replyObject);
-    }
 
-    private void handleReinitcommand() {
-        for(Chat chat : chats.values()){
-            try {
-                reply(new CreateChatWebSocketCommand(chat));
-            } catch (IOException | EncodeException e) {
-                onError(e);
+    private void handleReinitcommand() throws IOException, EncodeException {
+        for(Game game : games){
+            GameState<?> gameState = game.getGameState();
+            for(Chat chat : gameState.getOpenChats()){
+                ChatRemoteModel chatRemoteModel = new ChatRemoteModel(chat);
+                send(new CreateChatWebSocketCommand(chatRemoteModel));
             }
         }
     }
 
     private void handleSubmitCommand(int answerId, int chatId) {
+        Game game = gameManager.getGameForRemoteChatId(chatId);
 
     }
 
     private void handleReadMessageCommand(String messageId) {
+    }
+
+
+    private void send(AbstractWebSocketCommand replyObject) throws IOException, EncodeException {
+        session.getBasicRemote().sendObject(replyObject);
     }
 }
