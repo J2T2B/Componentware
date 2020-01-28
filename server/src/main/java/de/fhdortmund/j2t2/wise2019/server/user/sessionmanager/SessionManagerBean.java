@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 @Named
 @Dependent
@@ -30,7 +31,7 @@ public class SessionManagerBean implements LocalSessionManager, RemoteSessionMan
     public String createSession(User user) {
         String sessionId = UUID.randomUUID().toString();
 
-        Session session = new Session(sessionId, user.getName(), gameManager.getGamesForUser(user.getName()));
+        Session session = new Session(sessionId, user.getName(), gameManager.getGamesForUser(user.getName()).stream().map(Game::getGameState).collect(Collectors.toList()));
 
         return sessionId;
     }
@@ -38,5 +39,10 @@ public class SessionManagerBean implements LocalSessionManager, RemoteSessionMan
     @Override
     public List<Game> getGamesForToken(String token) {
         return gameManager.getGamesForUser(sessions.get(token).getUsername());
+    }
+
+    @Override
+    public void invalidate(String token) {
+
     }
 }

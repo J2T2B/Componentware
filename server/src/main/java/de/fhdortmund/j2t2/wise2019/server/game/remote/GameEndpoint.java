@@ -35,6 +35,7 @@ public class GameEndpoint {
 
     private List<Game> games;
     private final Gson gson;
+    private String token;
 
     public GameEndpoint() {
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -81,8 +82,9 @@ public class GameEndpoint {
     }
 
     @OnClose
-    public void onClose(Session session){
-        throw new UnsupportedOperationException("OnClose"); //TODO
+    public void onClose(Session session) throws IOException {
+        session.close();
+        sessionManager.invalidate(token);
     }
 
 
