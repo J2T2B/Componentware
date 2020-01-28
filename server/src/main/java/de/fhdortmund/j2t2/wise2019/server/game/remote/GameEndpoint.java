@@ -2,10 +2,12 @@ package de.fhdortmund.j2t2.wise2019.server.game.remote;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
@@ -98,9 +100,19 @@ public class GameEndpoint {
         }
     }
 
-    private void handleSubmitCommand(int answerId, int chatId) {
+    private void handleSubmitCommand(int answerId, long chatId) throws IOException, EncodeException {
         Game game = gameManager.getGameForRemoteChatId(chatId);
-
+        for(Chat chat : game.getGameState().getOpenChats()) {
+            if(chat.getId() == chatId) {
+                Chat.ChatMessage msg = chat.getMessages().get(chat.getMessages().size() - 1);
+                for(Answer answer : msg.getAnswers()) {
+                    if(answer.getId() == answerId) {
+                        PlayResult res = game.playAnswer(answer);
+                        send(new AddMessageWebSocketCommand(chatId, res.getMessage()));
+                    }
+                }
+            }
+        }
     }
 
     private void handleReadMessageCommand(String messageId) {
