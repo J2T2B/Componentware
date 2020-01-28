@@ -57,6 +57,11 @@ public class DetectivGame implements Game {
     }
 
     @Override
+    public PlayResult playAnswer(int answerId) {
+        return null;
+    }
+
+    @Override
     public GameState<Void> getGameState() {
         return state;
     }

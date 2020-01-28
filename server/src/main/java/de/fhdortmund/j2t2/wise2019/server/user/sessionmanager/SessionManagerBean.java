@@ -2,6 +2,7 @@ package de.fhdortmund.j2t2.wise2019.server.user.sessionmanager;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.GameManager;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.server.game.local.GameManagerLocal;
 import de.fhdortmund.j2t2.wise2019.server.user.User;
 
@@ -22,21 +23,20 @@ import java.util.UUID;
 @Singleton
 public class SessionManagerBean implements LocalSessionManager, RemoteSessionManager {
 
-    @Inject
-    private GameManagerLocal gameManager;
+    private GameManagerLocal gameManager = new MockGameManager();
     private Map<String, Session> sessions = new HashMap<>();
 
     @Override
     public String createSession(User user) {
         String sessionId = UUID.randomUUID().toString();
 
-        Session session = new Session(sessionId, user.getName(), gameManager.getChatsForUser(user.getName()));
+        Session session = new Session(sessionId, user.getName(), gameManager.getGamesForUser(user.getName()));
 
         return sessionId;
     }
 
     @Override
-    public List<Chat> getChatsForToken(String token) {
-        return gameManager.getChatsForUser(sessions.get(token).getUsername());
+    public List<Game> getGamesForToken(String token) {
+        return gameManager.getGamesForUser(sessions.get(token).getUsername());
     }
 }
