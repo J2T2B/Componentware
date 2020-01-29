@@ -110,4 +110,8 @@ public class GameEndpoint {
     private void send(AbstractWebSocketCommand replyObject) throws IOException, EncodeException {
         session.getBasicRemote().sendObject(replyObject);
     }
+
+    private void SendCreateChatCommand(){
+
+    }
 }

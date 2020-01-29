@@ -1,6 +1,6 @@
 package de.fhdortmund.j2t2.wise2019.server.user.sessionmanager;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
 
 import java.util.List;
@@ -9,20 +9,20 @@ public class Session {
 
     private String sessionId;
     private String username;
-    private List<GameState<?>> gameStates;
+    private List<Game> games;
 
-    public Session(String sessionId, String username, List<GameState<?>> gameStates) {
+    public Session(String sessionId, String username, List<Game> games) {
         this.sessionId = sessionId;
         this.username = username;
-        this.gameStates = gameStates;
+        this.games = games;
     }
 
-    public List<GameState<?>> getGameStates() {
-        return gameStates;
+    public List<Game> getGames() {
+        return games;
     }
 
-    public void setGameStates(List<GameState<?>> gameStates) {
-        this.gameStates = gameStates;
+    public void setGames(List<Game> games) {
+        this.games = games;
     }
 
     public String getSessionId() {
@@ -39,5 +39,9 @@ public class Session {
 
     public void setUsername(String username) {
         this.username = username;
+    }
+
+    public void invalidate() {
+        //TODO speichere relevante Session Daten
     }
 }
