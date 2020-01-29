@@ -3,6 +3,7 @@ package de.fhdortmund.j2t2.wise2019.server.game.models;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chatpartner;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
+import javafx.collections.transformation.SortedList;
 
 import java.io.Serializable;
 import java.util.Calendar;
@@ -14,12 +15,13 @@ public class ChatRemoteModel implements Chat, Serializable {
 
     private static long nextChatModelId = Long.MIN_VALUE;
 
-    final long id = nextChatModelId++;
+    final long id;
 
     private ChatpartnerRemoteModel chatPartner;
-    private List<Message> messages;
+    private List<ChatMessage> messages;
 
     public ChatRemoteModel(Chat chat) {
+        id = chat.getId();
         chatPartner = new ChatpartnerRemoteModel(chat.getChatpartner());
         messages = chat.getMessages();
     }
@@ -35,11 +37,11 @@ public class ChatRemoteModel implements Chat, Serializable {
 
     @Override
     public void addMessage(Message message) {
-        messages.add(message);
+        messages.add(new ChatMessage(message, System.currentTimeMillis()));
     }
 
     @Override
-    public List<Message> getMessages() {
+    public List<ChatMessage> getMessages() {
         return messages;
     }
 }
