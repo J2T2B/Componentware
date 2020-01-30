@@ -1,7 +1,7 @@
 plugins {
+    id 'ear'
     id 'war'
     id 'java'
-    id 'ear'
 }
 
 dependencies {
@@ -39,9 +39,7 @@ dependencies {
 
 }
 
-war{
-    from '../frontend/build/'
-}
+build.dependsOn "war"
 
 //build.dependsOn "includeFrontend"
 /*task includeFrontend{

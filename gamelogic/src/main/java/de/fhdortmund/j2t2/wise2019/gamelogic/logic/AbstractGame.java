@@ -9,6 +9,7 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameModel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
+import java.util.Calendar;
 
 /**
  * Implementierende Klassen müssen eine gameDefinition.json auf dem Root der Jar haben.
@@ -37,14 +38,16 @@ public abstract class AbstractGame<T> implements Game {
     public PlayResult playAnswer(Answer answer) {
         PlayResult res;
 
+
         if(answer.getTargets().size() < 1) {
             res = new PlayResultEnd();
         } else if(answer.getTargets().size() == 1) {
             Message target = answer.getTargets().get(0);
+            Chat.ChatMessage chatMessage = new Chat.ChatMessage(target, Calendar.getInstance().getTimeInMillis(), false);
             if(target.getAnswers().size() == 0) {
-                res = new PlayResultEnd(target);
+                res = new PlayResultEnd(chatMessage);
             } else {
-                res = new PlayResultMessage(target);
+                res = new PlayResultMessage(chatMessage);
             }
         } else {
             double random = Math.random();
@@ -56,8 +59,10 @@ public abstract class AbstractGame<T> implements Game {
                     //TODO break hier hin ?
                 }
             }
-            res = new PlayResultMessage(msg);
+            Chat.ChatMessage chatMessage = new Chat.ChatMessage(msg, Calendar.getInstance().getTimeInMillis(), false);
+            res = new PlayResultMessage(chatMessage);
         }
+        //TODO gameState ändern.
         return res;
     }
 

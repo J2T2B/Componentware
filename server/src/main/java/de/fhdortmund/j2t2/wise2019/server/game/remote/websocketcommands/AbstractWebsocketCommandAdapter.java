@@ -5,8 +5,7 @@ import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketComman
 
 import java.lang.reflect.Type;
 
-public class AbstractWebsocketCommandAdapter implements JsonDeserializer<AbstractWebSocketCommand> {
-
+public class AbstractWebsocketCommandAdapter implements JsonDeserializer<AbstractWebSocketCommand>{
     private static final String COMMANDTYPE_FIELD_NAME = "command";
 
     @Override
