@@ -12,57 +12,9 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.List;
 
-public class DetectivGame implements Game {
+public class DetectivGame extends AbstractGame<Void> {
 
-    GameModel model = new GameModel();
-    /**
-     * Keine weiteren Daten zu speichern -> Void
-     */
-    GameState<Void> state = new GameState<>();
     public DetectivGame() throws GameLoadingException {
-        InputStream gameDefinition;
-        try {
-            gameDefinition = DetectivGame.class.getClassLoader().getResource("gameDefinition.json").openStream();
-        } catch (IOException | NullPointerException e) {
-            throw new GameLoadingException("Unable to load gameDefinition.json", e);
-        }
-        GameLoader gameLoader = new GameLoader(gameDefinition);
-        model.addMessages(gameLoader.loadGame());
-    }
-    @Override
-    public PlayResult playAnswer(Answer answer) {
-        PlayResult res;
-
-        if(answer.getTargets().size() < 1) {
-            res = new PlayResultEnd();
-        } else if(answer.getTargets().size() == 1) {
-            Message target = answer.getTargets().get(0);
-            if(target.getAnswers().size() == 0) {
-                res = new PlayResultEnd(target);
-            } else {
-                res = new PlayResultMessage(target);
-            }
-        } else {
-            double random = Math.random();
-            double sum = 0;
-            Message msg = answer.getTargets().get(0);
-            for (Message target : answer.getTargets()) {
-                if (random >= sum && random < (sum += target.getProbably())) {
-                    msg = target;
-                }
-            }
-            res = new PlayResultMessage(msg);
-        }
-        return res;
-    }
-
-    @Override
-    public PlayResult playAnswer(int answerId) {
-        return null;
-    }
-
-    @Override
-    public GameState<Void> getGameState() {
-        return state;
+        super(DetectivGame.class.getClassLoader());
     }
 }

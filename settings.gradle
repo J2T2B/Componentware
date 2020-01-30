@@ -3,3 +3,5 @@ include 'gamelogic'
 include 'server'
 include 'frontend'
 include 'detectivgame'
+include 'supportgame'
+
