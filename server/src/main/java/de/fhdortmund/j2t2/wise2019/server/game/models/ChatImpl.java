@@ -3,10 +3,13 @@ package de.fhdortmund.j2t2.wise2019.server.game.models;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chatpartner;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
+import org.apache.commons.lang3.RandomUtils;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
+import java.util.Random;
 
 
 public class ChatImpl implements Chat, Serializable {
@@ -14,6 +17,12 @@ public class ChatImpl implements Chat, Serializable {
 
     private ChatpartnerImpl chatPartner;
     private List<ChatMessage> messages;
+
+    public ChatImpl(){
+        id = RandomUtils.nextLong(); //TODO
+        chatPartner = new ChatpartnerImpl();
+        messages = new ArrayList<>();
+    }
 
     public ChatImpl(Chat chat) {
         id = chat.getId();

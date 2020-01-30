@@ -1,7 +1,5 @@
 package de.fhdortmund.j2t2.wise2019.server.game.remote;
 
-import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
@@ -22,7 +20,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.List;
 
-@ServerEndpoint(value = "/game/{usertoken}")
+@ServerEndpoint(value = "/game/{usertoken}", encoders = MessageCoder.class, decoders = MessageCoder.class)
 public class GameEndpoint {
 
     private Session session;
@@ -35,14 +33,7 @@ public class GameEndpoint {
     private RemoteChatManager chatManager;
 
     private List<Game> games;
-    private final Gson gson;
     private String token;
-
-    public GameEndpoint() {
-        GsonBuilder gsonBuilder = new GsonBuilder();
-        gsonBuilder.registerTypeAdapter(AbstractWebSocketCommand.class, new AbstractWebsocketCommandAdapter());
-        gson = gsonBuilder.create();
-    }
 
     @OnOpen
     public void onOpen(Session session, @PathParam("usertoken") String token) throws IOException, EncodeException {
@@ -52,23 +43,24 @@ public class GameEndpoint {
     }
 
     @OnMessage
-    public void onMessage(String message, Session session) throws IOException, EncodeException {
-
-        AbstractWebSocketCommand command = gson.fromJson(message, AbstractWebSocketCommand.class);
-        switch (command.getCommand()){
-            case "Reinit":  handleReinitcommand();
-            case "SubmitAnswer": {
-                SubmitAnswerWebSocketCommand submitCommand = (SubmitAnswerWebSocketCommand) command;
-                handleSubmitCommand(submitCommand.getAnswerId(), submitCommand.getChatId());
-                break;
+    public void onMessage(AbstractWebSocketCommand command, Session session) throws IOException, EncodeException {
+            switch (command.getCommand()) {
+                case "Reinit":
+                    handleReinitcommand();
+                    break;
+                case "SubmitAnswer": {
+                    SubmitAnswerWebSocketCommand submitCommand = (SubmitAnswerWebSocketCommand) command;
+                    handleSubmitCommand(submitCommand.getAnswerId(), submitCommand.getChatId());
+                    break;
+                }
+                case "ReadMessage": {
+                    ReadMessageWebSocketCommand readMessageCommand = (ReadMessageWebSocketCommand) command;
+                    handleReadMessageCommand(readMessageCommand.getMessageId(), readMessageCommand.getChatId());
+                    break;
+                }
+                default:
+                    throw new UnsupportedOperationException(command.getCommand());
             }
-            case "ReadMessage": {
-                ReadMessageWebSocketCommand readMessageCommand = (ReadMessageWebSocketCommand) command;
-                handleReadMessageCommand(readMessageCommand.getMessageId(), readMessageCommand.getChatId());
-                break;
-            }
-            default: throw new UnsupportedOperationException(command.getCommand());
-        }
     }
 
 
@@ -76,7 +68,7 @@ public class GameEndpoint {
     @OnError
     public void onError(Throwable throwable){
         try {
-            send(new ErrorWebSocketCommand());
+            send(new ErrorWebSocketCommand(new Exception(throwable)));
         } catch (IOException | EncodeException e) {
             e.printStackTrace();  //TODO error handling
         }
@@ -94,13 +86,12 @@ public class GameEndpoint {
             GameState<?> gameState = game.getGameState();
             for(Chat chat : gameState.getOpenChats()){
                 ChatImpl chatImpl = new ChatImpl(chat);
-                chatManager.registerChat(chatImpl, game);
-                send(new CreateChatWebSocketCommand(chatImpl));
+                sendCreateChatCommand(chatImpl, game);
             }
         }
     }
 
-    private void handleSubmitCommand(int answerId, long chatId) throws IOException, EncodeException {
+    private void handleSubmitCommand(long answerId, long chatId) throws IOException, EncodeException {
         Game game = chatManager.getGameForRemoteChatId(chatId);
         Chat chat = game.getGameState().getChat(chatId);
 
@@ -125,7 +116,8 @@ public class GameEndpoint {
         session.getBasicRemote().sendObject(replyObject);
     }
 
-    private void SendCreateChatCommand(){
-
+    private void sendCreateChatCommand(Chat chat, Game game) throws IOException, EncodeException {
+        chatManager.registerChat(chat, game);
+        send(new CreateChatWebSocketCommand(chat));
     }
 }

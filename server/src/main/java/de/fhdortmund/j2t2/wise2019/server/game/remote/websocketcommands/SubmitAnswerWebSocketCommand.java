@@ -5,8 +5,8 @@ import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketComman
 public class SubmitAnswerWebSocketCommand extends AbstractWebSocketCommand {
 
     private static final String COMMAND = "SubmitAnswer";
-    private final int answerId;
-    private final int chatId;
+    private final long answerId;
+    private final long chatId;
 
     public SubmitAnswerWebSocketCommand(int answerId, int chatId) {
         super(COMMAND);
@@ -14,11 +14,11 @@ public class SubmitAnswerWebSocketCommand extends AbstractWebSocketCommand {
         this.chatId = chatId;
     }
 
-    public int getAnswerId() {
+    public long getAnswerId() {
         return answerId;
     }
 
-    public int getChatId() {
+    public long getChatId() {
         return chatId;
     }
 }

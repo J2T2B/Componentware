@@ -8,7 +8,9 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResultData;
 import de.fhdortmund.j2t2.wise2019.server.game.local.GameManagerLocal;
+import de.fhdortmund.j2t2.wise2019.server.game.models.ChatImpl;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
@@ -24,7 +26,23 @@ public class MockGameManager implements GameManagerLocal {
 
         @Override
         public PlayResult playAnswer(Answer answer) {
-            return null;
+            return new PlayResult() {
+                @Override
+                public Chat.ChatMessage getMessage() {
+                    return message1;
+                }
+
+                @Override
+                public boolean isEnd() {
+                    return false;
+                }
+
+                @Override
+                public List<PlayResultData> getPlayResultData() {
+                    return Collections.singletonList(new PlayResultData() {
+                    });
+                }
+            };
         }
 
         @Override
@@ -34,7 +52,9 @@ public class MockGameManager implements GameManagerLocal {
 
         @Override
         public Chat createNewChat() {
-            return null; //TODO
+            Chat chat = new ChatImpl();
+            gameState.addChat(chat);
+            return chat;
         }
 
         @Override
@@ -42,6 +62,11 @@ public class MockGameManager implements GameManagerLocal {
             return gameState;
         }
     };
+
+    public MockGameManager(){
+        game.createNewChat();
+        game.getGameState().getOpenChats().get(0).addMessage(message1, false);
+    }
 
     @Override
     public List<Game> getGamesForUser(String session) {
@@ -52,7 +77,7 @@ public class MockGameManager implements GameManagerLocal {
         return RandomStringUtils.random(RandomUtils.nextInt(1,50));
     }
 
-    private static final Message message1= new Message(){
+    private static Message realMessage1 = new Message(){
 
         private boolean read = false;
         @Override
@@ -138,5 +163,7 @@ public class MockGameManager implements GameManagerLocal {
         }
     };
 
-    private static Message[] messages = {message1};
+    private static final Chat.ChatMessage message1= new Chat.ChatMessage(realMessage1, 0, false);
+
+    private static Chat.ChatMessage[] messages = {message1};
 }
