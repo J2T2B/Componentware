@@ -10,14 +10,24 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 
+/**
+ * Implementierende Klassen müssen eine gameDefinition.json auf dem Root der Jar haben.
+ * @param <T> Typ der Daten, die GameState halten soll
+ */
 public abstract class AbstractGame<T> implements Game {
     protected GameModel gameModel;
     protected GameState<T> gameState;
 
+    /**
+     *
+     * @param gameClassLoader classloader mit einer gameDefinition.json auf dem Pfad
+     * @throws GameLoadingException wenn die gameDefintion.json nicht geladen werden kann oder ein sonstiger Fehler bei dem Laden
+     * der Spieldefinition auftritt
+     */
     protected AbstractGame(ClassLoader gameClassLoader) throws GameLoadingException {
         URL gameDefinitionURL = gameClassLoader.getResource("gameDefinition.json");
         try {
-            InputStream gameDefinition = gameDefinitionURL.openStream();
+            InputStream gameDefinition = gameDefinitionURL.openStream(); //Just catch the NPE
         } catch (NullPointerException | IOException e) {
             throw new GameLoadingException("Unable to load "+ gameDefinitionURL.toString(), e);
         }
