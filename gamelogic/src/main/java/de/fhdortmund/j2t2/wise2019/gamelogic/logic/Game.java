@@ -17,5 +17,7 @@ public interface Game {
 
     PlayResult playAnswer(int answerId);
 
+    Chat createNewChat();
+
     GameState<?> getGameState();
 }

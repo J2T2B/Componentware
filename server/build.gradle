@@ -12,8 +12,8 @@ dependencies {
     // The following dependencies will become ear libs and will
     // be placed in a dir configured via the libDirName property
     // earlib group: 'log4j', name: 'log4j'
+    earlib project(':supportgame')
     compile project(':gamelogic')
-    compile project(':detectivgame')
     earlib project(':gamelogic')
     earlib project(':detectivgame')
     earlib project(':frontend')

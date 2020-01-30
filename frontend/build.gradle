@@ -60,3 +60,24 @@ clean {
 }
 
 assemble.dependsOn packageNpmApp
+
+npmInstall.dependsOn 'npmHttpProxy'
+npmInstall.dependsOn 'npmHttpsProxy'
+
+task npmHttpProxy(type: NpmTask, group: 'node') {
+    args = ['config', 'set', 'proxy', "http://${-> System.properties["http.proxyHost"]}:${-> System.properties["http.proxyPort"]}"]
+}
+
+task removeNpmHttpProxy(type: NpmTask, group: 'node') {
+    args = ['config', 'delete', 'proxy']
+}
+
+task npmHttpsProxy(type: NpmTask, group: 'node') {
+    args = ['config', 'set', 'https-proxy', "http://${-> System.properties["https.proxyHost"]}:${-> System.properties["https.proxyPort"]}"]
+}
+
+task removeNpmHttpsProxy(type: NpmTask, group: 'node') {
+    args = ['config', 'delete', 'https-proxy']
+}
+npmHttpProxy.onlyIf { System.properties.containsKey("http.proxyHost") }
+npmHttpsProxy.onlyIf { System.properties.containsKey("https.proxyHost") }
