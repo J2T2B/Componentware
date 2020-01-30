@@ -2,6 +2,7 @@ package de.fhdortmund.j2t2.wise2019.server.user.sessionmanager;
 
 import com.google.common.collect.Lists;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
+import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
@@ -32,6 +33,11 @@ public class MockGameManager implements GameManagerLocal {
         }
 
         @Override
+        public Chat createNewChat() {
+            return null; //TODO
+        }
+
+        @Override
         public GameState<String> getGameState() {
             return gameState;
         }
@@ -48,6 +54,7 @@ public class MockGameManager implements GameManagerLocal {
 
     private static final Message message1= new Message(){
 
+        private boolean read = false;
         @Override
         public String getId() {
             return UUID.randomUUID().toString();

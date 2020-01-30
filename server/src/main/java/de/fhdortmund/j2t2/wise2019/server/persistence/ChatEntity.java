@@ -4,7 +4,6 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chatpartner;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.server.user.User;
-import javafx.collections.transformation.SortedList;
 
 import javax.persistence.*;
 import java.util.ArrayList;
@@ -43,12 +42,17 @@ public class ChatEntity implements Chat {
         return messages;
     }
 
+    @Override
+    public ChatMessage getMessage(String messageId) {
+        return null; //TODO
+    }
+
     public void setMessages(List<ChatMessage> messages) {
         this.messages = messages;
     }
 
     @Override
-    public void addMessage(Message message) {
+    public void addMessage(Message message, boolean isAnswer) {
         throw new UnsupportedOperationException("Not supported for chat entity");
     }
 }

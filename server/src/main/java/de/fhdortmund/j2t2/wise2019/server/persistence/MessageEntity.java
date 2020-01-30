@@ -60,14 +60,4 @@ public class MessageEntity implements Message {
     public Collection<Answer> getAnswers() {
         return answers;
     }
-
-    @Override
-    public void setRead(boolean b) {
-        this.read = b;
-    }
-
-    @Override
-    public boolean getRead() {
-        return read;
-    }
 }

@@ -1,8 +1,7 @@
 package de.fhdortmund.j2t2.wise2019.server.game.remote;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
-import de.fhdortmund.j2t2.wise2019.server.game.models.ChatRemoteModel;
+import de.fhdortmund.j2t2.wise2019.server.game.models.ChatImpl;
 
 import javax.ejb.Singleton;
 import javax.enterprise.context.SessionScoped;
@@ -22,7 +21,7 @@ public class RemoteChatManager implements Serializable {
         return chats.get(chatId);
     }
 
-    public void registerChat(ChatRemoteModel chat, Game game){
+    public void registerChat(ChatImpl chat, Game game){
         chats.put(chat.getId(), game);
     }
 }

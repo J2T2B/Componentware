@@ -9,15 +9,15 @@ import java.util.List;
 import java.util.NoSuchElementException;
 
 
-public class ChatRemoteModel implements Chat, Serializable {
+public class ChatImpl implements Chat, Serializable {
     final long id;
 
-    private ChatpartnerRemoteModel chatPartner;
+    private ChatpartnerImpl chatPartner;
     private List<ChatMessage> messages;
 
-    public ChatRemoteModel(Chat chat) {
+    public ChatImpl(Chat chat) {
         id = chat.getId();
-        chatPartner = new ChatpartnerRemoteModel(chat.getChatpartner());
+        chatPartner = new ChatpartnerImpl(chat.getChatpartner());
         messages = chat.getMessages();
     }
 
@@ -31,8 +31,8 @@ public class ChatRemoteModel implements Chat, Serializable {
     }
 
     @Override
-    public void addMessage(Message message) {
-        messages.add(new ChatMessage(message, System.currentTimeMillis()));
+    public void addMessage(Message message, boolean isAnswer) {
+        messages.add(new ChatMessage(message, System.currentTimeMillis(), isAnswer));
     }
 
     @Override
@@ -41,7 +41,7 @@ public class ChatRemoteModel implements Chat, Serializable {
     }
 
     @Override
-    public Message getMessage(String messageId) {
+    public ChatMessage getMessage(String messageId) {
         return messages.stream().filter(m -> m.getId().equals(messageId)).findAny().orElseThrow(NoSuchElementException::new);
     }
 }

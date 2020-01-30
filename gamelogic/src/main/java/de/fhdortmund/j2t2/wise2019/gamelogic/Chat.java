@@ -10,20 +10,23 @@ public interface Chat {
 
     Chatpartner getChatpartner();
 
-    void addMessage(Message message);
+    void addMessage(Message message, boolean isAnswer);
     List<ChatMessage> getMessages();
 
-    Message getMessage(String messageId);
+    ChatMessage getMessage(String messageId);
 
     public class ChatMessage implements Message, Comparable<ChatMessage> {
 
         private final String messageId = UUID.randomUUID().toString();
         private final Message msg;
         private final long timestamp;
+        private boolean read = false;
+        private boolean isAnswer;
 
-        public ChatMessage(Message msg, long timestamp) {
+        public ChatMessage(Message msg, long timestamp, boolean isAnswer) {
             this.msg = msg;
             this.timestamp = timestamp;
+            this.isAnswer = isAnswer;
         }
 
         @Override
@@ -69,6 +72,18 @@ public interface Chat {
         @Override
         public int compareTo(ChatMessage o) {
             return Long.compare(timestamp, o.timestamp);
+        }
+
+        public boolean isRead() {
+            return read;
+        }
+
+        public void setRead(boolean read) {
+            this.read = read;
+        }
+
+        public long getTimestamp() {
+            return timestamp;
         }
     }
 }

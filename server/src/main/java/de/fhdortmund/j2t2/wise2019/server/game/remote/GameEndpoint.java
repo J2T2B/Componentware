@@ -4,14 +4,13 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
-import de.fhdortmund.j2t2.wise2019.server.game.models.ChatRemoteModel;
+import de.fhdortmund.j2t2.wise2019.server.game.models.ChatImpl;
 import de.fhdortmund.j2t2.wise2019.server.game.remote.websocketcommands.*;
 import de.fhdortmund.j2t2.wise2019.server.user.UserManager;
 import de.fhdortmund.j2t2.wise2019.server.user.sessionmanager.SessionManager;
@@ -94,9 +93,9 @@ public class GameEndpoint {
         for(Game game : games){
             GameState<?> gameState = game.getGameState();
             for(Chat chat : gameState.getOpenChats()){
-                ChatRemoteModel chatRemoteModel = new ChatRemoteModel(chat);
-                chatManager.registerChat(chatRemoteModel, game);
-                send(new CreateChatWebSocketCommand(chatRemoteModel));
+                ChatImpl chatImpl = new ChatImpl(chat);
+                chatManager.registerChat(chatImpl, game);
+                send(new CreateChatWebSocketCommand(chatImpl));
             }
         }
     }
@@ -117,7 +116,7 @@ public class GameEndpoint {
     private void handleReadMessageCommand(String messageId, long chatId) {
         Game game = chatManager.getGameForRemoteChatId(chatId);
         Chat chat = game.getGameState().getChat(chatId);
-        Message message = chat.getMessage(messageId);
+        Chat.ChatMessage message = chat.getMessage(messageId);
         message.setRead(true);
     }
 
