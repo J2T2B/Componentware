@@ -18,6 +18,8 @@ public class MessageEntity implements Message {
     private Points points;
     private double probability;
     private List<Answer> answers = new ArrayList<>(0);
+    private boolean read = false;
+
     //TODO
     @Override
     public String getId() {
@@ -57,5 +59,15 @@ public class MessageEntity implements Message {
     @Override
     public Collection<Answer> getAnswers() {
         return answers;
+    }
+
+    @Override
+    public void setRead(boolean b) {
+        this.read = b;
+    }
+
+    @Override
+    public boolean getRead() {
+        return read;
     }
 }

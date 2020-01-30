@@ -1,9 +1,8 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic;
 
-import javafx.collections.transformation.SortedList;
-
 import java.util.Collection;
 import java.util.List;
+import java.util.UUID;
 
 public interface Chat {
 
@@ -14,8 +13,11 @@ public interface Chat {
     void addMessage(Message message);
     List<ChatMessage> getMessages();
 
+    Message getMessage(String messageId);
+
     public class ChatMessage implements Message, Comparable<ChatMessage> {
 
+        private final String messageId = UUID.randomUUID().toString();
         private final Message msg;
         private final long timestamp;
 
@@ -26,7 +28,7 @@ public interface Chat {
 
         @Override
         public String getId() {
-            return msg.getId();
+            return messageId;
         }
 
         @Override

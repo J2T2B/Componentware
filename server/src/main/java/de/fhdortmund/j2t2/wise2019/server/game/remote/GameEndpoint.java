@@ -33,7 +33,7 @@ public class GameEndpoint {
     @Inject
     private UserManager userManager;
     @Inject
-    private RemoteGameManager gameManager;
+    private RemoteChatManager chatManager;
 
     private List<Game> games;
     private final Gson gson;
@@ -65,7 +65,7 @@ public class GameEndpoint {
             }
             case "ReadMessage": {
                 ReadMessageWebSocketCommand readMessageCommand = (ReadMessageWebSocketCommand) command;
-                handleReadMessageCommand(readMessageCommand.getMessageId());
+                handleReadMessageCommand(readMessageCommand.getMessageId(), readMessageCommand.getChatId());
                 break;
             }
             default: throw new UnsupportedOperationException(command.getCommand());
@@ -95,27 +95,30 @@ public class GameEndpoint {
             GameState<?> gameState = game.getGameState();
             for(Chat chat : gameState.getOpenChats()){
                 ChatRemoteModel chatRemoteModel = new ChatRemoteModel(chat);
+                chatManager.registerChat(chatRemoteModel, game);
                 send(new CreateChatWebSocketCommand(chatRemoteModel));
             }
         }
     }
 
     private void handleSubmitCommand(int answerId, long chatId) throws IOException, EncodeException {
-        Game game = gameManager.getGameForRemoteChatId(chatId);
-        for(Chat chat : game.getGameState().getOpenChats()) {
-            if(chat.getId() == chatId) {
-                Chat.ChatMessage msg = chat.getMessages().get(chat.getMessages().size() - 1);
-                for(Answer answer : msg.getAnswers()) {
-                    if(answer.getId() == answerId) {
-                        PlayResult res = game.playAnswer(answer);
-                        send(new AddMessageWebSocketCommand(chatId, res.getMessage()));
-                    }
-                }
+        Game game = chatManager.getGameForRemoteChatId(chatId);
+        Chat chat = game.getGameState().getChat(chatId);
+
+        Chat.ChatMessage msg = chat.getMessages().get(chat.getMessages().size() - 1);
+        for(Answer answer : msg.getAnswers()) {
+            if (answer.getId() == answerId) {
+                PlayResult res = game.playAnswer(answer);
+                send(new AddMessageWebSocketCommand(chatId, res.getMessage()));
             }
         }
     }
 
-    private void handleReadMessageCommand(String messageId) {
+    private void handleReadMessageCommand(String messageId, long chatId) {
+        Game game = chatManager.getGameForRemoteChatId(chatId);
+        Chat chat = game.getGameState().getChat(chatId);
+        Message message = chat.getMessage(messageId);
+        message.setRead(true);
     }
 
 

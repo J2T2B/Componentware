@@ -3,6 +3,7 @@ package de.fhdortmund.j2t2.wise2019.gamelogic.logic;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 /**
  *
@@ -14,6 +15,10 @@ public class GameState<T> {
 
     public List<Chat> getOpenChats() {
         return openChats;
+    }
+
+    public Chat getChat(long chatId){
+        return openChats.stream().filter(c -> c.getId() == chatId).findFirst().orElseThrow(NoSuchElementException::new);
     }
 
     public void setOpenChats(List<Chat> openChats) {
