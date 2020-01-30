@@ -2,14 +2,15 @@ package de.fhdortmund.j2t2.wise2019.server.game.remote;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
+import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
-import de.fhdortmund.j2t2.wise2019.server.game.models.ChatRemoteModel;
+import de.fhdortmund.j2t2.wise2019.server.game.models.ChatImpl;
 import de.fhdortmund.j2t2.wise2019.server.game.remote.websocketcommands.*;
 import de.fhdortmund.j2t2.wise2019.server.user.UserManager;
 import de.fhdortmund.j2t2.wise2019.server.user.sessionmanager.SessionManager;
@@ -31,10 +32,11 @@ public class GameEndpoint {
     @Inject
     private UserManager userManager;
     @Inject
-    private RemoteGameManager gameManager;
+    private RemoteChatManager chatManager;
 
     private List<Game> games;
     private final Gson gson;
+    private String token;
 
     public GameEndpoint() {
         GsonBuilder gsonBuilder = new GsonBuilder();
@@ -62,7 +64,7 @@ public class GameEndpoint {
             }
             case "ReadMessage": {
                 ReadMessageWebSocketCommand readMessageCommand = (ReadMessageWebSocketCommand) command;
-                handleReadMessageCommand(readMessageCommand.getMessageId());
+                handleReadMessageCommand(readMessageCommand.getMessageId(), readMessageCommand.getChatId());
                 break;
             }
             default: throw new UnsupportedOperationException(command.getCommand());
@@ -81,8 +83,9 @@ public class GameEndpoint {
     }
 
     @OnClose
-    public void onClose(Session session){
-        throw new UnsupportedOperationException("OnClose"); //TODO
+    public void onClose(Session session) throws IOException {
+        session.close();
+        sessionManager.invalidate(token);
     }
 
 
@@ -90,22 +93,39 @@ public class GameEndpoint {
         for(Game game : games){
             GameState<?> gameState = game.getGameState();
             for(Chat chat : gameState.getOpenChats()){
-                ChatRemoteModel chatRemoteModel = new ChatRemoteModel(chat);
-                send(new CreateChatWebSocketCommand(chatRemoteModel));
+                ChatImpl chatImpl = new ChatImpl(chat);
+                chatManager.registerChat(chatImpl, game);
+                send(new CreateChatWebSocketCommand(chatImpl));
             }
         }
     }
 
-    private void handleSubmitCommand(int answerId, int chatId) {
-        Game game = gameManager.getGameForRemoteChatId(chatId);
+    private void handleSubmitCommand(int answerId, long chatId) throws IOException, EncodeException {
+        Game game = chatManager.getGameForRemoteChatId(chatId);
+        Chat chat = game.getGameState().getChat(chatId);
 
+        Chat.ChatMessage msg = chat.getMessages().get(chat.getMessages().size() - 1);
+        for(Answer answer : msg.getAnswers()) {
+            if (answer.getId() == answerId) {
+                PlayResult res = game.playAnswer(answer);
+                send(new AddMessageWebSocketCommand(chatId, res.getMessage()));
+            }
+        }
     }
 
-    private void handleReadMessageCommand(String messageId) {
+    private void handleReadMessageCommand(String messageId, long chatId) {
+        Game game = chatManager.getGameForRemoteChatId(chatId);
+        Chat chat = game.getGameState().getChat(chatId);
+        Chat.ChatMessage message = chat.getMessage(messageId);
+        message.setRead(true);
     }
 
 
     private void send(AbstractWebSocketCommand replyObject) throws IOException, EncodeException {
         session.getBasicRemote().sendObject(replyObject);
+    }
+
+    private void SendCreateChatCommand(){
+
     }
 }

@@ -18,6 +18,8 @@ public class MessageEntity implements Message {
     private Points points;
     private double probability;
     private List<Answer> answers = new ArrayList<>(0);
+    private boolean read = false;
+
     //TODO
     @Override
     public String getId() {

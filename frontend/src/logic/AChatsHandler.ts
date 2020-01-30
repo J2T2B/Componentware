@@ -101,7 +101,7 @@ export default abstract class AChatsHandler {
         this.sendMessage({
             command: "SubmitAnswer",
             answerId,
-            chatId: "drölf"
+            chatId: "drölf" //TODO mit echtem Wert füllen
         });
     }
 

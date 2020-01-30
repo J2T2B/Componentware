@@ -19,5 +19,5 @@ public interface Game {
 
     Chat createNewChat();
 
-    GameState getGameState();
+    GameState<?> getGameState();
 }

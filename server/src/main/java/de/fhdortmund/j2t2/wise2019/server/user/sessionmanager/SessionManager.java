@@ -10,4 +10,6 @@ public interface SessionManager {
     String createSession(User user);
 
     List<Game> getGamesForToken(String token);
+
+    void invalidate(String token);
 }

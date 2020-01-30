@@ -29,7 +29,8 @@ export type SocketMessage =
     } |
     {
         command: "ReadMessage", //TODO was der Sinn ?
-        messageId: string
+        messageId: string,
+        chatId: number
     } |
     ({
         command: "ChangePoints",

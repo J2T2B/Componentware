@@ -40,4 +40,8 @@ public class Session {
     public void setUsername(String username) {
         this.username = username;
     }
+
+    public void invalidate() {
+        //TODO speichere relevante Session Daten
+    }
 }
