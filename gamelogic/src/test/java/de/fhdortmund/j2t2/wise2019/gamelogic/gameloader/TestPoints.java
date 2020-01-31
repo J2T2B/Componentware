@@ -1,12 +1,12 @@
-package de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.models;
+package de.fhdortmund.j2t2.wise2019.gamelogic.gameloader;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
 
-public class PointsJson implements Points {
+public class TestPoints implements Points {
 
-    private Integer chefSatisfaction;
-    private Integer customerExperience;
-    private Integer budget;
+    int chefSatisfaction = 0;
+    int customerExperience = 0;
+    int budget = 0;
 
     @Override
     public int getChefSatisfaction() {
