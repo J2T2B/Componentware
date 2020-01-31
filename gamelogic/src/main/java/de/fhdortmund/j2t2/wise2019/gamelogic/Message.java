@@ -2,9 +2,8 @@ package de.fhdortmund.j2t2.wise2019.gamelogic;
 
 import java.util.Collection;
 
-public interface Message {
+public interface Message extends SimpleMessage{
     String getId();
-    String getText();
     String getImage();
 
     int getDelay();

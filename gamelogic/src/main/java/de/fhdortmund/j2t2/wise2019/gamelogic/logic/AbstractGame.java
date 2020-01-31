@@ -35,7 +35,32 @@ public abstract class AbstractGame<T> implements Game {
     }
 
     @Override
-    public PlayResult playAnswer(Answer answer) {
+    public PlayResult playAnswer(Chat chat, Answer answer) {
+        PlayResult res;
+
+        Chat.ChatMessage chatMessage = new Chat.ChatMessage(answer.getText(), Calendar.getInstance().getTimeInMillis(), true);
+        gameState.getChat(chat.getId()).addMessage(chatMessage);
+        res = playAnswer(answer);
+        gameState.getChat(chat.getId()).addMessage(res.getMessage());
+        updateGameState(res);
+        return res;
+    }
+
+    private void updateGameState(PlayResult res) {
+
+    }
+
+    @Override
+    public GameState<T> getGameState() {
+        return gameState;
+    }
+
+    @Override
+    public Chat createNewChat() {
+        throw new UnsupportedOperationException("TODO"); //TODO
+    }
+
+    private PlayResult playAnswer(Answer answer){
         PlayResult res;
 
 
@@ -62,22 +87,6 @@ public abstract class AbstractGame<T> implements Game {
             Chat.ChatMessage chatMessage = new Chat.ChatMessage(msg, Calendar.getInstance().getTimeInMillis(), false);
             res = new PlayResultMessage(chatMessage);
         }
-        //TODO gameState ändern.
         return res;
-    }
-
-    @Override
-    public PlayResult playAnswer(int answerId) {
-        throw new UnsupportedOperationException("TODO"); //TODO
-    }
-
-    @Override
-    public GameState<T> getGameState() {
-        return gameState;
-    }
-
-    @Override
-    public Chat createNewChat() {
-        throw new UnsupportedOperationException("TODO"); //TODO
     }
 }

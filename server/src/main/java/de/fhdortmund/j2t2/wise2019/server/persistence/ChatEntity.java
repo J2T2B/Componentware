@@ -52,7 +52,7 @@ public class ChatEntity implements Chat {
     }
 
     @Override
-    public void addMessage(Message message, boolean isAnswer) {
+    public void addMessage(ChatMessage message) {
         throw new UnsupportedOperationException("Not supported for chat entity");
     }
 }

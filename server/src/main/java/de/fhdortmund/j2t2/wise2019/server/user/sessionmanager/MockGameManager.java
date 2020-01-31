@@ -25,7 +25,7 @@ public class MockGameManager implements GameManagerLocal {
         private GameState<String> gameState = new GameState<>();
 
         @Override
-        public PlayResult playAnswer(Answer answer) {
+        public PlayResult playAnswer(Chat chat, Answer answer) {
             return new PlayResult() {
                 @Override
                 public Chat.ChatMessage getMessage() {
@@ -46,11 +46,6 @@ public class MockGameManager implements GameManagerLocal {
         }
 
         @Override
-        public PlayResult playAnswer(int answerId) {
-            return null;
-        }
-
-        @Override
         public Chat createNewChat() {
             Chat chat = new ChatImpl();
             gameState.addChat(chat);
@@ -65,7 +60,7 @@ public class MockGameManager implements GameManagerLocal {
 
     public MockGameManager(){
         game.createNewChat();
-        game.getGameState().getOpenChats().get(0).addMessage(message1, false);
+        game.getGameState().getOpenChats().get(0).addMessage(message1);
     }
 
     @Override
@@ -140,7 +135,7 @@ public class MockGameManager implements GameManagerLocal {
             Answer answer1 = new Answer() {
                 @Override
                 public Message getParent() {
-                    return message1;
+                    return realMessage1;
                 }
 
                 @Override
@@ -165,5 +160,5 @@ public class MockGameManager implements GameManagerLocal {
 
     private static final Chat.ChatMessage message1= new Chat.ChatMessage(realMessage1, 0, false);
 
-    private static Chat.ChatMessage[] messages = {message1};
+    private static Message[] messages = {realMessage1};
 }
