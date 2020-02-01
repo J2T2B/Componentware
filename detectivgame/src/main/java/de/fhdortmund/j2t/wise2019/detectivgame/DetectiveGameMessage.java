@@ -14,6 +14,8 @@ public class DetectiveGameMessage implements Message {
     private String text;
     private List<DetectiveGameAnswer> answers;
     private boolean root = false;
+    private String chatName;
+    private String chatImage;
     private List<String> unlockKeys;
 
     public String getId() {
@@ -32,6 +34,14 @@ public class DetectiveGameMessage implements Message {
 
     public boolean isRoot() {
         return root;
+    }
+
+    public String getChatName() {
+        return chatName;
+    }
+
+    public String getChatImage() {
+        return chatImage;
     }
 
     private Points zeroPoints = new Points() {

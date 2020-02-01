@@ -12,6 +12,7 @@ import javax.ejb.Startup;
 import javax.ejb.Stateful;
 import javax.inject.Named;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 
@@ -31,6 +32,6 @@ public class GameManagerBean implements GameManagerLocal {
 
     @Override
     public List<Game> getGamesForUser(String session) {
-        return null;
+        return Collections.unmodifiableList(games);
     }
 }

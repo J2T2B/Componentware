@@ -6,6 +6,7 @@ import de.fhdortmund.j2t2.wise2019.server.user.User;
 
 import javax.ejb.Singleton;
 import javax.enterprise.context.Dependent;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.HashMap;
 import java.util.List;
@@ -17,7 +18,8 @@ import java.util.UUID;
 @Singleton
 public class SessionManagerBean implements LocalSessionManager, RemoteSessionManager {
 
-    private GameManagerLocal gameManager = new MockGameManager();
+    @Inject
+    private GameManagerLocal gameManager;
     private Map<String, Session> sessions = new HashMap<>();
 
     @Override
