@@ -22,6 +22,9 @@ public class DetectivGame extends AbstractGame<Void> {
     }
 
     @Override
+    protected void updateGameState(PlayResult res) {
+        //TODO gibt es hier etwas zu tun ?
+    }
     protected void loadGame(InputStream gameDefinitionInputStream) throws GameLoadingException {
         gameModel.addMessages(new GameLoader(() -> gameDefinitionInputStream).loadGame(DetectiveGameMessage[].class, (answer, id) -> {
             ((DetectiveGameAnswer) answer).setId(id);

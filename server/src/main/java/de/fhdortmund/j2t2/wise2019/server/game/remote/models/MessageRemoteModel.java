@@ -1,5 +1,6 @@
 package de.fhdortmund.j2t2.wise2019.server.game.remote.models;
 
+import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 
@@ -21,9 +22,14 @@ public class MessageRemoteModel {
     public MessageRemoteModel(Chat.ChatMessage message) {
         this.id = message.getId();
         this.text = message.getText();
-        this.answers = message.getAnswers().stream().map(AnswerRemoteModel::new).collect(Collectors.toList());
         this.userHasRead = message.isRead();
         this.created = message.getTimestamp();
+        this.isAnswer = message.isAnswer();
+
+
+        if(message.getMsg() instanceof Message){
+            this.answers = ((Message) message.getMsg()).getAnswers().stream().map(AnswerRemoteModel::new).collect(Collectors.toList());
+        }
     }
 
     public String getId() {

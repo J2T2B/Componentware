@@ -1,6 +1,5 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic.logic;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 
 import java.util.ArrayList;
@@ -8,18 +7,18 @@ import java.util.List;
 
 public class PlayResultEnd implements PlayResult {
 
-    private Chat.ChatMessage message;
+    private Message message;
 
     public PlayResultEnd() {
 
     }
 
-    public PlayResultEnd(Chat.ChatMessage message) {
+    public PlayResultEnd(Message message) {
         this.message = message;
     }
 
     @Override
-    public Chat.ChatMessage getMessage() {
+    public Message getMessage() {
         return message;
     }
 

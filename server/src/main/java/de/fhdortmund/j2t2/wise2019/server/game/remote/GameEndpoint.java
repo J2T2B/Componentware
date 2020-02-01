@@ -2,6 +2,8 @@ package de.fhdortmund.j2t2.wise2019.server.game.remote;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
+import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
+import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
@@ -18,6 +20,7 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 @ServerEndpoint(value = "/game/{usertoken}", encoders = MessageCoder.class, decoders = MessageCoder.class)
@@ -50,7 +53,7 @@ public class GameEndpoint {
                     break;
                 case "SubmitAnswer": {
                     SubmitAnswerWebSocketCommand submitCommand = (SubmitAnswerWebSocketCommand) command;
-                    handleSubmitCommand(submitCommand.getAnswerId(), submitCommand.getChatId());
+                    handleSubmitCommand(submitCommand.getAnswerId(),submitCommand.getMessageId(), submitCommand.getChatId() );
                     break;
                 }
                 case "ReadMessage": {
@@ -91,15 +94,21 @@ public class GameEndpoint {
         }
     }
 
-    private void handleSubmitCommand(long answerId, long chatId) throws IOException, EncodeException {
+    private void handleSubmitCommand(long answerId, String messageId, long chatId) throws IOException, EncodeException {
         Game game = chatManager.getGameForRemoteChatId(chatId);
         Chat chat = game.getGameState().getChat(chatId);
+        Chat.ChatMessage chatMessage = chat.getMessage(messageId);
+        Message msg = (Message) chatMessage.getMsg();
 
-        Chat.ChatMessage msg = chat.getMessages().get(chat.getMessages().size() - 1);
         for(Answer answer : msg.getAnswers()) {
             if (answer.getId() == answerId) {
-                PlayResult res = game.playAnswer(answer);
-                send(new AddMessageWebSocketCommand(chatId, res.getMessage()));
+                PlayResult res = game.playAnswer(chat, answer);
+                List<Chat.ChatMessage> messages = chat.getMessages();
+                sendAddMessageCommand(chatId, messages.get(messages.size()-1));
+                Object gameData = game.getGameState().getData();
+                if(gameData instanceof Points){
+                    sendChangePointsCommand((Points) gameData);
+                }
             }
         }
     }
@@ -116,8 +125,16 @@ public class GameEndpoint {
         session.getBasicRemote().sendObject(replyObject);
     }
 
-    private void sendCreateChatCommand(Chat chat, Game game) throws IOException, EncodeException {
+    public void sendCreateChatCommand(Chat chat, Game game) throws IOException, EncodeException {
         chatManager.registerChat(chat, game);
         send(new CreateChatWebSocketCommand(chat));
+    }
+
+    public void sendAddMessageCommand(long chatId, Chat.ChatMessage chatMessage) throws IOException, EncodeException {
+        send(new AddMessageWebSocketCommand(chatId, chatMessage));
+    }
+
+    public void sendChangePointsCommand(Points points) throws IOException, EncodeException {
+        send(new ChangePointsWebSocketCommand(points));
     }
 }

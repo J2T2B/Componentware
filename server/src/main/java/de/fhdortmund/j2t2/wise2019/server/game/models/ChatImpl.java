@@ -40,8 +40,8 @@ public class ChatImpl implements Chat, Serializable {
     }
 
     @Override
-    public void addMessage(Message message, boolean isAnswer) {
-        messages.add(new ChatMessage(message, System.currentTimeMillis(), isAnswer));
+    public void addMessage(ChatMessage message) {
+        messages.add(message);
     }
 
     @Override
@@ -52,5 +52,25 @@ public class ChatImpl implements Chat, Serializable {
     @Override
     public ChatMessage getMessage(String messageId) {
         return messages.stream().filter(m -> m.getId().equals(messageId)).findAny().orElseThrow(NoSuchElementException::new);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+
+        ChatImpl chat = (ChatImpl) o;
+
+        if (id != chat.id) return false;
+        if (!chatPartner.equals(chat.chatPartner)) return false;
+        return messages.equals(chat.messages);
+    }
+
+    @Override
+    public int hashCode() {
+        int result = (int) (id ^ (id >>> 32));
+        result = 31 * result + chatPartner.hashCode();
+        result = 31 * result + messages.hashCode();
+        return result;
     }
 }

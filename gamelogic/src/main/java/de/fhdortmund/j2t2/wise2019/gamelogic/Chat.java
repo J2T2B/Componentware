@@ -1,6 +1,6 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic;
 
-import java.util.Collection;
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,26 +10,35 @@ public interface Chat {
 
     Chatpartner getChatpartner();
 
-    void addMessage(Message message, boolean isAnswer);
+    void addMessage(ChatMessage message);
     List<ChatMessage> getMessages();
 
     ChatMessage getMessage(String messageId);
 
-    public class ChatMessage implements Message, Comparable<ChatMessage> {
+    public class ChatMessage implements SimpleMessage, Comparable<ChatMessage> {
 
         private final String messageId = UUID.randomUUID().toString();
-        private final Message msg;
+        private final SimpleMessage msg;
         private final long timestamp;
         private boolean read = false;
         private boolean isAnswer;
 
-        public ChatMessage(Message msg, long timestamp, boolean isAnswer) {
+        public ChatMessage(SimpleMessage msg, long timestamp, boolean isAnswer) {
             this.msg = msg;
             this.timestamp = timestamp;
             this.isAnswer = isAnswer;
         }
 
-        @Override
+        public ChatMessage(Message msg) {
+            this.msg = msg;
+            this.timestamp = Calendar.getInstance().getTimeInMillis();
+            isAnswer = false;
+        }
+
+        public ChatMessage(String msg, long timestamp, boolean isAnswer){
+            this(() -> {return msg;}, timestamp, isAnswer);
+        }
+
         public String getId() {
             return messageId;
         }
@@ -39,29 +48,8 @@ public interface Chat {
             return msg.getText();
         }
 
-        @Override
-        public int getDelay() {
-            return msg.getDelay();
-        }
-
-        @Override
-        public boolean isRoot() {
-            return msg.isRoot();
-        }
-
-        @Override
-        public Points getPoints() {
-            return msg.getPoints();
-        }
-
-        @Override
-        public double getProbably() {
-            return msg.getProbably();
-        }
-
-        @Override
-        public List<? extends Answer> getAnswers() {
-            return msg.getAnswers();
+        public SimpleMessage getMsg() {
+            return msg;
         }
 
         @Override
@@ -79,6 +67,10 @@ public interface Chat {
 
         public long getTimestamp() {
             return timestamp;
+        }
+
+        public boolean isAnswer() {
+            return isAnswer;
         }
     }
 }

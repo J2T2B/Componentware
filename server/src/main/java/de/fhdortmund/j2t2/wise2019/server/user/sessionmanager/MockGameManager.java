@@ -5,15 +5,14 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResultData;
+import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.*;
 import de.fhdortmund.j2t2.wise2019.server.game.local.GameManagerLocal;
 import de.fhdortmund.j2t2.wise2019.server.game.models.ChatImpl;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
+import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -21,35 +20,7 @@ public class MockGameManager implements GameManagerLocal {
 
 
 
-    private Game game = new Game() {
-
-        private GameState<String> gameState = new GameState<>();
-
-        @Override
-        public PlayResult playAnswer(Answer answer) {
-            return new PlayResult() {
-                @Override
-                public Chat.ChatMessage getMessage() {
-                    return message1;
-                }
-
-                @Override
-                public boolean isEnd() {
-                    return false;
-                }
-
-                @Override
-                public List<PlayResultData> getPlayResultData() {
-                    return Collections.singletonList(new PlayResultData() {
-                    });
-                }
-            };
-        }
-
-        @Override
-        public PlayResult playAnswer(int answerId) {
-            return null;
-        }
+    private Game game = new AbstractGame<String>(this.getClass().getClassLoader()) {
 
         @Override
         public Chat createNewChat() {
@@ -59,14 +30,19 @@ public class MockGameManager implements GameManagerLocal {
         }
 
         @Override
-        public GameState<String> getGameState() {
-            return gameState;
+        protected void loadGame(InputStream gameDefinitionInputStream) throws GameLoadingException {
+
+        }
+
+        @Override
+        protected void updateGameState(PlayResult res) {
+
         }
     };
 
-    public MockGameManager(){
+    public MockGameManager() throws GameLoadingException {
         game.createNewChat();
-        game.getGameState().getOpenChats().get(0).addMessage(message1, false);
+        game.getGameState().getOpenChats().get(0).addMessage(message1);
     }
 
     @Override
@@ -136,7 +112,7 @@ public class MockGameManager implements GameManagerLocal {
             Answer answer1 = new Answer() {
                 @Override
                 public Message getParent() {
-                    return message1;
+                    return realMessage1;
                 }
 
                 @Override
@@ -166,5 +142,5 @@ public class MockGameManager implements GameManagerLocal {
 
     private static final Chat.ChatMessage message1= new Chat.ChatMessage(realMessage1, 0, false);
 
-    private static Chat.ChatMessage[] messages = {message1};
+    private static Message[] messages = {realMessage1};
 }

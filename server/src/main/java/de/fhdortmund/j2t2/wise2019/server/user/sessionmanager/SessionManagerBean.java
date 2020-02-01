@@ -1,5 +1,6 @@
 package de.fhdortmund.j2t2.wise2019.server.user.sessionmanager;
 
+import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.server.game.local.GameManagerLocal;
 import de.fhdortmund.j2t2.wise2019.server.user.User;
@@ -21,6 +22,9 @@ public class SessionManagerBean implements LocalSessionManager, RemoteSessionMan
     @Inject
     private GameManagerLocal gameManager;
     private Map<String, Session> sessions = new HashMap<>();
+
+    public SessionManagerBean() throws GameLoadingException {
+    }
 
     @Override
     public String createSession(User user) {

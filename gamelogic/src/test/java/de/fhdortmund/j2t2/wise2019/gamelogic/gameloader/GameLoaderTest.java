@@ -54,7 +54,7 @@ public class GameLoaderTest {
         Answer toTest = answers[0];
             assertEquals(0, toTest.getId());
             assertEquals("Stäckt der Stecker?", toTest.getText());
-            assertArrayEquals(new String[]{"test1", "test2"}, toTest.getTargets().stream().map(target -> target.getId()).toArray(String[]::new));
+            assertArrayEquals(new String[]{"test1", "test2"}, toTest.getTargets().stream().map(Message::getId).toArray(String[]::new));
 
         toTest = answers[1];
             assertEquals(1, toTest.getId());
@@ -62,9 +62,7 @@ public class GameLoaderTest {
             assertArrayEquals(new String[]{"test2"}, toTest
                     .getTargets()
                     .stream()
-                    .map(target ->
-                            target.getId()
-                    )
+                    .map(Message::getId)
                     .toArray(String[]::new));
 
 
