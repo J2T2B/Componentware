@@ -29,7 +29,7 @@ public interface Chat {
             this.isAnswer = isAnswer;
         }
 
-        public ChatMessage(Message msg){
+        public ChatMessage(Message msg) {
             this.msg = msg;
             this.timestamp = Calendar.getInstance().getTimeInMillis();
             isAnswer = false;

@@ -29,10 +29,13 @@ public abstract class AbstractGame<T> implements Game {
         URL gameDefinitionURL = gameClassLoader.getResource("gameDefinition.json");
         try {
             InputStream gameDefinition = gameDefinitionURL.openStream(); //Just catch the NPE
+            loadGame(gameDefinition);
         } catch (NullPointerException | IOException e) {
             throw new GameLoadingException("Unable to load "+ gameDefinitionURL.toString(), e);
         }
     }
+
+    protected abstract void loadGame(InputStream gameDefinitionInputStream) throws GameLoadingException;
 
     @Override
     public PlayResult playAnswer(Chat chat, Answer answer) {
@@ -61,7 +64,6 @@ public abstract class AbstractGame<T> implements Game {
     private PlayResult playAnswer(Answer answer){
         PlayResult res;
 
-
         if(answer.getTargets().size() < 1) {
             res = new PlayResultEnd();
         } else if(answer.getTargets().size() == 1) {
@@ -78,7 +80,7 @@ public abstract class AbstractGame<T> implements Game {
             for (Message target : answer.getTargets()) {
                 if (random >= sum && random < (sum += target.getProbably())) {
                     msg = target;
-                    //TODO break hier hin ?
+                    break;
                 }
             }
             res = new PlayResultMessage(msg);

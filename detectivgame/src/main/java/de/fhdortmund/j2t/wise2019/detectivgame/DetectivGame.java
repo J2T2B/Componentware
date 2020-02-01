@@ -10,7 +10,9 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.logic.*;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class DetectivGame extends AbstractGame<Void> {
 
@@ -21,5 +23,14 @@ public class DetectivGame extends AbstractGame<Void> {
     @Override
     protected void updateGameState(PlayResult res) {
         //TODO gibt es hier etwas zu tun ?
+    }
+    protected void loadGame(InputStream gameDefinitionInputStream) throws GameLoadingException {
+        gameModel.addMessages(new GameLoader(() -> gameDefinitionInputStream).loadGame(DetectiveGameMessage[].class, (answer, id) -> {
+            ((DetectiveGameAnswer) answer).setId(id);
+            return (parent, targets) -> {
+                ((DetectiveGameAnswer) answer).setParent(parent);
+                ((DetectiveGameAnswer) answer).setTarget(targets[0]);
+            };
+        }));
     }
 }

@@ -1,6 +1,5 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic.logic;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 
 import java.util.ArrayList;

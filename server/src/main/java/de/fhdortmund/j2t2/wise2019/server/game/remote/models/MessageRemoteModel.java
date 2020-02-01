@@ -14,7 +14,6 @@ public class MessageRemoteModel {
 
     private String id;
     private String text;
-    private String image;
     private boolean isAnswer = false;
     private List<AnswerRemoteModel> answers;
     private boolean userHasRead;
@@ -29,7 +28,6 @@ public class MessageRemoteModel {
 
 
         if(message.getMsg() instanceof Message){
-            this.image = ((Message) message.getMsg()).getImage();
             this.answers = ((Message) message.getMsg()).getAnswers().stream().map(AnswerRemoteModel::new).collect(Collectors.toList());
         }
     }
@@ -40,10 +38,6 @@ public class MessageRemoteModel {
 
     public String getText() {
         return text;
-    }
-
-    public String getImage() {
-        return image;
     }
 
     public boolean isAnswer() {

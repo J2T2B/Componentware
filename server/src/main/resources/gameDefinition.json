@@ -1,35 +1,179 @@
 [
   {
-    "delay": 500,
-    "id": "test1",
-    "text": "Open the pod bay doors, Hal.",
+    "id": "mainRoot",
+    "delay": 0,
+    "text": "INTRODUCTORY TEXT // TODO",
     "answers": [
       {
-        "text": "Stäckt der Stecker?",
-        "targets": [
-          "test2-1",
-          "test2-2"
-        ]
+        "text": "Stellt zuerst eine Frage an Sophie Farber.",
+        "targetId": "sophieMain"
       },
       {
-        "text": "I'm sorry Dave, I'm afraid I can't do that",
-        "targets": [
-          "test3"
-        ]
+        "text": "Stellt zuerst eine Frage an Steffan Wagner.",
+        "targetId": "steffanMain"
       }
     ],
-    "points": {
-      "chefSatisfaction": 0,
-      "customerExperience": 0,
-      "budget": 0
-    },
-    "isRoot": true,
-    "probably": 1.5,
-    "image": "foo/bar"
+    "root": true,
+    "unlockKeys": []
   },
   {
-    "id": "test2",
-    "text": "What is the answer to the Ultimate Question of Life, the Universe, and Everything",
-    "answers": []
+    "id": "sophieMain",
+    "delay": 0,
+    "text": "Wonach sollen wir Sophie fragen?",
+    "answers": [
+      {
+        "text": "Stellt doch lieber eine Frage an Steffan Wagner.",
+        "targetId": "steffanMain"
+      },
+      {
+        "text": "Fragt nach möglichen Feinden von Markus Farber.",
+        "targetId": "markusFeinde"
+      },
+      {
+        "text": "Hat sich Markus Farber in letzter Zeit ungewöhnlich Verhalten?",
+        "targetId": "markusVerhalten"
+      },
+      {
+        "text": "Sophie hat angegeben, dass sie zur Tatzeit im Theater sei aber die Mobilfunkdaten stimmen damit nicht überein. Sie scheint gelogen zu haben, konfrontiert sie mal damit.",
+        "targetId": "sophieBreakdown",
+        "locked": true,
+        "unlockKey": "telefon"
+      }
+    ],
+    "root": false,
+    "unlockKeys": []
+  },
+  {
+    "id": "markusFeinde",
+    "delay": 30,
+    "text": "Sie geht davon aus, dass Markus sicherlich einige Feinde hat, da sich dies als Firmenchef nicht vermeiden ließe. Allerdings weiß sie nichts genaueres und kann sich nicht vorstellen, dass jemand deshalb sein Haus anzünden würde.",
+    "answers": [
+      {
+        "targetId": "sophieMain"
+      }
+    ],
+    "root": false,
+    "unlockKeys": []
+  },
+  {
+    "id": "markusVerhalten",
+    "delay": 30,
+    "text": "Laut Sophie war Markus Farber in naher Vergangenheit sehr häufig mit seinem Unternehmen und des dazugehörigen Dokumenten beschäftigt. Deutlich häufiger als sonst.",
+    "answers": [
+      {
+        "targetId": "sophieMain"
+      }
+    ],
+    "root": false,
+    "unlockKeys": []
+  },
+  {
+    "id": "sophieBreakdown",
+    "delay": 120,
+    "text": "Nervernzusammenbruch // TODO",
+    "answers": [
+      {
+        "text": "Könnte es sein, dass sie Haus danach angezündet hat, um die Spuren zu verwischen?",
+        "targetId": "sophieHausbrand"
+      }
+    ],
+    "root": false,
+    "unlockKeys": []
+  },
+  {
+    "id": "sophieHausbrand",
+    "delay": 120,
+    "text": "Nope. Das war sie nicht.",
+    "answers": [
+      {
+        "targetId": "steffanMain"
+      },
+      {
+        "targetId": "ende",
+        "locked": true
+      }
+    ],
+    "root": false,
+    "unlockKeys": []
+  },
+  {
+    "id": "steffanMain",
+    "delay": 0,
+    "text": "Wonach sollen wir Steffan fragen?",
+    "answers": [
+      {
+        "text": "Stellt doch lieber eine Frage an Sophie Farber",
+        "targetId": "sophieMain"
+      },
+      {
+        "text": "Fragt nach der E-Mail",
+        "targetId": "steffanEmail"
+      }
+    ],
+    "root": false,
+    "unlockKeys": []
+  },
+  {
+    "id": "steffanEmail",
+    "delay": 0,
+    "text": "E-Maik fuckup // TODO",
+    "answers": [
+      {
+        "text": "Größere Investments?",
+        "targetId": "steffanInvest"
+      },
+      {
+        "text": "Stellt ihn doch einfach mal unter tatverdacht und macht ein bisschen Druck mit der Brandstiftung.",
+        "targetId": "steffanAnwalt"
+      }
+    ],
+    "root": false,
+    "unlockKeys": []
+  },
+  {
+    "id": "steffanInvest",
+    "delay": 0,
+    "text": "Investments. Langweilig. // TODO",
+    "answers": [
+      {
+        "text": "Stellt ihn doch einfach mal unter tatverdacht und macht ein bisschen Druck mit der Brandstiftung.",
+        "targetId": "steffanAnwalt"
+      }
+    ],
+    "root": false,
+    "unlockKeys": []
+  },
+  {
+    "id": "steffanEmail",
+    "delay": 0,
+    "text": "E-Maik fuckup // TODO",
+    "answers": [
+      {
+        "text": "Größere Investments?",
+        "targetId": "steffanInvest"
+      },
+      {
+        "text": "Stellt ihn doch einfach mal unter tatverdacht und macht ein bisschen Druck mit der Brandstiftung.",
+        "targetId": "steffanAnwalt"
+      }
+    ],
+    "root": false,
+    "unlockKeys": []
+  },
+  {
+    "id": "telefonDaten",
+    "delay": 300,
+    "text": "Telefon daten // TODO",
+    "answers": [],
+    "root": true,
+    "unlockKeys": ["telefon"]
+  },
+  {
+    "id": "ende",
+    "delay": 0,
+    "text": "Ende // TODO",
+    "answers": [],
+    "root": false,
+    "unlockKeys": []
   }
 ]

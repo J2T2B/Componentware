@@ -5,6 +5,8 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.AbstractGame;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
 
+import java.io.InputStream;
+
 public class SupportGame extends AbstractGame<Points> {
 
     public SupportGame() throws GameLoadingException {
@@ -15,5 +17,10 @@ public class SupportGame extends AbstractGame<Points> {
     protected void updateGameState(PlayResult res) {
         Points points = gameState.getData();
         res.getMessage();
+    }
+
+    @Override
+    protected void loadGame(InputStream gameDefinitionInputStream) throws GameLoadingException {
+
     }
 }
