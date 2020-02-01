@@ -1,5 +1,6 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic;
 
+import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
@@ -26,6 +27,12 @@ public interface Chat {
             this.msg = msg;
             this.timestamp = timestamp;
             this.isAnswer = isAnswer;
+        }
+
+        public ChatMessage(Message msg){
+            this.msg = msg;
+            this.timestamp = Calendar.getInstance().getTimeInMillis();
+            isAnswer = false;
         }
 
         public ChatMessage(String msg, long timestamp, boolean isAnswer){

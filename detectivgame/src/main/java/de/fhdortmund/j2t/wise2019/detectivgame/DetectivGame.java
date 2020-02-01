@@ -17,4 +17,9 @@ public class DetectivGame extends AbstractGame<Void> {
     public DetectivGame() throws GameLoadingException {
         super(DetectivGame.class.getClassLoader());
     }
+
+    @Override
+    protected void updateGameState(PlayResult res) {
+        //TODO gibt es hier etwas zu tun ?
+    }
 }

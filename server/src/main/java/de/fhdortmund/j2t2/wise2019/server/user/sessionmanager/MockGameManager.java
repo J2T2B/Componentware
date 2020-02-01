@@ -5,10 +5,8 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResultData;
+import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.*;
 import de.fhdortmund.j2t2.wise2019.server.game.local.GameManagerLocal;
 import de.fhdortmund.j2t2.wise2019.server.game.models.ChatImpl;
 import org.apache.commons.lang3.RandomStringUtils;
@@ -20,30 +18,7 @@ public class MockGameManager implements GameManagerLocal {
 
 
 
-    private Game game = new Game() {
-
-        private GameState<String> gameState = new GameState<>();
-
-        @Override
-        public PlayResult playAnswer(Chat chat, Answer answer) {
-            return new PlayResult() {
-                @Override
-                public Chat.ChatMessage getMessage() {
-                    return message1;
-                }
-
-                @Override
-                public boolean isEnd() {
-                    return false;
-                }
-
-                @Override
-                public List<PlayResultData> getPlayResultData() {
-                    return Collections.singletonList(new PlayResultData() {
-                    });
-                }
-            };
-        }
+    private Game game = new AbstractGame<String>(this.getClass().getClassLoader()) {
 
         @Override
         public Chat createNewChat() {
@@ -53,12 +28,12 @@ public class MockGameManager implements GameManagerLocal {
         }
 
         @Override
-        public GameState<String> getGameState() {
-            return gameState;
+        protected void updateGameState(PlayResult res) {
+
         }
     };
 
-    public MockGameManager(){
+    public MockGameManager() throws GameLoadingException {
         game.createNewChat();
         game.getGameState().getOpenChats().get(0).addMessage(message1);
     }

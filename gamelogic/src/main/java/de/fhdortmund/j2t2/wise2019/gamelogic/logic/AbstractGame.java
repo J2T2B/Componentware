@@ -17,7 +17,7 @@ import java.util.Calendar;
  */
 public abstract class AbstractGame<T> implements Game {
     protected GameModel gameModel;
-    protected GameState<T> gameState;
+    protected GameState<T> gameState = new GameState<>();
 
     /**
      *
@@ -41,14 +41,12 @@ public abstract class AbstractGame<T> implements Game {
         Chat.ChatMessage chatMessage = new Chat.ChatMessage(answer.getText(), Calendar.getInstance().getTimeInMillis(), true);
         gameState.getChat(chat.getId()).addMessage(chatMessage);
         res = playAnswer(answer);
-        gameState.getChat(chat.getId()).addMessage(res.getMessage());
+        gameState.getChat(chat.getId()).addMessage(new Chat.ChatMessage(res.getMessage()));
         updateGameState(res);
         return res;
     }
 
-    private void updateGameState(PlayResult res) {
-
-    }
+    protected abstract void updateGameState(PlayResult res);
 
     @Override
     public GameState<T> getGameState() {
@@ -68,11 +66,10 @@ public abstract class AbstractGame<T> implements Game {
             res = new PlayResultEnd();
         } else if(answer.getTargets().size() == 1) {
             Message target = answer.getTargets().get(0);
-            Chat.ChatMessage chatMessage = new Chat.ChatMessage(target, Calendar.getInstance().getTimeInMillis(), false);
             if(target.getAnswers().size() == 0) {
-                res = new PlayResultEnd(chatMessage);
+                res = new PlayResultEnd(target);
             } else {
-                res = new PlayResultMessage(chatMessage);
+                res = new PlayResultMessage(target);
             }
         } else {
             double random = Math.random();
@@ -84,8 +81,7 @@ public abstract class AbstractGame<T> implements Game {
                     //TODO break hier hin ?
                 }
             }
-            Chat.ChatMessage chatMessage = new Chat.ChatMessage(msg, Calendar.getInstance().getTimeInMillis(), false);
-            res = new PlayResultMessage(chatMessage);
+            res = new PlayResultMessage(msg);
         }
         return res;
     }

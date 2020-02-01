@@ -8,14 +8,14 @@ import java.util.List;
 
 public class PlayResultMessage implements PlayResult {
 
-    private Chat.ChatMessage message;
+    private Message message;
 
-    public PlayResultMessage(Chat.ChatMessage message) {
+    public PlayResultMessage(Message message) {
         this.message = message;
     }
 
     @Override
-    public Chat.ChatMessage getMessage() {
+    public Message getMessage() {
         return message;
     }
 

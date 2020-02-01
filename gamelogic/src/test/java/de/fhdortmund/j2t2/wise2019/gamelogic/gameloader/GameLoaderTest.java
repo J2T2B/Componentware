@@ -47,12 +47,12 @@ public class GameLoaderTest {
         Answer toTest = answers[0];
             assertEquals(0, toTest.getId());
             assertEquals("Stäckt der Stecker?", toTest.getText());
-            assertArrayEquals(new String[]{"test2-1", "test2-2"}, toTest.getTargets().stream().map(target -> target.getId()).toArray(String[]::new));
+            assertArrayEquals(new String[]{"test2-1", "test2-2"}, toTest.getTargets().stream().map(Message::getId).toArray(String[]::new));
 
         toTest = answers[1];
             assertEquals(1, toTest.getId());
             assertEquals("I'm sorry Dave, I'm afraid I can't do that", toTest.getText());
-            assertArrayEquals(new String[]{"test3"}, toTest.getTargets().stream().map(target -> target.getId()).toArray(String[]::new));
+            assertArrayEquals(new String[]{"test3"}, toTest.getTargets().stream().map(Message::getId).toArray(String[]::new));
 
 
         Message minimalConfiguration = messages.get("test2");
