@@ -41,7 +41,7 @@ public class DetectiveGameChat implements Chat {
 
     @Override
     public List<ChatMessage> getMessages() {
-        return null;
+        return messages;
     }
 
     @Override

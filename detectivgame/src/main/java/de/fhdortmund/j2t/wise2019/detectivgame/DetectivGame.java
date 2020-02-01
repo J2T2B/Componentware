@@ -46,6 +46,7 @@ public class DetectivGame extends AbstractGame<Void> {
                     }
                 });
                 chat.addMessage(new Chat.ChatMessage(() -> message.getText(), System.currentTimeMillis(), false));
+                gameState.addChat(chat);
             }
         }
     }

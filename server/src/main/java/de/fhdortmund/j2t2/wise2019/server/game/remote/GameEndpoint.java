@@ -69,7 +69,9 @@ public class GameEndpoint {
 
 
     @OnError
-    public void onError(Throwable throwable){
+    public void onError(Throwable throwable) {
+        System.err.println("Error in WebSocket!");
+        throwable.printStackTrace();
         try {
             send(new ErrorWebSocketCommand(new Exception(throwable)));
         } catch (IOException | EncodeException e) {
@@ -88,8 +90,8 @@ public class GameEndpoint {
         for(Game game : games){
             GameState<?> gameState = game.getGameState();
             for(Chat chat : gameState.getOpenChats()){
-                ChatImpl chatImpl = new ChatImpl(chat);
-                sendCreateChatCommand(chatImpl, game);
+                //ChatImpl chatImpl = new ChatImpl(chat);
+                sendCreateChatCommand(chat, game);
             }
         }
     }
