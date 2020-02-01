@@ -50,7 +50,7 @@ public class DetectivGame extends AbstractGame<Void> {
                         return image;
                     }
                 });
-                chat.addMessage(message, false);
+                chat.addMessage(new Chat.ChatMessage(() -> message.getText(), System.currentTimeMillis(), false));
             }
         }
     }

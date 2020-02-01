@@ -2,7 +2,6 @@ package de.fhdortmund.j2t.wise2019.detectivgame;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chatpartner;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,8 +35,8 @@ public class DetectiveGameChat implements Chat {
     }
 
     @Override
-    public void addMessage(Message message, boolean isAnswer) {
-        messages.add(new ChatMessage(message, System.currentTimeMillis(), isAnswer));
+    public void addMessage(ChatMessage message) {
+        messages.add(message);
     }
 
     @Override
