@@ -5,6 +5,7 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.Chatpartner;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 public class DetectiveGameChat implements Chat {
 
@@ -46,6 +47,6 @@ public class DetectiveGameChat implements Chat {
 
     @Override
     public ChatMessage getMessage(String messageId) {
-        return null;
+        return messages.stream().filter(m -> messageId.equals(m.getId())).findAny().orElseThrow(NoSuchElementException::new);
     }
 }

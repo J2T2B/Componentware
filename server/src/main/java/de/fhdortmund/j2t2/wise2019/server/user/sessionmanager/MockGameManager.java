@@ -1,23 +1,23 @@
 package de.fhdortmund.j2t2.wise2019.server.user.sessionmanager;
 
 import com.google.common.collect.Lists;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
+import de.fhdortmund.j2t2.wise2019.gamelogic.*;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.*;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.AbstractGame;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
 import de.fhdortmund.j2t2.wise2019.server.game.local.GameManagerLocal;
-import de.fhdortmund.j2t2.wise2019.server.game.models.ChatImpl;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.io.InputStream;
-import java.util.*;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class MockGameManager implements GameManagerLocal {
-
+public class MockGameManager implements GameManager {
 
 
     private Game game = new MockGame();
@@ -56,7 +56,7 @@ public class MockGameManager implements GameManagerLocal {
 
         @Override
         public int getDelay() {
-            return RandomUtils.nextInt();
+            return 5;
         }
 
         @Override
@@ -133,13 +133,6 @@ public class MockGameManager implements GameManagerLocal {
         }
 
         @Override
-        public Chat createNewChat() {
-            Chat chat = new ChatImpl();
-            gameState.addChat(chat);
-            return chat;
-        }
-
-        @Override
         protected void loadGame(InputStream gameDefinitionInputStream) throws GameLoadingException {
 
         }
@@ -147,6 +140,11 @@ public class MockGameManager implements GameManagerLocal {
         @Override
         protected void updateGameState(PlayResult res) {
 
+        }
+
+        @Override
+        public Chatpartner produceSomeChatpartner() {
+            return new ChatpartnerImpl();
         }
     }
 }

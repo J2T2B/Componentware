@@ -1,28 +1,29 @@
 package de.fhdortmund.j2t2.wise2019.server.game.remote;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
+import de.fhdortmund.j2t2.wise2019.gamelogic.*;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
-import de.fhdortmund.j2t2.wise2019.server.game.models.ChatImpl;
 import de.fhdortmund.j2t2.wise2019.server.game.remote.websocketcommands.*;
 import de.fhdortmund.j2t2.wise2019.server.user.UserManager;
 import de.fhdortmund.j2t2.wise2019.server.user.sessionmanager.SessionManager;
 
+import javax.annotation.Resource;
+import javax.ejb.Startup;
+import javax.ejb.TimerService;
 import javax.inject.Inject;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
-import java.util.Collections;
 import java.util.List;
+import java.util.concurrent.Executor;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
+@Startup
 @ServerEndpoint(value = "/game/{usertoken}", encoders = MessageCoder.class, decoders = MessageCoder.class)
 public class GameEndpoint {
 
@@ -69,14 +70,10 @@ public class GameEndpoint {
 
 
     @OnError
-    public void onError(Throwable throwable) {
+    public void onError(Throwable throwable){
         System.err.println("Error in WebSocket!");
         throwable.printStackTrace();
-        try {
-            send(new ErrorWebSocketCommand(new Exception(throwable)));
-        } catch (IOException | EncodeException e) {
-            e.printStackTrace();  //TODO error handling
-        }
+        send(new ErrorWebSocketCommand(new Exception(throwable)));
     }
 
     @OnClose
@@ -104,7 +101,6 @@ public class GameEndpoint {
 
         for(Answer answer : msg.getAnswers()) {
             if (answer.getId() == answerId) {
-                PlayResult res = game.playAnswer(chat, answer);
                 List<Chat.ChatMessage> messages = chat.getMessages();
                 sendAddMessageCommand(chatId, messages.get(messages.size()-1));
                 Object gameData = game.getGameState().getData();
@@ -123,20 +119,35 @@ public class GameEndpoint {
     }
 
 
-    private void send(AbstractWebSocketCommand replyObject) throws IOException, EncodeException {
-        session.getBasicRemote().sendObject(replyObject);
+    private void send(AbstractWebSocketCommand replyObject) {
+        try {
+            session.getBasicRemote().sendObject(replyObject);
+        } catch (IOException | EncodeException e) {
+            e.printStackTrace();
+        }
     }
 
-    public void sendCreateChatCommand(Chat chat, Game game) throws IOException, EncodeException {
+    public void sendCreateChatCommand(Chat chat, Game game) {
         chatManager.registerChat(chat, game);
         send(new CreateChatWebSocketCommand(chat));
     }
 
-    public void sendAddMessageCommand(long chatId, Chat.ChatMessage chatMessage) throws IOException, EncodeException {
-        send(new AddMessageWebSocketCommand(chatId, chatMessage));
+    public void sendAddMessageCommand(long chatId, Chat.ChatMessage chatMessage) {
+        AddMessageWebSocketCommand command = new AddMessageWebSocketCommand(chatId, chatMessage);
+        SimpleMessage message = chatMessage.getMsg();
+        int duration = 0;
+
+        if(message instanceof Message){
+            duration = ((Message) message).getDelay();
+        }
+        if(duration > 0){
+            new CommandDelayer<>(command, duration, () -> send(command));
+        } else {
+            send(command);
+        }
     }
 
-    public void sendChangePointsCommand(Points points) throws IOException, EncodeException {
+    public void sendChangePointsCommand(Points points) {
         send(new ChangePointsWebSocketCommand(points));
     }
 }

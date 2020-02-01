@@ -1,4 +1,4 @@
-package de.fhdortmund.j2t2.wise2019.server.game.models;
+package de.fhdortmund.j2t2.wise2019.gamelogic;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chatpartner;
 

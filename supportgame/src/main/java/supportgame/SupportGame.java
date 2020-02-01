@@ -1,5 +1,6 @@
 package supportgame;
 
+import de.fhdortmund.j2t2.wise2019.gamelogic.Chatpartner;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.AbstractGame;
@@ -17,6 +18,11 @@ public class SupportGame extends AbstractGame<Points> {
     protected void updateGameState(PlayResult res) {
         Points points = gameState.getData();
         res.getMessage();
+    }
+
+    @Override
+    public Chatpartner produceSomeChatpartner() {
+        return null;
     }
 
     @Override
