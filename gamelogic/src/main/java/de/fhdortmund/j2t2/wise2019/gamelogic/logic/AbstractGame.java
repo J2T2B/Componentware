@@ -9,29 +9,51 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameModel;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
-import java.util.Calendar;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Stream;
+import java.util.stream.StreamSupport;
 
 /**
  * Implementierende Klassen müssen eine gameDefinition.json auf dem Root der Jar haben.
  * @param <T> Typ der Daten, die GameState halten soll
  */
 public abstract class AbstractGame<T> implements Game {
-    protected GameModel gameModel;
+    protected GameModel gameModel  = new GameModel();
     protected GameState<T> gameState = new GameState<>();
 
     /**
      *
-     * @param gameClassLoader classloader mit einer gameDefinition.json auf dem Pfad
+     * @param gameClass Game Klasse welche zum laden der gameDefinition.json genutzt wird.
      * @throws GameLoadingException wenn die gameDefintion.json nicht geladen werden kann oder ein sonstiger Fehler bei dem Laden
      * der Spieldefinition auftritt
      */
-    protected AbstractGame(ClassLoader gameClassLoader) throws GameLoadingException {
-        URL gameDefinitionURL = gameClassLoader.getResource("gameDefinition.json");
-        try {
-            InputStream gameDefinition = gameDefinitionURL.openStream(); //Just catch the NPE
-            loadGame(gameDefinition);
+    protected AbstractGame(Class<? extends Game> gameClass, Function<Stream<URL>, URL> resourceSelector) throws GameLoadingException {
+        URL gameDefinitionURL = resourceSelector.apply(getGameDefinitions(gameClass));
+        try(InputStream in = gameDefinitionURL.openStream()) {
+            loadGame(in);
         } catch (NullPointerException | IOException e) {
-            throw new GameLoadingException("Unable to load "+ gameDefinitionURL.toString(), e);
+            throw new GameLoadingException("Unable to load gameDefinitition " + gameDefinitionURL.toString(), e);
+        }
+    }
+
+    private Stream<URL> getGameDefinitions(Class<? extends Game> gameClass) {
+        try {
+            Enumeration<URL> jsons = gameClass.getClassLoader().getResources("gameDefinition.json");
+            return StreamSupport.stream(
+                    Spliterators.spliteratorUnknownSize(
+                            new Iterator<URL>() {
+                                public URL next() {
+                                    return jsons.nextElement();
+                                }
+                                public boolean hasNext() {
+                                    return jsons.hasMoreElements();
+                                }
+                            },
+                            Spliterator.ORDERED),
+                    false);
+        } catch (IOException e) {
+            return Stream.<URL>builder().build();
         }
     }
 

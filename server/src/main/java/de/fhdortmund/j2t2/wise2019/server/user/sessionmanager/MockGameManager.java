@@ -20,25 +20,7 @@ public class MockGameManager implements GameManagerLocal {
 
 
 
-    private Game game = new AbstractGame<String>(this.getClass().getClassLoader()) {
-
-        @Override
-        public Chat createNewChat() {
-            Chat chat = new ChatImpl();
-            gameState.addChat(chat);
-            return chat;
-        }
-
-        @Override
-        protected void loadGame(InputStream gameDefinitionInputStream) throws GameLoadingException {
-
-        }
-
-        @Override
-        protected void updateGameState(PlayResult res) {
-
-        }
-    };
+    private Game game = new MockGame();
 
     public MockGameManager() throws GameLoadingException {
         game.createNewChat();
@@ -143,4 +125,28 @@ public class MockGameManager implements GameManagerLocal {
     private static final Chat.ChatMessage message1= new Chat.ChatMessage(realMessage1, 0, false);
 
     private static Message[] messages = {realMessage1};
+
+    private static class MockGame extends AbstractGame<String> {
+
+        protected MockGame() throws GameLoadingException {
+            super(MockGame.class, stream -> stream.findFirst().get());
+        }
+
+        @Override
+        public Chat createNewChat() {
+            Chat chat = new ChatImpl();
+            gameState.addChat(chat);
+            return chat;
+        }
+
+        @Override
+        protected void loadGame(InputStream gameDefinitionInputStream) throws GameLoadingException {
+
+        }
+
+        @Override
+        protected void updateGameState(PlayResult res) {
+
+        }
+    }
 }

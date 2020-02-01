@@ -10,7 +10,7 @@ import java.io.InputStream;
 public class SupportGame extends AbstractGame<Points> {
 
     public SupportGame() throws GameLoadingException {
-        super(SupportGame.class.getClassLoader());
+        super(SupportGame.class, stream -> stream.filter(url -> url.toString().contains("supportgame")).findFirst().get());
     }
 
     @Override
