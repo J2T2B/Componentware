@@ -40,11 +40,6 @@ public interface Chat {
         }
 
         @Override
-        public String getImage() {
-            return msg.getImage();
-        }
-
-        @Override
         public int getDelay() {
             return msg.getDelay();
         }
@@ -65,7 +60,7 @@ public interface Chat {
         }
 
         @Override
-        public Collection<? extends Answer> getAnswers() {
+        public List<? extends Answer> getAnswers() {
             return msg.getAnswers();
         }
 

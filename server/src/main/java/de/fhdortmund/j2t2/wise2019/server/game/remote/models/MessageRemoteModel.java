@@ -13,7 +13,6 @@ public class MessageRemoteModel {
 
     private String id;
     private String text;
-    private String image;
     private boolean isAnswer = false;
     private List<AnswerRemoteModel> answers;
     private boolean userHasRead;
@@ -22,7 +21,6 @@ public class MessageRemoteModel {
     public MessageRemoteModel(Chat.ChatMessage message) {
         this.id = message.getId();
         this.text = message.getText();
-        this.image = message.getImage();
         this.answers = message.getAnswers().stream().map(AnswerRemoteModel::new).collect(Collectors.toList());
         this.userHasRead = message.isRead();
         this.created = message.getTimestamp();
@@ -34,10 +32,6 @@ public class MessageRemoteModel {
 
     public String getText() {
         return text;
-    }
-
-    public String getImage() {
-        return image;
     }
 
     public boolean isAnswer() {

@@ -15,6 +15,7 @@ import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class MockGameManager implements GameManagerLocal {
 
@@ -96,11 +97,6 @@ public class MockGameManager implements GameManagerLocal {
         }
 
         @Override
-        public String getImage() {
-            return "https://s3.amazonaws.com/baconmockup/img/bm-home-280.jpg";
-        }
-
-        @Override
         public int getDelay() {
             return RandomUtils.nextInt();
         }
@@ -136,7 +132,7 @@ public class MockGameManager implements GameManagerLocal {
         }
 
         @Override
-        public Collection<? extends Answer> getAnswers() {
+        public List<? extends Answer> getAnswers() {
             Answer answer1 = new Answer() {
                 @Override
                 public Message getParent() {
@@ -154,8 +150,13 @@ public class MockGameManager implements GameManagerLocal {
                 }
 
                 @Override
-                public List<Message> getTargets() {
+                public List<? extends Message> getTargets() {
                     return Arrays.asList(messages);
+                }
+
+                @Override
+                public List<String> getTargetIds() {
+                    return Arrays.stream(messages).map(msg -> msg.getId()).collect(Collectors.toList());
                 }
             };
 

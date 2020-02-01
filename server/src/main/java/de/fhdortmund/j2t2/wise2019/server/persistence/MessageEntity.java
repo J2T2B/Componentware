@@ -12,7 +12,6 @@ public class MessageEntity implements Message {
 
     private String id;
     private String text;
-    private String image;
     private int delay;
     private boolean root;
     private Points points;
@@ -29,11 +28,6 @@ public class MessageEntity implements Message {
     @Override
     public String getText() {
         return text;
-    }
-
-    @Override
-    public String getImage() {
-        return image;
     }
 
     @Override
@@ -57,7 +51,7 @@ public class MessageEntity implements Message {
     }
 
     @Override
-    public Collection<Answer> getAnswers() {
+    public List<Answer> getAnswers() {
         return answers;
     }
 }
