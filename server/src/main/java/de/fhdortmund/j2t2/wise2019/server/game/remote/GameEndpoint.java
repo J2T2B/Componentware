@@ -43,6 +43,7 @@ public class GameEndpoint {
         System.out.println("Open session with id: " +session.getId());
         this.session = session;
         this.games = sessionManager.getGamesForToken(token);
+        this.token = token;
         send(new WebSocketCreatedCommand());
     }
 
