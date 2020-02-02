@@ -12,6 +12,7 @@ export interface SmartInputProps<T> {
     onValue: OnValueCallback<T>
     type: InputType
     error?: string
+    onKeyPress?: (event: React.KeyboardEvent<HTMLInputElement>) => void,
     autoComplete: string
 }
 
@@ -34,6 +35,7 @@ export function SmartInputComponent<T>(props: SmartInputProps<T>) {
             value={props.value}
             name={props.name as string}
             onChange={getValueHandler(props.onValue)}
+            onKeyPress={props.onKeyPress}
             invalid={props.error !== undefined}
             autoComplete={props.autoComplete}
         />

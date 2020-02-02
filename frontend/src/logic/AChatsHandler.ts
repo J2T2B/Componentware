@@ -6,6 +6,8 @@ import { VoidLike } from "./VoidLike";
 import { IMessage, Message } from "../models/Message";
 import { Answer } from "../models/Answer";
 import IConnectionListener from "./IConnectionListener";
+import { IErrorHandler, isIErrorHandler } from "./IErrorHandler";
+import { NotificationHandler } from "./NotificationHandler";
 
 /**
  * Verwaltet alle Chats und Nachrichten und kommuniziert über die angehangenden Listener
@@ -16,12 +18,14 @@ export default abstract class AChatsHandler {
     private chatListener: IChatListener[];
     private chats: Chat[];
     private _currentChat?: Chat;
+    private errorHandlers: IErrorHandler[];
     protected connectionListener: IConnectionListener;
 
     constructor(connectionListener: IConnectionListener) {
         this.chatListener = [];
         this.chatsListener = [];
         this.chats = [];
+        this.errorHandlers = [];
         this.connectionListener = connectionListener;
     }
 
@@ -63,12 +67,15 @@ export default abstract class AChatsHandler {
      * Hängt den Listener an den Handler. Sollte in componentDidMount() aufgerufen werden
      * @param listener Listener
      */
-    public attach(listener: IChatListener | IChatsListener): void {
+    public attach(listener: IChatListener | IChatsListener | IErrorHandler): void {
         if (isIChatListener(listener)) {
             this.chatListener.push(listener);
         }
         else if (isIChatsListener(listener)) {
             this.chatsListener.push(listener);
+        }
+        else if (isIErrorHandler(listener)) {
+            this.errorHandlers.push(listener);
         }
     }
 
@@ -76,12 +83,15 @@ export default abstract class AChatsHandler {
      * Entfernt den Listener vom Handler. Sollte in componentWillUnmount() aufgerufen werden
      * @param listener Listener
      */
-    public detatch(listener: IChatsListener | IChatListener): void {
+    public detatch(listener: IChatsListener | IChatListener | IErrorHandler): void {
         if (isIChatListener(listener)) {
             this.chatListener = this.detatchListener(listener, this.chatListener)
         }
         else if (isIChatsListener(listener)) {
             this.chatsListener = this.detatchListener(listener, this.chatsListener);
+        }
+        else if (isIErrorHandler(listener)) {
+            this.errorHandlers = this.detatchListener(listener, this.errorHandlers);
         }
     }
 
@@ -89,9 +99,9 @@ export default abstract class AChatsHandler {
      * Sendet die Antwort an den Server
      * @param answer Antwort
      */
-    public submitAnswer(answer: Answer | number) : void {
-        let answerId : number;
-        if (typeof(answer) === "number") {
+    public submitAnswer(answer: Answer | number, chatId: string): void {
+        let answerId: number;
+        if (typeof (answer) === "number") {
             answerId = answer;
         }
         else {
@@ -100,7 +110,8 @@ export default abstract class AChatsHandler {
 
         this.sendMessage({
             command: "SubmitAnswer",
-            answerId
+            answerId,
+            chatId
         });
     }
 
@@ -137,27 +148,31 @@ export default abstract class AChatsHandler {
      * @param chatId Betroffene ChatId
      * @param message Neue Nachricht
      */
-    private onMessage(chatId: number, message: IMessage) {
+    private onMessage(chatId: string, message: IMessage) {
         let useMessage = new Message(message);
+        let targetChat: Chat;
 
-        if (this._currentChat !== undefined && chatId === this._currentChat.chatId) {
-            this._currentChat.addMessage(useMessage);
-            this.chatListener.forEach(c => c.onMessage(this._currentChat!, useMessage));
+        const chat = this.chats.find(c => c.chatId === chatId);
+
+        if (chat === undefined) {
+            throw new Error(`Chat ${chatId} not found. Fatal Error`);
         }
         else {
-            let targetChat = this.chats.find(c => c.chatId === chatId);
-            if (targetChat !== undefined) {
-                targetChat.addMessage(useMessage);
-            }
-            else {
-                throw new Error(`Chat ${chatId} not found. Fatal Error`);
-            }
+            targetChat = chat;
         }
 
-        // Notification
-        let audio = new Audio("eventually.mp3");
-        audio.play().then(()=>audio.remove());
+        targetChat.addMessage(useMessage);
 
+        // Nur Benachrichtigen, wenn Nachricht neu ist
+        if (!message.userHasRead) {
+            NotificationHandler.Instance.sendNotification(targetChat.partner.name, message.text);
+            let audio = new Audio("eventually.mp3");
+            audio.play().then(() => audio.remove());
+        }
+
+        if (this._currentChat !== undefined && chatId === this._currentChat.chatId) {
+            this.chatListener.forEach(c => c.onMessage(this._currentChat!, useMessage));
+        }
         this.chatsListener.forEach(c => c.onChatChange(this.chats));
     }
 
@@ -167,7 +182,7 @@ export default abstract class AChatsHandler {
      * @param messageId Betroffene Nachricht
      * @param answer Gegebene Antwort
      */
-    private onAnswer(chatId: number, messageId: string, answer: Answer) {
+    private onAnswer(chatId: string, messageId: string, answer: Answer) {
         let targetChat = this.chats.find(c => c.chatId === chatId);
         if (targetChat === undefined) {
             throw new Error(`Chat ${chatId} not found. Fatal Error`);
@@ -203,6 +218,9 @@ export default abstract class AChatsHandler {
                 break;
             case "ChangePoints":
                 this.chatsListener.forEach(c => c.onPointsChange(message));
+                break;
+            case "HandleError":
+                this.errorHandlers.forEach(e => e.onError(message.message));
                 break;
             default:
                 throw new Error(`The Command ${message.command} is unknown`);

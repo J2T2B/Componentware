@@ -1,0 +1,35 @@
+[
+  {
+    "delay": 500,
+    "id": "test1",
+    "text": "Open the pod bay doors, Hal.",
+    "answers": [
+      {
+        "text": "Stäckt der Stecker?",
+        "targets": [
+          "test2-1",
+          "test2-2"
+        ]
+      },
+      {
+        "text": "I'm sorry Dave, I'm afraid I can't do that",
+        "targets": [
+          "test3"
+        ]
+      }
+    ],
+    "points": {
+      "chefSatisfaction": 0,
+      "customerExperience": 0,
+      "budget": 0
+    },
+    "isRoot": true,
+    "probably": 1.5,
+    "image": "foo/bar"
+  },
+  {
+    "id": "test2",
+    "text": "What is the answer to the Ultimate Question of Life, the Universe, and Everything",
+    "answers": []
+  }
+]

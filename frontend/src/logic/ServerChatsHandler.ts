@@ -15,7 +15,7 @@ export class ServerChatsHandler extends AChatsHandler {
     }
 
     connect(): Promise<boolean> {
-        const url = new URL("/game/"+this.token, this.baseUrl);
+        const url = new URL(`${this.baseUrl}/game/${this.token}`);
         url.protocol = "ws:";
 
         const error = this.onCloseOrError.bind(this);

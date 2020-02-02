@@ -7,7 +7,7 @@ import de.fhdortmund.j2t2.wise2019.server.user.User;
 
 import javax.persistence.*;
 import java.util.ArrayList;
-import java.util.Collection;
+import java.util.List;
 
 @Entity
 @Table(name = "chat")
@@ -21,7 +21,7 @@ public class ChatEntity implements Chat {
     private ChatpartnerEntity chatpartner;
 
     @ManyToMany(mappedBy = "chat")
-    private Collection<MessageEntity> messages = new ArrayList<>(0);
+    private List<Message> messages = new ArrayList<>(0);
 
     @ManyToOne
     private User owner;
@@ -35,21 +35,16 @@ public class ChatEntity implements Chat {
         this.chatpartner = chatpartner;
     }
 
-    public Collection<MessageEntity> getMessages() {
+    public List<Message> getMessages() {
         return messages;
     }
 
-    public void setMessages(Collection<MessageEntity> messages) {
+    public void setMessages(List<Message> messages) {
         this.messages = messages;
     }
 
     @Override
     public void addMessage(Message message) {
-        throw new UnsupportedOperationException("Not supported for chat entity");
-    }
-
-    @Override
-    public Message getLastMessage() {
         throw new UnsupportedOperationException("Not supported for chat entity");
     }
 }

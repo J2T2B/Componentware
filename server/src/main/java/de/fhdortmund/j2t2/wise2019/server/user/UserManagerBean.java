@@ -5,19 +5,20 @@ import de.fhdortmund.j2t2.wise2019.server.user.login.LoginCredentials;
 import de.fhdortmund.j2t2.wise2019.server.user.register.NewUserData;
 import de.fhdortmund.j2t2.wise2019.server.user.register.UserAlreadyExistsException;
 
+import javax.ejb.Singleton;
 import javax.ejb.Stateful;
+import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Default;
+import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@Default
-@Stateful
+@Singleton
+@Named
+@Dependent
 public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
-
-    private static UserManagerBean that;
-
     Map<String, User> users = new HashMap<>();
 
     public List<Chat> getChatsForUser(String token) {
@@ -25,15 +26,11 @@ public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
     }
 
     @Override
-    public void createUser(LoginCredentials user) throws UserAlreadyExistsException {
+    public void createUser(NewUserData user) throws UserAlreadyExistsException {
         if(users.containsKey(user.getUsername())){
             throw new UserAlreadyExistsException("User with name " + user.getUsername() + "already exists");
         }
         users.put(user.getUsername(), new DefaultUserImpl(user.getUsername(), hashUserData(user)));
-    }
-
-    private String hashUserData(LoginCredentials user) {
-        return new String(user.getPassword());
     }
 
     @Override
@@ -48,11 +45,15 @@ public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
         return hashUserData(credentials).equals(target.getHash());
     }
 
-    public static UserManagerBean getInstance(){
+    private String hashUserData(Credentials user) {
+        return new String(user.getPassword());
+    }
+
+    /*public static UserManagerBean getInstance(){
         if(that == null){
             that = new UserManagerBean();
         }
 
         return that;
-    }
+    }*/
 }

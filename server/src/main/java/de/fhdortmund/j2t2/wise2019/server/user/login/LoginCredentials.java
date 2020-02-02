@@ -1,11 +1,13 @@
 package de.fhdortmund.j2t2.wise2019.server.user.login;
 
+import de.fhdortmund.j2t2.wise2019.server.user.Credentials;
+
 import javax.xml.bind.annotation.XmlRootElement;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
 
 @XmlRootElement
-public class LoginCredentials {
+public class LoginCredentials implements Credentials {
     private char[] password;
     private String username;
 

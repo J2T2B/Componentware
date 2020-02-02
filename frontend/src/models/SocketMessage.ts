@@ -10,24 +10,25 @@ export type SocketMessage =
     } |
     {
         command: "AddMessage"
-        chatId: number
+        chatId: string
         message: IMessage
     } |
     {
         command: "AddAnswer",
-        chatId: number,
+        chatId: string,
         messageId: string,
         answer: Answer
     } |
     {
         command: "SubmitAnswer",
-        answerId: number
+        answerId: number,
+        chatId: string
     } |
     {
         command: "Reinit"
     } |
     {
-        command: "ReadMessage",
+        command: "ReadMessage", //TODO was der Sinn ?
         messageId: string
     } |
     ({
@@ -35,4 +36,8 @@ export type SocketMessage =
     } & Points) | // Enthält alle Felder aus Points 
     {
         command: "GameOver"
+    } |
+    {
+        command: "HandleError",
+        message: string
     }

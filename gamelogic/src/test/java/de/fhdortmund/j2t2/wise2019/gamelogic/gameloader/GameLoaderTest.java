@@ -6,6 +6,8 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.models.MessageJson;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.models.ResolvedAnswer;
 import org.junit.Test;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Collection;
 import java.util.List;
 import java.util.Map;
@@ -15,7 +17,10 @@ import static org.junit.Assert.*;
 
 public class GameLoaderTest {
 
-    String testJsonReadable = Objects.requireNonNull(GameLoaderTest.class.getClassLoader().getResource("game.json")).getFile();
+    InputStream testJsonReadable = Objects.requireNonNull(GameLoaderTest.class.getClassLoader().getResource("game.json")).openStream();
+
+    public GameLoaderTest() throws IOException {
+    }
 
     @Test
     public void loadGame() throws GameLoadingException {

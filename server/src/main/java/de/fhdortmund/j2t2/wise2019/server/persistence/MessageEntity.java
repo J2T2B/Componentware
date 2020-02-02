@@ -4,46 +4,58 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
 
+import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 public class MessageEntity implements Message {
+
+    private String id;
+    private String text;
+    private String image;
+    private int delay;
+    private boolean root;
+    private Points points;
+    private double probability;
+    private List<Answer> answers = new ArrayList<>(0);
+    //TODO
     @Override
     public String getId() {
-        return null;
+        return id;
     }
 
     @Override
     public String getText() {
-        throw new UnsupportedOperationException();
+        return text;
     }
 
     @Override
     public String getImage() {
-        return null;
+        return image;
     }
 
     @Override
     public int getDelay() {
-        return 0;
+        return delay;
     }
 
     @Override
     public boolean isRoot() {
-        return false;
+        return root;
     }
 
     @Override
     public Points getPoints() {
-        return null;
+        return points;
     }
 
     @Override
     public double getProbably() {
-        return 0;
+        return probability;
     }
 
     @Override
     public Collection<Answer> getAnswers() {
-        return null;
+        return answers;
     }
 }

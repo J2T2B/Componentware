@@ -17,11 +17,12 @@ import java.util.Arrays;
 @Path("register")
 public class Register {
 
-    private UserManager userManager = UserManagerBean.getInstance();
+    @Inject
+    private UserManager userManager;
 
     @POST
     @Consumes("application/json")
-    public void registerUser(LoginCredentials user) {
+    public void registerUser(NewUserData user) {
         try {
             userManager.createUser(user);
         } catch (UserAlreadyExistsException e) {
