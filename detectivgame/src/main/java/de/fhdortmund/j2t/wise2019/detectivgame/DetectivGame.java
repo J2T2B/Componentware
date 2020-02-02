@@ -5,7 +5,6 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.Chatpartner;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoader;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
-import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameModel;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.*;
 
 import java.io.InputStream;

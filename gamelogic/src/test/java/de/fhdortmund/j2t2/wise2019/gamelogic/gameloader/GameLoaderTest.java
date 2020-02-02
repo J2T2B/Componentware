@@ -13,7 +13,6 @@ import java.util.Objects;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
 import static org.junit.Assert.*;
 
