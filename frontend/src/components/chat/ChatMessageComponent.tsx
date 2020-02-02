@@ -126,7 +126,7 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                             </div>
                         })
                     }
-                    <div style={{float: "left", clear: "both"}}
+                    <div style={{float: "left", clear: "both", margin: "10px"}}
                          ref={(el) => {
                              this.messagesEnd = el;
                          }}>
