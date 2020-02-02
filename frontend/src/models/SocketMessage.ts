@@ -22,14 +22,16 @@ export type SocketMessage =
     {
         command: "SubmitAnswer",
         answerId: number,
-        chatId: string
+        chatId: number,
+        messageId: string
     } |
     {
         command: "Reinit"
     } |
     {
         command: "ReadMessage", //TODO was der Sinn ?
-        messageId: string
+        messageId: string,
+        chatId: number
     } |
     ({
         command: "ChangePoints",

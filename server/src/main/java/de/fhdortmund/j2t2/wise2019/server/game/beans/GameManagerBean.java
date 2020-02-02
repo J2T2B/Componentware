@@ -12,6 +12,7 @@ import javax.ejb.Startup;
 import javax.ejb.Stateful;
 import javax.inject.Named;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.ServiceLoader;
 
@@ -30,7 +31,7 @@ public class GameManagerBean implements GameManagerLocal {
     }
 
     @Override
-    public List<Chat> getChatsForUser(String username) {
-        return new ArrayList<>();
+    public List<Game> getGamesForUser(String session) {
+        return Collections.unmodifiableList(games);
     }
 }

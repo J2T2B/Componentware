@@ -21,10 +21,13 @@ public class ChatEntity implements Chat {
     private ChatpartnerEntity chatpartner;
 
     @ManyToMany(mappedBy = "chat")
-    private List<Message> messages = new ArrayList<>(0);
+    private List<ChatMessage> messages = new ArrayList<ChatMessage>(0);
 
     @ManyToOne
     private User owner;
+
+    @Override
+    public long getId() {  return id;  }
 
     @Override
     public Chatpartner getChatpartner() {
@@ -35,16 +38,21 @@ public class ChatEntity implements Chat {
         this.chatpartner = chatpartner;
     }
 
-    public List<Message> getMessages() {
+    public List<ChatMessage> getMessages() {
         return messages;
     }
 
-    public void setMessages(List<Message> messages) {
+    @Override
+    public ChatMessage getMessage(String messageId) {
+        return null; //TODO
+    }
+
+    public void setMessages(List<ChatMessage> messages) {
         this.messages = messages;
     }
 
     @Override
-    public void addMessage(Message message) {
+    public void addMessage(ChatMessage message) {
         throw new UnsupportedOperationException("Not supported for chat entity");
     }
 }

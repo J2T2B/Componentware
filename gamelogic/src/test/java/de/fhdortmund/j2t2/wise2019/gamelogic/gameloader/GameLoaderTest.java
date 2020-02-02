@@ -1,33 +1,40 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic.gameloader;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.*;
-import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.models.AnswerJson;
-import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.models.MessageJson;
-import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.models.ResolvedAnswer;
+import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
+import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
+import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
 import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.Collection;
-import java.util.List;
+import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
+import java.util.concurrent.Callable;
+import java.util.function.BiConsumer;
+import java.util.function.BiFunction;
+import java.util.function.Consumer;
 
 import static org.junit.Assert.*;
 
 public class GameLoaderTest {
 
-    InputStream testJsonReadable = Objects.requireNonNull(GameLoaderTest.class.getClassLoader().getResource("game.json")).openStream();
+    Callable<InputStream> testJsonReadableProvider = () -> Objects.requireNonNull(GameLoaderTest.class.getClassLoader().getResource("game.json")).openStream();
+    BiFunction<TestAnswer, Integer, BiConsumer<TestMessage, TestMessage[]>> resolveFunction = (answer, id) -> {
+        ((TestAnswer) answer).id = id;
+        return (parent, targets) -> {
+            ((TestAnswer)answer).parent = parent;
+            ((TestAnswer)answer).targets = Arrays.asList(targets);
+        };
+    };
 
     public GameLoaderTest() throws IOException {
     }
 
     @Test
     public void loadGame() throws GameLoadingException {
-        GameLoader gameLoader = new GameLoader(testJsonReadable);
-        Map<String, ? extends Message> messages = gameLoader.loadGame();
-
-        assertSame(messages, gameLoader.loadGame());
+        GameLoader gameLoader = new GameLoader(testJsonReadableProvider);
+        Map<String, TestMessage> messages = gameLoader.loadGame(TestMessage[].class, resolveFunction);
 
         Message maximalConfiguration = messages.get("test1");
             assertNotNull(maximalConfiguration);
@@ -47,17 +54,21 @@ public class GameLoaderTest {
         Answer toTest = answers[0];
             assertEquals(0, toTest.getId());
             assertEquals("Stäckt der Stecker?", toTest.getText());
-            assertArrayEquals(new String[]{"test2-1", "test2-2"}, toTest.getTargets().stream().map(target -> target.getId()).toArray(String[]::new));
+            assertArrayEquals(new String[]{"test1", "test2"}, toTest.getTargets().stream().map(Message::getId).toArray(String[]::new));
 
         toTest = answers[1];
             assertEquals(1, toTest.getId());
             assertEquals("I'm sorry Dave, I'm afraid I can't do that", toTest.getText());
-            assertArrayEquals(new String[]{"test3"}, toTest.getTargets().stream().map(target -> target.getId()).toArray(String[]::new));
+            assertArrayEquals(new String[]{"test2"}, toTest
+                    .getTargets()
+                    .stream()
+                    .map(Message::getId)
+                    .toArray(String[]::new));
 
 
         Message minimalConfiguration = messages.get("test2");
             assertEquals("test2", minimalConfiguration.getId());
             assertEquals("What is the answer to the Ultimate Question of Life, the Universe, and Everything", minimalConfiguration.getText());
-            assertArrayEquals(new ResolvedAnswer[0], minimalConfiguration.getAnswers().toArray(new Answer[0]));
+            assertArrayEquals(new TestAnswer[0], minimalConfiguration.getAnswers().toArray(new Answer[0]));
     }
 }

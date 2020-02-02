@@ -13,7 +13,9 @@ public interface Game {
      * @param answer the answer to play
      * @return the result of the answer
      */
-    PlayResult playAnswer(Answer answer);
+    PlayResult playAnswer(Chat chat, Answer answer);
 
-    GameState getGameState();
+    Chat createNewChat();
+
+    GameState<?> getGameState();
 }

@@ -1,25 +1,22 @@
-package de.fhdortmund.j2t2.wise2019.server.persistence;
+package de.fhdortmund.j2t2.wise2019.gamelogic.gameloader;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
 
-import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 
-public class MessageEntity implements Message {
+public class TestMessage implements Message {
 
     private String id;
-    private String text;
     private int delay;
-    private boolean root;
-    private Points points;
-    private double probability;
-    private List<Answer> answers = new ArrayList<>(0);
-    private boolean read = false;
+    private String text;
+    private List<TestAnswer> answers;
+    private boolean root = false;
+    private double probably = 1;
+    private TestPoints points;
 
-    //TODO
     @Override
     public String getId() {
         return id;
@@ -47,11 +44,11 @@ public class MessageEntity implements Message {
 
     @Override
     public double getProbably() {
-        return probability;
+        return probably;
     }
 
     @Override
-    public List<Answer> getAnswers() {
+    public List<? extends Answer> getAnswers() {
         return answers;
     }
 }

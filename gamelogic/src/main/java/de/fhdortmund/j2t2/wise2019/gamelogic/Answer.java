@@ -6,5 +6,6 @@ public interface Answer {
     Message getParent();
     int getId();
     String getText();
-    List<Message> getTargets();
+    List<? extends Message> getTargets();
+    List<String> getTargetIds();
 }

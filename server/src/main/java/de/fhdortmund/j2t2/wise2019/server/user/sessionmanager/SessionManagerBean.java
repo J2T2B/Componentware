@@ -1,15 +1,12 @@
 package de.fhdortmund.j2t2.wise2019.server.user.sessionmanager;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
-import de.fhdortmund.j2t2.wise2019.gamelogic.GameManager;
+import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.server.game.local.GameManagerLocal;
 import de.fhdortmund.j2t2.wise2019.server.user.User;
 
 import javax.ejb.Singleton;
-import javax.ejb.Startup;
-import javax.enterprise.context.ApplicationScoped;
 import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.HashMap;
@@ -23,20 +20,31 @@ import java.util.UUID;
 public class SessionManagerBean implements LocalSessionManager, RemoteSessionManager {
 
     @Inject
-    private GameManagerLocal gameManager;
+    private GameManagerLocal gameManager;// = new MockGameManager();
     private Map<String, Session> sessions = new HashMap<>();
+
+    public SessionManagerBean() throws GameLoadingException {
+    }
 
     @Override
     public String createSession(User user) {
         String sessionId = UUID.randomUUID().toString();
 
-        Session session = new Session(sessionId, user.getName(), gameManager.getChatsForUser(user.getName()));
+        Session session = new Session(sessionId, user.getName(), gameManager.getGamesForUser(user.getName()));
+        sessions.put(sessionId, session);
 
         return sessionId;
     }
 
     @Override
-    public List<Chat> getChatsForToken(String token) {
-        return gameManager.getChatsForUser(sessions.get(token).getUsername());
+    public List<Game> getGamesForToken(String token) {
+        return gameManager.getGamesForUser(sessions.get(token).getUsername());
+    }
+
+    @Override
+    public void invalidate(String token) {
+        Session session = sessions.get(token);
+        session.invalidate();
+        sessions.remove(token);
     }
 }
