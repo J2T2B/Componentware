@@ -214,6 +214,11 @@ export default abstract class AChatsHandler {
         switch (message.command) {
             case "CreateChat":
                 this.chats.push(new Chat(message.chat));
+                if (message.chat.messages !== undefined && message.chat.messages.length > 0) {
+                    for (let m of message.chat.messages) {
+                        this.onMessage(message.chat.chatId, m);
+                    }
+                }
                 this.chatsListener.forEach(c => c.onChatChange(this.chats));
                 break;
             case "AddMessage":
