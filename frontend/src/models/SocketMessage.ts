@@ -41,5 +41,8 @@ export type SocketMessage =
     } |
     {
         command: "HandleError",
-        message: String
+        message: string
+    } |
+    {
+        command: "WebSocketCreated"
     }

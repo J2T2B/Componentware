@@ -1,11 +1,12 @@
 import React from "react";
-import {LoginCardComponent} from "./LoginCard";
-import {Alert, Button, FormGroup, Input, Label} from "reactstrap";
-import {SmartInputComponent} from "./SmartInputComponent";
+import { LoginCardComponent } from "./LoginCard";
+import { Alert, Button, FormGroup, Input, Label } from "reactstrap";
+import { SmartInputComponent } from "./SmartInputComponent";
 import setWindowTitle from "../../logic/setWindowTitle";
-import {LoginRegisterProps} from "../../models/LoginRegisterProps";
-import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
-import {faSync} from "@fortawesome/free-solid-svg-icons";
+import { LoginRegisterProps } from "../../models/LoginRegisterProps";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faSync } from "@fortawesome/free-solid-svg-icons";
+import OnEnterPress from "../../logic/OnEnterPress";
 
 const ERRORS = {
     usernameToShort: "Nutzername darf nicht leer sein",
@@ -75,9 +76,9 @@ export class RegisterComponent extends React.Component<LoginRegisterProps, Regis
     }
 
     async onSubmit() {
-        this.setState({busy: true, error: undefined});
+        this.setState({ busy: true, error: undefined });
 
-        const {username, password} = this.state;
+        const { username, password } = this.state;
 
         try {
             await this.props.connector.register(username, password);
@@ -99,7 +100,7 @@ export class RegisterComponent extends React.Component<LoginRegisterProps, Regis
 
             <FormGroup>
                 <Label>Name</Label>
-                <Input type="text" value={this.state.name} autoComplete="off" readOnly/>
+                <Input type="text" value={this.state.name} autoComplete="off" readOnly />
             </FormGroup>
 
             <SmartInputComponent
@@ -133,6 +134,7 @@ export class RegisterComponent extends React.Component<LoginRegisterProps, Regis
                 type="password"
                 error={this.state.repeatPasswordError}
                 autoComplete="new-password"
+                onKeyPress={OnEnterPress(this.onSubmit)}
             />
 
             <Button
@@ -140,7 +142,7 @@ export class RegisterComponent extends React.Component<LoginRegisterProps, Regis
                 onClick={this.onSubmit}
                 disabled={!checkUndefined(this.state.repeatPasswordError, this.state.passwordError, this.state.usernameError)}
             >
-                {this.state.busy && <FontAwesomeIcon icon={faSync} spin/>}
+                {this.state.busy && <FontAwesomeIcon icon={faSync} spin />}
                 Registrieren
             </Button>
 
