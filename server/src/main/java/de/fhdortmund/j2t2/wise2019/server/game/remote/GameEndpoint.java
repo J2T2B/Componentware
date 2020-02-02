@@ -74,7 +74,7 @@ public class GameEndpoint {
     public void onError(Throwable throwable){
         System.err.println("Error in WebSocket!");
         throwable.printStackTrace();
-        send(new ErrorWebSocketCommand(new Exception(throwable)));
+        send(new ErrorWebSocketCommand(new Exception(throwable).getMessage()));
     }
 
     @OnClose

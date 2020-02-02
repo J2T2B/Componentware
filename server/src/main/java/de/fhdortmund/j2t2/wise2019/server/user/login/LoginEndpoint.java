@@ -1,5 +1,6 @@
 package de.fhdortmund.j2t2.wise2019.server.user.login;
 
+import de.fhdortmund.j2t2.wise2019.server.user.UserDoesntExistException;
 import de.fhdortmund.j2t2.wise2019.server.user.UserManager;
 import de.fhdortmund.j2t2.wise2019.server.user.sessionmanager.SessionManager;
 
@@ -20,7 +21,12 @@ public class LoginEndpoint {
     @Produces("plain/text")
     public String login(LoginCredentials loginCredentials){
         String sessionToken;
-        boolean success = userManager.login(loginCredentials);
+        boolean success = false;
+        try {
+            success = userManager.login(loginCredentials);
+        } catch (UserDoesntExistException e) {
+            throw new NotAuthorizedException("False username or password!");
+        }
         loginCredentials.clean();
 
         if(success){
