@@ -19,7 +19,8 @@ import java.util.UUID;
 @Singleton
 public class SessionManagerBean implements LocalSessionManager, RemoteSessionManager {
 
-    private GameManagerLocal gameManager = new MockGameManager();
+    @Inject
+    private GameManagerLocal gameManager;
     private Map<String, Session> sessions = new HashMap<>();
 
     public SessionManagerBean() throws GameLoadingException {
