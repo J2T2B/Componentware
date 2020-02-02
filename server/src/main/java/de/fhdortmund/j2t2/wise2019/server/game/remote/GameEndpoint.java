@@ -48,6 +48,7 @@ public class GameEndpoint {
 
     @OnMessage
     public void onMessage(AbstractWebSocketCommand command, Session session) throws IOException, EncodeException {
+        System.out.println("Empfangen: "+command.toString());
             switch (command.getCommand()) {
                 case "Reinit":
                     handleReinitcommand();
@@ -78,8 +79,8 @@ public class GameEndpoint {
 
     @OnClose
     public void onClose(Session session) throws IOException {
-        session.close();
         sessionManager.invalidate(token);
+        session.close();
     }
 
 
