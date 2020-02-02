@@ -1,17 +1,18 @@
 import React from "react";
 import {Button, Container, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
-import { Chat } from "../../models/Chat";
+import {Chat} from "../../models/Chat";
 import IChatListener from "../../logic/IChatListener";
 import {DefaultComponentProps} from "../../DefaultComponentProps";
 import {Message} from "../../models/Message";
 import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPaperPlane, faSmile} from "@fortawesome/free-regular-svg-icons";
+import {Answer} from "../../models/Answer";
 
 export interface ChatMessageStates {
     chat?: Chat;
     openAnswers: boolean;
-    chosenAnswer?: number;
+    chosenAnswer?: Answer;
 }
 
 export class ChatMessageComponent extends React.Component<DefaultComponentProps, ChatMessageStates> implements IChatListener {
@@ -30,15 +31,15 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
     }
 
     onChatChange(chat: Chat): void | Promise<void> {
-        this.setState({ chat });
+        this.setState({chat, chosenAnswer: undefined});
     }
 
     onMessage(chat: Chat, message: Message): void | Promise<void> {
-        this.setState({ chat });
+        this.setState({chat, chosenAnswer: undefined});
     }
 
     scrollToBottom() {
-        this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+        this.messagesEnd.scrollIntoView({behavior: "smooth"});
     }
 
     componentDidMount() {
@@ -57,13 +58,13 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
             return {openAnswers: !o.openAnswers};
         });
         if (this.state.chosenAnswer === undefined) {
-            let id = (answer === undefined) ? undefined : answer.id;
-            this.setState({chosenAnswer: id});
+            const chosenAnswer = (answer === undefined) ? undefined : answer;
+            this.setState({chosenAnswer});
         }
     }
 
-    onAnswerChoose(id: number) {
-       this.setState({chosenAnswer: id, openAnswers: false});
+    onAnswerChoose(chosenAnswer: Answer) {
+        this.setState({chosenAnswer, openAnswers: false});
     }
 
     toggleModal() {
@@ -72,8 +73,8 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
 
     onSendMessage() {
         if (this.state.chosenAnswer !== undefined) {
-            let answer = this.state.chat!.getLastMessage()!.answers.find(a => a.id === this.state.chosenAnswer);
-            this.props.chatsHandler.submitAnswer(answer!);
+            const answer = this.state.chosenAnswer;
+            this.props.chatsHandler.submitAnswer(answer!, this.state.chat!.chatId, this.state.chat!.getLastMessage()!.id);
         }
     }
 
@@ -81,7 +82,7 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
         if (this.state.chat === undefined) {
             return <Container>
                 <div className="contact-profile">
-                    <img className="contact-picture" alt="" />
+                    <img className="contact-picture" alt=""/>
                     <div className="contact-name">
                         <em>Kein Chat ausgewählt</em>
                     </div>
@@ -92,16 +93,18 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                             <em>Keine Nachrichten</em>
                         </div>
                     </div>
-                    <div style={{ float:"left", clear: "both" }}
-                         ref={(el) => { this.messagesEnd = el; }}>
+                    <div style={{float: "left", clear: "both"}}
+                         ref={(el) => {
+                             this.messagesEnd = el;
+                         }}>
                     </div>
                 </div>
             </Container>
-        }
-        else {
+        } else {
             return <Container>
                 <div className="contact-profile">
-                    <img className="contact-picture" src={this.state.chat!.partner.imageUrl} alt={this.state.chat!.partner.name}/>
+                    <img className="contact-picture" src={this.state.chat!.partner.imageUrl}
+                         alt={this.state.chat!.partner.name}/>
                     <div className="contact-name">{this.state.chat!.partner.name}</div>
                 </div>
                 <div className="messages col-md-12">
@@ -123,19 +126,25 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                             </div>
                         })
                     }
-                    <div style={{ float:"left", clear: "both" }}
-                         ref={(el) => { this.messagesEnd = el; }}>
+                    <div style={{float: "left", clear: "both"}}
+                         ref={(el) => {
+                             this.messagesEnd = el;
+                         }}>
                     </div>
                     {
                         this.state.chat.getLastMessage() && (this.state.chat.getLastMessage()!.answers.length > 0) ?
                             <div className="row">
                                 <Modal isOpen={this.state.openAnswers} toggle={() => this.toggleModal()}>
-                                    <ModalHeader toggle={() => this.toggleModal()}>Ihre Antwortmöglichkeiten</ModalHeader>
+                                    <ModalHeader toggle={() => this.toggleModal()}>Ihre
+                                        Antwortmöglichkeiten</ModalHeader>
                                     <ModalBody>
                                         <ListGroup>
                                             {
                                                 this.state.chat.getLastMessage()!.answers.map(a => {
-                                                    return <ListGroupItem tag="button" className={this.state.chosenAnswer === a.id ? 'active' : ''} onClick={() => this.onAnswerChoose(a.id)} id={"answer-"+a.id}>
+                                                    return <ListGroupItem tag="button"
+                                                                          className={this.state.chosenAnswer === a ? 'active' : ''}
+                                                                          onClick={() => this.onAnswerChoose(a)}
+                                                                          id={"answer-" + a.id}>
                                                         {a.text}
                                                     </ListGroupItem>
                                                 })
@@ -156,8 +165,8 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                 <div className="message-input">
                     <div className="row text-center">
                         <div className="col-md-1">
-                            <Button color="primary" onClick={() => console.log("I am useless. :^)") }>
-                                <FontAwesomeIcon icon={faSmile} />
+                            <Button color="primary" onClick={() => console.log("I am useless. :^)")}>
+                                <FontAwesomeIcon icon={faSmile}/>
                             </Button>
                         </div>
                         <div className="col-md-10">
@@ -167,14 +176,14 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                                         !this.state.chosenAnswer ?
                                             <i>Bitte Antwort wählen</i>
                                             :
-                                            this.state.chat.getLastMessage()!.answers.find(a => a.id === this.state.chosenAnswer)!.text
+                                            this.state.chosenAnswer!.text
                                     )
                                 }
                             </div>
                         </div>
                         <div className="col-md-1">
                             <Button color="primary" onClick={this.onSendMessage}>
-                                <FontAwesomeIcon icon={faPaperPlane} />
+                                <FontAwesomeIcon icon={faPaperPlane}/>
                             </Button>
                         </div>
                     </div>

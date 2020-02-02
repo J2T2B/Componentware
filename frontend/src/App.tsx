@@ -14,6 +14,7 @@ import {HashRouter} from "react-router-dom";
 import Error404Component from "./components/Error404Component";
 import ReconnectingComponent from "./components/ReconnectingComponent";
 import {GameOverPage} from "./components/gameover/GameOverPage";
+import {ErrorComponent} from "./components/globals/ErrorComponent";
 
 interface AppStates {
     isChatListOpen: boolean;
@@ -29,7 +30,7 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
 
         this.state = {
             isChatListOpen: true,
-            connector: new Connector("http://localhost:8080/server-1.0-SNAPSHOT", this, true),
+            connector: new Connector("http://localhost:8080/server-1.0-SNAPSHOT", this, false),
             mode: AppStateMode.LOGIN
         };
 
@@ -63,21 +64,24 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
         return <>
             <Route path="/login" exact render={() => <LoginComponent connector={this.state.connector}/>}/>
             <Route path="/register" exact render={() => <RegisterComponent connector={this.state.connector}/>}/>
-            <Redirect from="*" to="/login" />
+            <Redirect from="*" to="/login"/>
         </>;
     }
 
     private renderNormalBody() {
-        return <Route path="/" exact>
-            <Row>
-                <Col md={4}>
-                    <ChatsListComponent chatsHandler={this.state.chatsHandler!} isOpen={this.state.isChatListOpen}/>
-                </Col>
-                <Col md={8}>
-                    <ChatMessageComponent chatsHandler={this.state.chatsHandler!}/>
-                </Col>
-            </Row>
-        </Route>;
+        return <>
+            <Route path="/" exact>
+                <Row>
+                    <Col md={4}>
+                        <ChatsListComponent chatsHandler={this.state.chatsHandler!} isOpen={this.state.isChatListOpen}/>
+                    </Col>
+                    <Col md={8}>
+                        <ChatMessageComponent chatsHandler={this.state.chatsHandler!}/>
+                    </Col>
+                </Row>
+            </Route>
+            <ErrorComponent chatsHandler={this.state.chatsHandler!}/>
+        </>;
     }
 
     render() {
@@ -92,7 +96,7 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
                         {this.state.mode === AppStateMode.GAMEOVER && <GameOverPage/>}
                         {this.state.mode === AppStateMode.CONNECTING && <ReconnectingComponent/>}
                         <Route path="/404" exact component={() => <Error404Component/>}/>
-                        <Redirect from="*" to="/404" />
+                        <Redirect from="*" to="/404"/>
                     </Switch>
                 </HashRouter>
             </Container>

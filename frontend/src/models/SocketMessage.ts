@@ -10,19 +10,19 @@ export type SocketMessage =
     } |
     {
         command: "AddMessage"
-        chatId: number
+        chatId: string
         message: IMessage
     } |
     {
         command: "AddAnswer",
-        chatId: number,
+        chatId: string,
         messageId: string,
         answer: Answer
     } |
     {
         command: "SubmitAnswer",
         answerId: number,
-        chatId: number,
+        chatId: string,
         messageId: string
     } |
     {
@@ -31,7 +31,7 @@ export type SocketMessage =
     {
         command: "ReadMessage", //TODO was der Sinn ?
         messageId: string,
-        chatId: number
+        chatId: string
     } |
     ({
         command: "ChangePoints",
@@ -41,5 +41,8 @@ export type SocketMessage =
     } |
     {
         command: "HandleError",
-        message: String
+        message: string
+    } |
+    {
+        command: "WebSocketCreated"
     }

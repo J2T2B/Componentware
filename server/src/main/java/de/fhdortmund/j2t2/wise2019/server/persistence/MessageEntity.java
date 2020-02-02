@@ -5,7 +5,6 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
 
 import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
 public class MessageEntity implements Message {

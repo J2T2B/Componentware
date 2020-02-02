@@ -10,4 +10,11 @@ public abstract class AbstractWebSocketCommand {
     public String getCommand() {
         return command;
     }
+
+    @Override
+    public String toString() {
+        return "AbstractWebSocketCommand{" +
+                "command='" + command + '\'' +
+                '}';
+    }
 }

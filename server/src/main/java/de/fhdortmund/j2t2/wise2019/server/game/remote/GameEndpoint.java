@@ -3,6 +3,7 @@ package de.fhdortmund.j2t2.wise2019.server.game.remote;
 import de.fhdortmund.j2t2.wise2019.gamelogic.*;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
@@ -10,20 +11,13 @@ import de.fhdortmund.j2t2.wise2019.server.game.remote.websocketcommands.*;
 import de.fhdortmund.j2t2.wise2019.server.user.UserManager;
 import de.fhdortmund.j2t2.wise2019.server.user.sessionmanager.SessionManager;
 
-import javax.annotation.Resource;
-import javax.ejb.Startup;
-import javax.ejb.TimerService;
 import javax.inject.Inject;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
-@Startup
 @ServerEndpoint(value = "/game/{usertoken}", encoders = MessageCoder.class, decoders = MessageCoder.class)
 public class GameEndpoint {
 
@@ -41,13 +35,16 @@ public class GameEndpoint {
 
     @OnOpen
     public void onOpen(Session session, @PathParam("usertoken") String token) throws IOException, EncodeException {
+        System.out.println("Open session with id: " +session.getId());
         this.session = session;
         this.games = sessionManager.getGamesForToken(token);
+        this.token = token;
         send(new WebSocketCreatedCommand());
     }
 
     @OnMessage
     public void onMessage(AbstractWebSocketCommand command, Session session) throws IOException, EncodeException {
+        System.out.println("Empfangen: "+command.toString() + "for session id: "+session.getId());
             switch (command.getCommand()) {
                 case "Reinit":
                     handleReinitcommand();
@@ -73,13 +70,14 @@ public class GameEndpoint {
     public void onError(Throwable throwable){
         System.err.println("Error in WebSocket!");
         throwable.printStackTrace();
-        send(new ErrorWebSocketCommand(new Exception(throwable)));
+        send(new ErrorWebSocketCommand(new Exception(throwable).getMessage()));
     }
 
     @OnClose
     public void onClose(Session session) throws IOException {
-        session.close();
+        System.out.println("Closing session with id: " + session.getId());
         sessionManager.invalidate(token);
+        session.close();
     }
 
 
@@ -101,14 +99,21 @@ public class GameEndpoint {
 
         for(Answer answer : msg.getAnswers()) {
             if (answer.getId() == answerId) {
-                List<Chat.ChatMessage> messages = chat.getMessages();
-                sendAddMessageCommand(chatId, messages.get(messages.size()-1));
-                Object gameData = game.getGameState().getData();
+                PlayResult pr = game.playAnswer(chat, answer);
+                sendAddMessageCommand(chatId, pr.getMessage());
+                Object gameData = pr.getPlayResultData();
                 if(gameData instanceof Points){
                     sendChangePointsCommand((Points) gameData);
                 }
+                if(pr.isEnd()){
+                    sendGameOverCommand();
+                }
             }
         }
+    }
+
+    public void sendGameOverCommand() {
+        send(new GameOverWebSocketCommand());
     }
 
     private void handleReadMessageCommand(String messageId, long chatId) {
