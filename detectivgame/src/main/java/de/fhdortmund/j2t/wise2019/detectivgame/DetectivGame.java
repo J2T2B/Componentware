@@ -19,6 +19,12 @@ public class DetectivGame extends AbstractGame<Void> {
     protected void updateGameState(PlayResult res) {
         //TODO gibt es hier etwas zu tun ?
     }
+
+    @Override
+    public Chatpartner produceSomeChatpartner() {
+        return null;
+    }
+
     protected void loadGame(InputStream gameDefinitionInputStream) throws GameLoadingException {
         gameModel.addMessages(new GameLoader(() -> gameDefinitionInputStream).loadGame(DetectiveGameMessage[].class, (answer, id) -> {
             ((DetectiveGameAnswer) answer).setId(id);
@@ -44,7 +50,7 @@ public class DetectivGame extends AbstractGame<Void> {
                         return image;
                     }
                 });
-                chat.addMessage(new Chat.ChatMessage(() -> message.getText(), System.currentTimeMillis(), false));
+                chat.addMessage(new Chat.ChatMessage(message, System.currentTimeMillis(), false));
                 gameState.addChat(chat);
             }
         }

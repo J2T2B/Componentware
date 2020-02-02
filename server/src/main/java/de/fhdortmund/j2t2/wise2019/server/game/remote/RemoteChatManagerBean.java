@@ -2,15 +2,10 @@ package de.fhdortmund.j2t2.wise2019.server.game.remote;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
-import de.fhdortmund.j2t2.wise2019.server.game.models.ChatImpl;
 
-import javax.ejb.Local;
-import javax.ejb.Remote;
 import javax.ejb.Singleton;
 import javax.enterprise.context.Dependent;
-import javax.enterprise.context.SessionScoped;
 import javax.inject.Named;
-import java.io.Serializable;
 import java.util.HashMap;
 import java.util.Map;
 

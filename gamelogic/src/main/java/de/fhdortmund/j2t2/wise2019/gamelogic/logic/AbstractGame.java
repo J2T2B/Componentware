@@ -1,8 +1,6 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic.logic;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
+import de.fhdortmund.j2t2.wise2019.gamelogic.*;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameModel;
 
@@ -59,6 +57,8 @@ public abstract class AbstractGame<T> implements Game {
 
     protected abstract void loadGame(InputStream gameDefinitionInputStream) throws GameLoadingException;
 
+    protected abstract void updateGameState(PlayResult res);
+
     @Override
     public PlayResult playAnswer(Chat chat, Answer answer) {
         PlayResult res;
@@ -71,7 +71,13 @@ public abstract class AbstractGame<T> implements Game {
         return res;
     }
 
-    protected abstract void updateGameState(PlayResult res);
+    /**
+     * Erstelle irgendeinen Chatpartner
+     * @return erstellten Chatpartner
+     */
+    public abstract Chatpartner produceSomeChatpartner();
+
+
 
     @Override
     public GameState<T> getGameState() {
@@ -80,7 +86,10 @@ public abstract class AbstractGame<T> implements Game {
 
     @Override
     public Chat createNewChat() {
-        throw new UnsupportedOperationException("TODO"); //TODO
+        Chatpartner chatpartner = produceSomeChatpartner();
+        Chat chat = new ChatImpl(chatpartner);
+        gameState.addChat(chat);
+        return chat;
     }
 
     private PlayResult playAnswer(Answer answer){

@@ -33,7 +33,6 @@ dependencies {
     compile group: 'javax', name: 'javaee-web-api', version: '8.0.1'
     compile group: 'javax.security.enterprise', name: 'javax.security.enterprise-api', version: '1.0'
     // https://mvnrepository.com/artifact/org.apache.commons/commons-lang3
-    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.9'
 
     implementation 'org.reflections:reflections:0.9.11'
     // https://mvnrepository.com/artifact/com.google.guava/guava

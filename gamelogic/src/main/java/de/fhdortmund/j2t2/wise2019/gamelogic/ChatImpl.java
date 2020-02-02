@@ -1,33 +1,33 @@
-package de.fhdortmund.j2t2.wise2019.server.game.models;
+package de.fhdortmund.j2t2.wise2019.gamelogic;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Chatpartner;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import org.apache.commons.lang3.RandomUtils;
 
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
-import java.util.Random;
 
 
 public class ChatImpl implements Chat, Serializable {
     final long id;
 
-    private ChatpartnerImpl chatPartner;
+    private Chatpartner chatPartner;
     private List<ChatMessage> messages;
 
     public ChatImpl(){
-        id = RandomUtils.nextLong(); //TODO
-        chatPartner = new ChatpartnerImpl();
-        messages = new ArrayList<>();
+        this(new ChatpartnerImpl());
     }
 
     public ChatImpl(Chat chat) {
         id = chat.getId();
         chatPartner = new ChatpartnerImpl(chat.getChatpartner());
         messages = chat.getMessages();
+    }
+
+    public ChatImpl(Chatpartner chatpartner){
+        id = RandomUtils.nextLong();
+        this.chatPartner = chatpartner;
+        messages = new ArrayList<>();
     }
 
     public long getId() {
