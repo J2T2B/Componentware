@@ -9,12 +9,12 @@ public class ChatRemoteModel {
 
     private List<MessageRemoteModel> messages;
     private ChatPartnerRemoteModel partner;
-    private Long chatId;
+    private String chatId;
 
     public ChatRemoteModel(Chat chat){
         this.messages = chat.getMessages().stream().map(MessageRemoteModel::new).collect(Collectors.toList());
         this.partner = new ChatPartnerRemoteModel(chat.getChatpartner());
-        this.chatId = chat.getId();
+        this.chatId = chat.getId()+"";
     }
 
     public List<MessageRemoteModel> getMessages() {
@@ -26,6 +26,6 @@ public class ChatRemoteModel {
     }
 
     public long getChatId() {
-        return chatId;
+        return Long.parseLong(chatId);
     }
 }
