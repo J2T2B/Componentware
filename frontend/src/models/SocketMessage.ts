@@ -10,12 +10,12 @@ export type SocketMessage =
     } |
     {
         command: "AddMessage"
-        chatId: string
+        chatId: number
         message: IMessage
     } |
     {
         command: "AddAnswer",
-        chatId: string,
+        chatId: number,
         messageId: string,
         answer: Answer
     } |
@@ -42,4 +42,7 @@ export type SocketMessage =
     {
         command: "HandleError",
         message: string
+    } |
+    {
+        command: "WebSocketCreated"
     }

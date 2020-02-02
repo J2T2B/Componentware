@@ -4,13 +4,13 @@ import { Partner } from "./Partner";
 export interface IChat {
     messages: IMessage[] | Message[];
     partner: Partner;
-    chatId: string;
+    chatId: number;
 }
 
 export class Chat implements IChat {
     messages: Message[];
     partner: Partner;
-    chatId: string;
+    chatId: number;
 
     constructor(init: IChat) {
         this.chatId = init.chatId;

@@ -73,7 +73,7 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
     onSendMessage() {
         if (this.state.chosenAnswer !== undefined) {
             let answer = this.state.chat!.getLastMessage()!.answers.find(a => a.id === this.state.chosenAnswer);
-            this.props.chatsHandler.submitAnswer(answer!, this.state.chat!.chatId);
+            this.props.chatsHandler.submitAnswer(answer!, this.state.chat!.chatId, this.state.chat!.getLastMessage()!.id);
         }
     }
 

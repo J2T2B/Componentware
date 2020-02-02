@@ -99,7 +99,7 @@ export default abstract class AChatsHandler {
      * Sendet die Antwort an den Server
      * @param answer Antwort
      */
-    public submitAnswer(answer: Answer | number, chatId: string): void {
+    public submitAnswer(answer: Answer | number, chatId: number, messageId: string): void {
         let answerId: number;
         if (typeof (answer) === "number") {
             answerId = answer;
@@ -111,7 +111,8 @@ export default abstract class AChatsHandler {
         this.sendMessage({
             command: "SubmitAnswer",
             answerId,
-            chatId
+            chatId,
+            messageId
         });
     }
 
@@ -128,7 +129,8 @@ export default abstract class AChatsHandler {
             message.userHasRead = true;
             this.sendMessage({
                 command: "ReadMessage",
-                messageId: message.id
+                messageId: message.id,
+                chatId: this._currentChat.chatId
             });
         }
         this.chatsListener.forEach(l => l.onChatChange(this.chats));
@@ -148,7 +150,7 @@ export default abstract class AChatsHandler {
      * @param chatId Betroffene ChatId
      * @param message Neue Nachricht
      */
-    private onMessage(chatId: string, message: IMessage) {
+    private onMessage(chatId: number, message: IMessage) {
         let useMessage = new Message(message);
         let targetChat: Chat;
 
@@ -182,7 +184,7 @@ export default abstract class AChatsHandler {
      * @param messageId Betroffene Nachricht
      * @param answer Gegebene Antwort
      */
-    private onAnswer(chatId: string, messageId: string, answer: Answer) {
+    private onAnswer(chatId: number, messageId: string, answer: Answer) {
         let targetChat = this.chats.find(c => c.chatId === chatId);
         if (targetChat === undefined) {
             throw new Error(`Chat ${chatId} not found. Fatal Error`);
@@ -221,6 +223,9 @@ export default abstract class AChatsHandler {
                 break;
             case "HandleError":
                 this.errorHandlers.forEach(e => e.onError(message.message));
+                break;
+            case "WebSocketCreated":
+                console.log("WebSocket erzeugt. Juhu");
                 break;
             default:
                 throw new Error(`The Command ${message.command} is unknown`);

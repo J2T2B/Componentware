@@ -30,7 +30,7 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
 
         this.state = {
             isChatListOpen: true,
-            connector: new Connector("http://localhost:8080/server-1.0-SNAPSHOT", this, true),
+            connector: new Connector("http://localhost:8080/server-1.0-SNAPSHOT", this, false),
             mode: AppStateMode.LOGIN
         };
 
