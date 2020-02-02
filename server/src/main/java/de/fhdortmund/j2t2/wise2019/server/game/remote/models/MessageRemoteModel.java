@@ -1,6 +1,5 @@
 package de.fhdortmund.j2t2.wise2019.server.game.remote.models;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 
