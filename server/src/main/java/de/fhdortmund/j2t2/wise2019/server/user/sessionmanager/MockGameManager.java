@@ -6,6 +6,7 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.AbstractGame;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResultMessage;
 import de.fhdortmund.j2t2.wise2019.server.game.local.GameManagerLocal;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
@@ -145,6 +146,28 @@ public class MockGameManager implements GameManagerLocal {
         @Override
         public Chatpartner produceSomeChatpartner() {
             return new ChatpartnerImpl();
+        }
+
+        @Override
+        protected PlayResult playAnswer(Answer answer) {
+            PlayResult res;
+
+            if(answer.getTargets().size() == 1) {
+                Message target = answer.getTargets().get(0);
+                res = new PlayResultMessage(new Chat.ChatMessage(target));
+            } else {
+                double random = Math.random();
+                double sum = 0;
+                Message msg = answer.getTargets().get(0);
+                for (Message target : answer.getTargets()) {
+                    if (random >= sum && random < (sum += target.getProbably())) {
+                        msg = target;
+                        break;
+                    }
+                }
+                res = new PlayResultMessage(new Chat.ChatMessage(msg));
+            }
+            return res;
         }
     }
 }

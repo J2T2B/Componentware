@@ -66,7 +66,9 @@ public abstract class AbstractGame<T> implements Game {
         Chat.ChatMessage chatMessage = new Chat.ChatMessage(answer.getText(), Calendar.getInstance().getTimeInMillis(), true);
         gameState.getChat(chat.getId()).addMessage(chatMessage);
         res = playAnswer(answer);
-        gameState.getChat(chat.getId()).addMessage(res.getMessage());
+        for(Chat.ChatMessage message : res.getMessages()) {
+            gameState.getChat(chat.getId()).addMessage(message);
+        }
         updateGameState(res);
         return res;
     }
@@ -92,30 +94,5 @@ public abstract class AbstractGame<T> implements Game {
         return chat;
     }
 
-    private PlayResult playAnswer(Answer answer){
-        PlayResult res;
-
-        if(answer.getTargets().size() < 1) {
-            res = new PlayResultEnd();
-        } else if(answer.getTargets().size() == 1) {
-            Message target = answer.getTargets().get(0);
-            if(target.getAnswers().size() == 0) {
-                res = new PlayResultEnd(new Chat.ChatMessage(target));
-            } else {
-                res = new PlayResultMessage(new Chat.ChatMessage(target));
-            }
-        } else {
-            double random = Math.random();
-            double sum = 0;
-            Message msg = answer.getTargets().get(0);
-            for (Message target : answer.getTargets()) {
-                if (random >= sum && random < (sum += target.getProbably())) {
-                    msg = target;
-                    break;
-                }
-            }
-            res = new PlayResultMessage(new Chat.ChatMessage(msg));
-        }
-        return res;
-    }
+    protected abstract PlayResult playAnswer(Answer answer);
 }

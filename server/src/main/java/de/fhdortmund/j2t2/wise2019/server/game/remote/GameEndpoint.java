@@ -91,16 +91,18 @@ public class GameEndpoint {
         }
     }
 
-    private void handleSubmitCommand(long answerId, String messageId, long chatId) throws IOException, EncodeException {
+    private void handleSubmitCommand(long answerId, String remoteMessageId, long chatId) throws IOException, EncodeException {
         Game game = chatManager.getGameForRemoteChatId(chatId);
         Chat chat = game.getGameState().getChat(chatId);
-        Chat.ChatMessage chatMessage = chat.getMessage(messageId);
-        Message msg = (Message) chatMessage.getMsg();
+        Chat.ChatMessage chatMessage = chat.getMessage(remoteMessageId);
+        Message lastMessage = (Message) chatMessage.getMsg();
 
-        for(Answer answer : msg.getAnswers()) {
+        for(Answer answer : lastMessage.getAnswers()) {
             if (answer.getId() == answerId) {
                 PlayResult pr = game.playAnswer(chat, answer);
-                sendAddMessageCommand(chatId, pr.getMessage());
+                for(Chat.ChatMessage msg : pr.getMessages()) {
+                    sendAddMessageCommand(chatId, msg);
+                }
                 Object gameData = pr.getPlayResultData();
                 if(gameData instanceof Points){
                     sendChangePointsCommand((Points) gameData);

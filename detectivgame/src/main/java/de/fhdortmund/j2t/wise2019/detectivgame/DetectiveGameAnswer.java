@@ -39,6 +39,14 @@ public class DetectiveGameAnswer implements Answer {
         return text;
     }
 
+    public String getUnlockKey() {
+        return unlockKey;
+    }
+
+    public boolean isLocked() {
+        return locked;
+    }
+
     @Override
     public List<? extends Message> getTargets() {
         return Collections.singletonList(target);
