@@ -9,4 +9,8 @@ public interface Message extends SimpleMessage{
     Points getPoints();
     double getProbably();
     List<? extends Answer> getAnswers();
+
+    default Answer firstAnswer() {
+        return getAnswers().get(0);
+    }
 }

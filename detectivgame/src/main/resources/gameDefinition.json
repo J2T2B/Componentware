@@ -20,7 +20,7 @@
   },
   {
     "id": "sophieMain",
-    "delay": 0,
+    "delay": 5,
     "text": "Wonach sollen wir Sophie fragen?",
     "answers": [
       {
@@ -178,6 +178,7 @@
     "text": "Ende // TODO",
     "answers": [],
     "root": false,
-    "unlockKeys": []
+    "unlockKeys": [],
+    "end": true
   }
 ]

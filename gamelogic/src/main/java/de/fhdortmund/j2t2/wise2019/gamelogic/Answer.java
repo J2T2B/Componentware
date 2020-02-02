@@ -8,4 +8,8 @@ public interface Answer {
     String getText();
     List<? extends Message> getTargets();
     List<String> getTargetIds();
+
+    default Message firstTarget() {
+        return getTargets().get(0);
+    }
 }
