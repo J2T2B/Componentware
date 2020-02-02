@@ -37,12 +37,12 @@ public class DetectivGame extends AbstractGame<Void> {
             if(message.isRoot()) {
                 Chat chat = new DetectiveGameChat(message.getId().hashCode(), new Chatpartner() {
 
-                    private String id = message.getId();
+                    private String name = message.getId();
                     private String image = ((DetectiveGameMessage)message).getChatImage();
 
                     @Override
                     public String getName() {
-                        return id;
+                        return name;
                     }
 
                     @Override
@@ -54,10 +54,5 @@ public class DetectivGame extends AbstractGame<Void> {
                 gameState.addChat(chat);
             }
         }
-    }
-
-    @Override
-    public Chat createNewChat() {
-        throw new UnsupportedOperationException("Creating chats after the game has been loaded is not supported.");
     }
 }
