@@ -207,6 +207,10 @@ export default abstract class AChatsHandler {
      * @param message Vom Server bekommene Message
      */
     protected onSocketMessage(message: SocketMessage) {
+        if (process.env.NODE_ENV !== "production") {
+            console.info("Eingehende Nachricht: ", message);
+        }
+
         switch (message.command) {
             case "CreateChat":
                 this.chats.push(new Chat(message.chat));
