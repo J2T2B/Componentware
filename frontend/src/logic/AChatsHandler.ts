@@ -8,6 +8,7 @@ import { Answer } from "../models/Answer";
 import IConnectionListener from "./IConnectionListener";
 import { IErrorHandler, isIErrorHandler } from "./IErrorHandler";
 import { NotificationHandler } from "./NotificationHandler";
+import moment from "moment";
 
 /**
  * Verwaltet alle Chats und Nachrichten und kommuniziert über die angehangenden Listener
@@ -99,20 +100,24 @@ export default abstract class AChatsHandler {
      * Sendet die Antwort an den Server
      * @param answer Antwort
      */
-    public submitAnswer(answer: Answer | number, chatId: string, messageId: string): void {
-        let answerId: number;
-        if (typeof (answer) === "number") {
-            answerId = answer;
-        }
-        else {
-            answerId = answer.id;
-        }
+    public submitAnswer(answer: Answer, chatId: string, messageId: string): void {
+        const answerId: number = answer.id;
 
         this.sendMessage({
             command: "SubmitAnswer",
             answerId,
             chatId,
             messageId
+        });
+
+        this.onMessage(chatId, {
+            answers: [],
+            created: moment(),
+            id: answerId.toString(),
+            isAnswer: true,
+            image: "",
+            text: answer.text,
+            userHasRead: true
         });
     }
 
