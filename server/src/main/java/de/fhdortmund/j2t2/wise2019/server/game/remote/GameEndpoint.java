@@ -23,7 +23,6 @@ import java.util.concurrent.Executor;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
-@Startup
 @ServerEndpoint(value = "/game/{usertoken}", encoders = MessageCoder.class, decoders = MessageCoder.class)
 public class GameEndpoint {
 
@@ -41,6 +40,7 @@ public class GameEndpoint {
 
     @OnOpen
     public void onOpen(Session session, @PathParam("usertoken") String token) throws IOException, EncodeException {
+        System.out.println("Open session with id: " +session.getId());
         this.session = session;
         this.games = sessionManager.getGamesForToken(token);
         send(new WebSocketCreatedCommand());
@@ -48,6 +48,7 @@ public class GameEndpoint {
 
     @OnMessage
     public void onMessage(AbstractWebSocketCommand command, Session session) throws IOException, EncodeException {
+        System.out.println("Empfangen: "+command.toString() + "for session id: "+session.getId());
             switch (command.getCommand()) {
                 case "Reinit":
                     handleReinitcommand();
@@ -78,8 +79,9 @@ public class GameEndpoint {
 
     @OnClose
     public void onClose(Session session) throws IOException {
-        session.close();
+        System.out.println("Closing session with id: " + session.getId());
         sessionManager.invalidate(token);
+        session.close();
     }
 
 
