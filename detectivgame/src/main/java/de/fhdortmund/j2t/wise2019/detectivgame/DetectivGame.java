@@ -1,6 +1,5 @@
 package de.fhdortmund.j2t.wise2019.detectivgame;
 
-import com.google.gson.Gson;
 import de.fhdortmund.j2t2.wise2019.gamelogic.*;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoader;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
@@ -10,12 +9,13 @@ import java.io.InputStream;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class DetectivGame extends AbstractGame<Void> {
-
-    boolean created = false;
+public class DetectivGame extends AbstractGame<DetectiveGameData> {
 
     public DetectivGame() throws GameLoadingException {
-        super(DetectivGame.class, stream -> stream.filter(url -> url.toString().contains("detectivgame")).findFirst().get(), Void.class);
+        super(DetectivGame.class, stream -> stream.filter(url -> url.toString().contains("detectivgame")).findFirst().get(), DetectiveGameData.class);
+        if(gameState.getData() == null) {
+            gameState.setData(new DetectiveGameData());
+        }
     }
 
     @Override
@@ -25,11 +25,16 @@ public class DetectivGame extends AbstractGame<Void> {
 
     @Override
     public CreateChatResult createNewChat() {
-        DetectiveGameMessage rootMessage = (DetectiveGameMessage) gameModel.getSomeRootMessage();
-        if(!rootMessage.getId().equals("telefonDaten") || created) {
+        DetectiveGameMessage rootMessage;
+        if(gameState.getData().getSendTelefonDatenCount() == 0) {
+            gameState.getData().setSendTelefonDatenCount(1);
+            rootMessage = (DetectiveGameMessage) gameModel.getMessage("mainRoot");
+        } else if(gameState.getData().getSendTelefonDatenCount() >= 3 && !gameState.getData().isTelefonDatenSent()) {
+            gameState.getData().setTelefonDatenSent(true);
+            rootMessage = (DetectiveGameMessage) gameModel.getMessage("telefonDaten");
+        } else {
             return null;
         }
-        created = true;
         List<Answer> unlockedTotal = unlockAll(rootMessage.getUnlockKeys());
         Chat chat = new ChatImpl(createChatpartner(rootMessage));
         chat.addMessage(new Chat.ChatMessageImpl(rootMessage));
@@ -69,13 +74,6 @@ public class DetectivGame extends AbstractGame<Void> {
                 ((DetectiveGameAnswer) answer).setTarget(targets[0]);
             };
         }));
-        for(Message message : gameModel.getMessages().values()) {
-            if(message.isRoot()) {
-                Chat chat = new DetectiveGameChat(message.getId().hashCode(), createChatpartner((DetectiveGameMessage) message));
-                chat.addMessage(new Chat.ChatMessageImpl(message, System.currentTimeMillis(), false));
-                gameState.addChat(chat);
-            }
-        }
     }
 
     @Override
@@ -120,14 +118,14 @@ public class DetectivGame extends AbstractGame<Void> {
         Message msg = gameModel.getMessage(removeAnswers);
         msg.getAnswers().clear();
 
-        // TODO add removeId to gameState
+        gameState.getData().addRemovedAnswerId(removeAnswers);
     }
 
     private void removeSingleAnswer(String msgId, int answerId) {
         Message msg = gameModel.getMessage(msgId);
         msg.getAnswers().removeIf(answer -> answer.getId() == answerId);
 
-        // TODO add to gameState
+        gameState.getData().addSingleRemovedAnswer(msgId, answerId);
     }
 
     private List<Answer> unlockAll(List<String> unlockKeys) {
@@ -152,7 +150,7 @@ public class DetectivGame extends AbstractGame<Void> {
             }
         }
 
-        // TODO add to gameState
+        gameState.getData().addUnlockKey(unlockKey);
 
         return unlocked;
     }
@@ -160,7 +158,7 @@ public class DetectivGame extends AbstractGame<Void> {
     private Chatpartner createChatpartner(DetectiveGameMessage msg) {
         return new Chatpartner() {
             private String name = msg.getId();
-            private String image = ((DetectiveGameMessage)msg).getChatImage();
+            private String image = msg.getChatImage();
 
             @Override
             public String getName() {

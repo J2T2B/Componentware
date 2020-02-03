@@ -13,14 +13,15 @@ public class AddMessageWebSocketCommand extends AbstractWebSocketCommand {
 
     public AddMessageWebSocketCommand(long chatId, ChatMessage message) {
         super(COMMAND);
-        this.chatId = chatId+"";
+        this.chatId = chatId + "";
         this.message = new MessageRemoteModel(message);
     }
 
-    public long getChatId() { return Long.parseLong(chatId); }
+    public long getChatId() {
+        return Long.parseLong(chatId);
+    }
 
     public MessageRemoteModel getMessage() {
         return message;
     }
 }
-

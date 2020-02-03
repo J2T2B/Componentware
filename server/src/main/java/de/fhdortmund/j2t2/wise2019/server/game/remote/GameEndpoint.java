@@ -23,7 +23,7 @@ import java.util.concurrent.TimeUnit;
 
 @ServerEndpoint(value = "/game/{usertoken}", encoders = MessageCoder.class, decoders = MessageCoder.class)
 public class GameEndpoint implements Serializable {
-    private static final int CHAT_CREATION_PERIOD_IN_SECONDS = 45;
+    private static final int CHAT_CREATION_PERIOD_IN_SECONDS = 15;
     private int currentGameIndex = 0;
 
     private Session session;
@@ -38,7 +38,7 @@ public class GameEndpoint implements Serializable {
     private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(5);
     @OnOpen
     public void onOpen(Session session, @PathParam("usertoken") String token) {
-        executorService.scheduleAtFixedRate(this::createNewChat, CHAT_CREATION_PERIOD_IN_SECONDS, CHAT_CREATION_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(this::createNewChat, 1, CHAT_CREATION_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
         System.out.println("Open session with id: " +session.getId());
         this.session = session;
         this.games = sessionManager.getGamesForToken(token);
@@ -93,6 +93,9 @@ public class GameEndpoint implements Serializable {
                 //ChatImpl chatImpl = new ChatImpl(chat);
                 sendCreateChatCommand(chat, game);
             }
+            if(game.getGameState().getData() instanceof Points){
+                sendChangePointsCommand((Points) game.getGameState().getData());
+            }
         }
     }
 
@@ -108,9 +111,8 @@ public class GameEndpoint implements Serializable {
                 for(ChatMessage msg : pr.getMessages()) {
                     sendAddMessageCommand(chatId, msg);
                 }
-                Object gameData = pr.getPlayResultData();
-                if(gameData instanceof Points){
-                    sendChangePointsCommand((Points) gameData);
+                if(game.getGameState().getData() instanceof Points){
+                    sendChangePointsCommand((Points) game.getGameState().getData());
                 }
                 if(pr.isEnd()){
                     sendGameOverCommand();
@@ -165,12 +167,12 @@ public class GameEndpoint implements Serializable {
 
     public void createNewChat(){
         System.out.println("Creating new chat");
+        updateGameIndex();
         Game game = games.get(currentGameIndex);
         CreateChatResult result = game.createNewChat();
         if(result == null) {
             return;
         }
-        updateGameIndex();
         sendCreateChatCommand(result.getChat(), game);
         if(result instanceof ChatCreationWithExtraAnswers) {
             for(Map.Entry<Long, List<Answer>> entry : ((ChatCreationWithExtraAnswers) result).getExtaAnswers().entrySet()) {
