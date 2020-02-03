@@ -51,7 +51,7 @@ export class ServerChatsHandler extends AChatsHandler {
         this.connectionListener.onDisconnect();
         console.log("Websocket getrennt. Versuche erneute Verbindung...");
         // Nicht rekursiv starten...
-        window.setTimeout(this.connect, 0);
+        window.setTimeout(this.connect.bind(this), 0);
     }
 
     private onWebSocketMessage(ev: MessageEvent) {
