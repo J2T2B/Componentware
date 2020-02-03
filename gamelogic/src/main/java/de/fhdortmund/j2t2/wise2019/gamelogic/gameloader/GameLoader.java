@@ -34,6 +34,7 @@ public class GameLoader {
         return resolveReferences(loaded, resolveFunction);
     }
 
+    @SuppressWarnings("unchecked") //by design
     private <T extends Message, U extends Answer> Map<String, T> resolveReferences(T[] data, BiFunction<U, Integer, BiConsumer<T, T[]>> resolveFunction) {
         Map<String, T> res = new HashMap<>();
         for(T t : data) {
