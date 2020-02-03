@@ -8,12 +8,15 @@ import java.util.List;
 
 public class DetectiveGameAnswer implements Answer {
 
-    private transient DetectiveGameMessage parent;
-    private transient int id;
     private String text;
     private String targetId;
     private String unlockKey;
     private boolean locked;
+    private LockedIfCondition lockedIf;
+    private String removeAnswers;
+
+    private transient DetectiveGameMessage parent;
+    private transient int id;
     private transient DetectiveGameMessage target;
 
     @Override
@@ -44,7 +47,11 @@ public class DetectiveGameAnswer implements Answer {
     }
 
     public boolean isLocked() {
-        return locked;
+        return locked || (lockedIf != null && lockedIf.isLocked(this));
+    }
+
+    public String getRemoveAnswers() {
+        return removeAnswers;
     }
 
     @Override

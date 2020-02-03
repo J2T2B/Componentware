@@ -58,8 +58,13 @@ public class DetectivGame extends AbstractGame<Void> {
     }
 
     @Override
-    protected PlayResult playAnswer(Answer answer) {
+    protected PlayResult playAnswer(Answer answerOrig) {
+        DetectiveGameAnswer answer = (DetectiveGameAnswer) answerOrig;
         DetectiveGameMessage target = (DetectiveGameMessage) gameModel.getMessage(answer.firstTarget().getId());
+
+        if(answer.getRemoveAnswers() != null) {
+            gameModel.getMessage(answer.getRemoveAnswers()).getAnswers().clear();
+        }
 
         // Create a new DetectiveGameMessage containing only the answers which are to be sent to the client
         List<DetectiveGameAnswer> answers = new ArrayList<>(target.getAnswers());
@@ -76,7 +81,11 @@ public class DetectivGame extends AbstractGame<Void> {
         }
         if(target.getAnswers().size() == 1 && target.firstAnswer().getText() == null) {
             answer.getParent().getAnswers().removeIf(elem -> elem.getId() == answer.getId());
-            return new PlayResultMessage(new Chat.ChatMessage(target), new Chat.ChatMessage(target.firstAnswer().firstTarget()));
+            PlayResult firstAnswerTargetResult = playAnswer(target.firstAnswer());
+            List<Chat.ChatMessage> resultMessages = new ArrayList<>();
+            resultMessages.add(new Chat.ChatMessage(target));
+            resultMessages.addAll(firstAnswerTargetResult.getMessages());
+            return new PlayResultMessage(resultMessages.toArray(new Chat.ChatMessage[0]));
         }
         return new PlayResultMessage(new Chat.ChatMessage(target));
     }

@@ -2,7 +2,7 @@
   {
     "id": "mainRoot",
     "delay": 0,
-    "text": "INTRODUCTORY TEXT // TODO",
+    "text": "Anfangstext // TODO",
     "answers": [
       {
         "text": "Stellt zuerst eine Frage an Sophie Farber.",
@@ -15,7 +15,7 @@
     ],
     "root": true,
     "chatName": "DETECTIVECHAT MAIN // TODO",
-    "chatImage": "/image/detectivemain.png",
+    "chatImage": "/image/detect,ivemain.png",
     "unlockKeys": []
   },
   {
@@ -25,7 +25,11 @@
     "answers": [
       {
         "text": "Stellt doch lieber eine Frage an Steffan Wagner.",
-        "targetId": "steffanMain"
+        "targetId": "steffanMain",
+        "lockedIf": {
+          "condition": "targetAnswerCountSmallerThan",
+          "data": 2
+        }
       },
       {
         "text": "Fragt nach möglichen Feinden von Markus Farber.",
@@ -85,14 +89,21 @@
   {
     "id": "sophieHausbrand",
     "delay": 0,
-    "text": "Nope. Das war sie nicht.",
+    "text": "Sie hat zwar gestanden ihn umgebracht zu haben, aber sagt der Hausbrand habe nichts mit ihr zu tun. Klingt sehr glaubwürdig wenn du mich fragst.",
     "answers": [
       {
-        "targetId": "steffanMain"
+        "targetId": "steffanMain",
+        "lockedIf": {
+          "condition": "targetAnswerCountSmallerThan",
+          "data": 2
+        },
+        "removeAnswers": "sohpieMain"
       },
       {
         "targetId": "ende",
-        "locked": true
+        "lockedIf": {
+          "condition": "notSingleChild"
+        }
       }
     ],
     "root": false,
@@ -105,7 +116,11 @@
     "answers": [
       {
         "text": "Stellt doch lieber eine Frage an Sophie Farber",
-        "targetId": "sophieMain"
+        "targetId": "sophieMain",
+        "lockedIf": {
+          "condition": "targetAnswerCountSmallerThan",
+          "data": 2
+        }
       },
       {
         "text": "Fragt nach der E-Mail",
@@ -123,10 +138,6 @@
       {
         "text": "Größere Investments?",
         "targetId": "steffanInvest"
-      },
-      {
-        "text": "Stellt ihn doch einfach mal unter tatverdacht und macht ein bisschen Druck mit der Brandstiftung.",
-        "targetId": "steffanAnwalt"
       }
     ],
     "root": false,
@@ -138,7 +149,7 @@
     "text": "Investments. Langweilig. // TODO",
     "answers": [
       {
-        "text": "Stellt ihn doch einfach mal unter tatverdacht und macht ein bisschen Druck mit der Brandstiftung.",
+        "text": "Stellt ihn doch einfach mal unter Tatverdacht und macht ein bisschen Druck mit der Brandstiftung.",
         "targetId": "steffanAnwalt"
       }
     ],
@@ -146,17 +157,23 @@
     "unlockKeys": []
   },
   {
-    "id": "steffanEmail",
+    "id": "steffanAnwalt",
     "delay": 0,
-    "text": "E-Maik fuckup // TODO",
+    "text": "Er will seinen Anwalt.",
     "answers": [
       {
-        "text": "Größere Investments?",
-        "targetId": "steffanInvest"
+        "targetId": "sophieMain",
+        "lockedIf": {
+          "condition": "targetAnswerCountSmallerThan",
+          "data": 2
+        },
+        "removeAnswers": "steffanMain"
       },
       {
-        "text": "Stellt ihn doch einfach mal unter tatverdacht und macht ein bisschen Druck mit der Brandstiftung.",
-        "targetId": "steffanAnwalt"
+        "targetId": "ende",
+        "lockedIf": {
+          "condition": "notSingleChild"
+        }
       }
     ],
     "root": false,
