@@ -4,13 +4,13 @@ import { Partner } from "./Partner";
 export interface IChat {
     messages: IMessage[] | Message[];
     partner: Partner;
-    chatId: number;
+    chatId: string;
 }
 
 export class Chat implements IChat {
     messages: Message[];
     partner: Partner;
-    chatId: number;
+    chatId: string;
 
     constructor(init: IChat) {
         this.chatId = init.chatId;
@@ -19,7 +19,7 @@ export class Chat implements IChat {
     }
 
     addMessage(message: Message) {
-        this.messages = this.messages.sort((a,b) => b.created.unix() - a.created.unix());
+        this.messages = this.messages.sort((a, b) => a.created.unix() - b.created.unix());
         this.messages.push(message);
     }
 

@@ -8,15 +8,23 @@ import java.util.List;
 
 public class PlayResultMessage implements PlayResult {
 
-    private Message message;
+    private List<Chat.ChatMessage> messages;
 
-    public PlayResultMessage(Message message) {
-        this.message = message;
+    public PlayResultMessage(Chat.ChatMessage message) {
+        this.messages = new ArrayList<>();
+        this.messages.add(message);
+    }
+
+    public PlayResultMessage(Chat.ChatMessage... messages) {
+        this.messages = new ArrayList<>();
+        for(Chat.ChatMessage msg : messages) {
+            this.messages.add(msg);
+        }
     }
 
     @Override
-    public Message getMessage() {
-        return message;
+    public List<Chat.ChatMessage> getMessages() {
+        return messages;
     }
 
     @Override
@@ -25,7 +33,7 @@ public class PlayResultMessage implements PlayResult {
     }
 
     @Override
-    public List<PlayResultData> getPlayResultData() {
-        return new ArrayList<>();
+    public PlayResultData getPlayResultData() {
+        return null;
     }
 }

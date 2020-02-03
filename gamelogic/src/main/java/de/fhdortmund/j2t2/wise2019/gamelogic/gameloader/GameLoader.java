@@ -1,22 +1,21 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic.gameloader;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 
-import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Array;
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.concurrent.Callable;
 import java.util.function.BiConsumer;
 import java.util.function.BiFunction;
-import java.util.function.Consumer;
 
 public class GameLoader {
 
@@ -55,7 +54,7 @@ public class GameLoader {
     }
 
     private <T extends Message> T[] loadGameData(Class<T[]> msgClassArray) throws GameLoadingException {
-        try (Reader reader = new InputStreamReader(gameJsonStreamProvider.call())) {
+        try (Reader reader = new InputStreamReader(gameJsonStreamProvider.call(), StandardCharsets.UTF_8)) {
             return gson.fromJson(reader, msgClassArray);
         } catch (Exception e) {
             throw new GameLoadingException("Unable to load game", e);

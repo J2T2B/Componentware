@@ -6,12 +6,12 @@ public class ReadMessageWebSocketCommand extends AbstractWebSocketCommand {
 
     private static final String COMMAND = "ReadMessage";
     private final String messageId;
-    private final long chatId;
+    private final String chatId;
 
     public ReadMessageWebSocketCommand(String messageId, long chatId) {
         super(COMMAND);
         this.messageId = messageId;
-        this.chatId = chatId;
+        this.chatId = chatId+"";
     }
 
     public String getMessageId() {
@@ -19,7 +19,7 @@ public class ReadMessageWebSocketCommand extends AbstractWebSocketCommand {
     }
 
     public long getChatId() {
-        return chatId;
+        return Long.parseLong(chatId);
     }
 }
 

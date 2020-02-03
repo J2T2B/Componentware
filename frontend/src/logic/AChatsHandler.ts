@@ -8,6 +8,7 @@ import { Answer } from "../models/Answer";
 import IConnectionListener from "./IConnectionListener";
 import { IErrorHandler, isIErrorHandler } from "./IErrorHandler";
 import { NotificationHandler } from "./NotificationHandler";
+import moment from "moment";
 
 /**
  * Verwaltet alle Chats und Nachrichten und kommuniziert über die angehangenden Listener
@@ -99,20 +100,24 @@ export default abstract class AChatsHandler {
      * Sendet die Antwort an den Server
      * @param answer Antwort
      */
-    public submitAnswer(answer: Answer | number, chatId: number, messageId: string): void {
-        let answerId: number;
-        if (typeof (answer) === "number") {
-            answerId = answer;
-        }
-        else {
-            answerId = answer.id;
-        }
+    public submitAnswer(answer: Answer, chatId: string, messageId: string): void {
+        const answerId: number = answer.id;
 
         this.sendMessage({
             command: "SubmitAnswer",
             answerId,
             chatId,
             messageId
+        });
+
+        this.onMessage(chatId, {
+            answers: [],
+            created: moment(),
+            id: answerId.toString(),
+            isAnswer: true,
+            image: "",
+            text: answer.text,
+            userHasRead: true
         });
     }
 
@@ -150,7 +155,7 @@ export default abstract class AChatsHandler {
      * @param chatId Betroffene ChatId
      * @param message Neue Nachricht
      */
-    private onMessage(chatId: number, message: IMessage) {
+    private onMessage(chatId: string, message: IMessage) {
         let useMessage = new Message(message);
         let targetChat: Chat;
 
@@ -184,7 +189,7 @@ export default abstract class AChatsHandler {
      * @param messageId Betroffene Nachricht
      * @param answer Gegebene Antwort
      */
-    private onAnswer(chatId: number, messageId: string, answer: Answer) {
+    private onAnswer(chatId: string, messageId: string, answer: Answer) {
         let targetChat = this.chats.find(c => c.chatId === chatId);
         if (targetChat === undefined) {
             throw new Error(`Chat ${chatId} not found. Fatal Error`);

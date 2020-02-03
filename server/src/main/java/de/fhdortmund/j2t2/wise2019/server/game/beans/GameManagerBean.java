@@ -11,27 +11,25 @@ import javax.ejb.Singleton;
 import javax.ejb.Startup;
 import javax.ejb.Stateful;
 import javax.inject.Named;
-import java.util.ArrayList;
-import java.util.Collections;
-import java.util.List;
-import java.util.ServiceLoader;
+import java.util.*;
 
 @Startup
 @Named
 @Stateful
 public class GameManagerBean implements GameManagerLocal {
-    List<Game> games;
-    @PostConstruct
-    private void loadGames(){
-        ServiceLoader<Game> loadedGames = ServiceLoader.load(Game.class);
-        this.games = new ArrayList<>();
-        for(Game game : loadedGames) {
-            this.games.add(game);
-        }
-    }
+    Map<String, List<Game>> games = new HashMap<>();
 
     @Override
     public List<Game> getGamesForUser(String session) {
-        return Collections.unmodifiableList(games);
+        return games.computeIfAbsent(session, key -> loadNewGames());
+    }
+
+    private List<Game> loadNewGames() {
+        ServiceLoader<Game> loadedGames = ServiceLoader.load(Game.class);
+        List<Game> loaded = new ArrayList<>();
+        for(Game game : loadedGames) {
+            loaded.add(game);
+        }
+        return loaded;
     }
 }

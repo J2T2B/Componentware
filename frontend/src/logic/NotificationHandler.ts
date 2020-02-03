@@ -35,7 +35,7 @@ export class NotificationHandler {
 
     public sendNotification(title: string, body: string): void {
         if (this.isEnabled && this.allowed) {
-            const notification = new Notification(title, {
+            new Notification(title, {
                 body
             });
         }

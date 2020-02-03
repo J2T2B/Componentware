@@ -34,6 +34,10 @@ export class ServerChatsHandler extends AChatsHandler {
     }
 
     protected sendMessage(socketMessage: SocketMessage): void | Promise<void> {
+        if (process.env.NODE_ENV !== "production") {
+            console.info("Ausgehende Nachricht: ", socketMessage);
+        }
+
         // Socket steht nicht bereit. Try later again
         if (this.wsConnection === undefined || this.wsConnection.readyState !== 1) {
             window.setTimeout(() => this.sendMessage(socketMessage), 1000);

@@ -35,7 +35,7 @@ export class MockChatsHandler extends AChatsHandler {
                 {
                     command: "CreateChat",
                     chat: {
-                        chatId: i,
+                        chatId: i.toString(),
                         partner: {
                             name: "Kunde " + (i + 1),
                             imageUrl: "http://emilcarlsson.se/assets/harveyspecter.png",
@@ -58,7 +58,7 @@ export class MockChatsHandler extends AChatsHandler {
                 }
                 this.simulateMessage({
                     command: "AddMessage",
-                    chatId: i,
+                    chatId: i.toString(),
                     message: {
                         id: ((i * 10) + j).toString(),
                         text: "Hallo Will " + ((i * 10) + j).toString(),

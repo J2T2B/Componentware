@@ -3,6 +3,7 @@ package de.fhdortmund.j2t2.wise2019.server.game.remote;
 import de.fhdortmund.j2t2.wise2019.gamelogic.*;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
@@ -93,22 +94,31 @@ public class GameEndpoint implements Serializable {
         }
     }
 
-    private void handleSubmitCommand(long answerId, String messageId, long chatId) {
+    private void handleSubmitCommand(long answerId, String remoteMessageId, long chatId) {
         Game game = chatManager.getGameForRemoteChatId(chatId);
         Chat chat = game.getGameState().getChat(chatId);
-        Chat.ChatMessage chatMessage = chat.getMessage(messageId);
-        Message msg = (Message) chatMessage.getMsg();
+        Chat.ChatMessage chatMessage = chat.getMessage(remoteMessageId);
+        Message lastMessage = (Message) chatMessage.getMsg();
 
-        for(Answer answer : msg.getAnswers()) {
+        for(Answer answer : lastMessage.getAnswers()) {
             if (answer.getId() == answerId) {
-                List<Chat.ChatMessage> messages = chat.getMessages();
-                sendAddMessageCommand(chatId, messages.get(messages.size()-1));
-                Object gameData = game.getGameState().getData();
+                PlayResult pr = game.playAnswer(chat, answer);
+                for(Chat.ChatMessage msg : pr.getMessages()) {
+                    sendAddMessageCommand(chatId, msg);
+                }
+                Object gameData = pr.getPlayResultData();
                 if(gameData instanceof Points){
                     sendChangePointsCommand((Points) gameData);
                 }
+                if(pr.isEnd()){
+                    sendGameOverCommand();
+                }
             }
         }
+    }
+
+    public void sendGameOverCommand() {
+        send(new GameOverWebSocketCommand());
     }
 
     private void handleReadMessageCommand(String messageId, long chatId) {
