@@ -7,6 +7,7 @@ import org.junit.Test;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.nio.charset.Charset;
 import java.util.Arrays;
 import java.util.Map;
 import java.util.Objects;
@@ -52,7 +53,7 @@ public class GameLoaderTest {
         Answer[] answers = maximalConfiguration.getAnswers().toArray(new Answer[0]);
         Answer toTest = answers[0];
             assertEquals(0, toTest.getId());
-            assertEquals("Stäckt der Stecker?", toTest.getText());
+            assertEquals(new String("Stäckt der Stecker?".getBytes(), Charset.forName("UTF-8")), toTest.getText());
             assertArrayEquals(new String[]{"test1", "test2"}, toTest.getTargets().stream().map(Message::getId).toArray(String[]::new));
 
         toTest = answers[1];
