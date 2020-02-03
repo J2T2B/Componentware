@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface PlayResult {
 
-    List<Chat.ChatMessage> getMessages();
+    List<Chat.ChatMessageImpl> getMessages();
 
     boolean isEnd();
 

@@ -10,7 +10,7 @@ public class AddMessageWebSocketCommand extends AbstractWebSocketCommand {
     private final String chatId;
     private final MessageRemoteModel message;
 
-    public AddMessageWebSocketCommand(long chatId, Chat.ChatMessage message) {
+    public AddMessageWebSocketCommand(long chatId, Chat.ChatMessageImpl message) {
         super(COMMAND);
         this.chatId = chatId+"";
         this.message = new MessageRemoteModel(message);

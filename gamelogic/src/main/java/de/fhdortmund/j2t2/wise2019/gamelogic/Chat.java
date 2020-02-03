@@ -15,7 +15,7 @@ public interface Chat {
 
     ChatMessage getMessage(String messageId);
 
-    public class ChatMessage implements SimpleMessage, Comparable<ChatMessage> {
+    public class ChatMessageImpl implements ChatMessage {
 
         private final String messageId = UUID.randomUUID().toString();
         private final SimpleMessage msg;
@@ -23,19 +23,19 @@ public interface Chat {
         private boolean read = false;
         private boolean isAnswer;
 
-        public ChatMessage(SimpleMessage msg, long timestamp, boolean isAnswer) {
+        public ChatMessageImpl(SimpleMessage msg, long timestamp, boolean isAnswer) {
             this.msg = msg;
             this.timestamp = timestamp;
             this.isAnswer = isAnswer;
         }
 
-        public ChatMessage(Message msg) {
+        public ChatMessageImpl(Message msg) {
             this.msg = msg;
             this.timestamp = Calendar.getInstance().getTimeInMillis();
             isAnswer = false;
         }
 
-        public ChatMessage(String msg, long timestamp, boolean isAnswer){
+        public ChatMessageImpl(String msg, long timestamp, boolean isAnswer){
             this(() -> {return msg;}, timestamp, isAnswer);
         }
 
@@ -43,7 +43,6 @@ public interface Chat {
             return messageId;
         }
 
-        @Override
         public String getText() {
             return msg.getText();
         }
@@ -54,7 +53,7 @@ public interface Chat {
 
         @Override
         public int compareTo(ChatMessage o) {
-            return Long.compare(timestamp, o.timestamp);
+            return Long.compare(timestamp, o.getTimestamp());
         }
 
         public boolean isRead() {

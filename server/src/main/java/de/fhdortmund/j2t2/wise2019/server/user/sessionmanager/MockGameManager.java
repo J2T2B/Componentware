@@ -123,14 +123,14 @@ public class MockGameManager implements GameManagerLocal {
         }
     };
 
-    private static final Chat.ChatMessage message1= new Chat.ChatMessage(realMessage1, 0, false);
+    private static final Chat.ChatMessageImpl message1= new Chat.ChatMessageImpl(realMessage1, 0, false);
 
     private static Message[] messages = {realMessage1};
 
     private static class MockGame extends AbstractGame<String> {
 
         protected MockGame() throws GameLoadingException {
-            super(MockGame.class, stream -> stream.findFirst().get());
+            super(MockGame.class, stream -> stream.findFirst().get(), String.class);
             gameModel.addMessages(Collections.singletonMap(realMessage1.getId(), realMessage1));
         }
 
@@ -155,7 +155,7 @@ public class MockGameManager implements GameManagerLocal {
 
             if(answer.getTargets().size() == 1) {
                 Message target = answer.getTargets().get(0);
-                res = new PlayResultMessage(new Chat.ChatMessage(target));
+                res = new PlayResultMessage(new Chat.ChatMessageImpl(target));
             } else {
                 double random = Math.random();
                 double sum = 0;
@@ -166,7 +166,7 @@ public class MockGameManager implements GameManagerLocal {
                         break;
                     }
                 }
-                res = new PlayResultMessage(new Chat.ChatMessage(msg));
+                res = new PlayResultMessage(new Chat.ChatMessageImpl(msg));
             }
             return res;
         }

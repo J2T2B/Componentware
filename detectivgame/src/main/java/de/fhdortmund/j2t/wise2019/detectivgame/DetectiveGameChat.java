@@ -1,6 +1,7 @@
 package de.fhdortmund.j2t.wise2019.detectivgame;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
+import de.fhdortmund.j2t2.wise2019.gamelogic.ChatMessage;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chatpartner;
 
 import java.util.ArrayList;

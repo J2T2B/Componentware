@@ -1,5 +1,6 @@
 package de.fhdortmund.j2t.wise2019.detectivgame;
 
+import com.google.gson.Gson;
 import de.fhdortmund.j2t2.wise2019.gamelogic.*;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoader;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
@@ -13,7 +14,7 @@ import java.util.List;
 public class DetectivGame extends AbstractGame<Void> {
 
     public DetectivGame() throws GameLoadingException {
-        super(DetectivGame.class, stream -> stream.filter(url -> url.toString().contains("detectivgame")).findFirst().get());
+        super(DetectivGame.class, stream -> stream.filter(url -> url.toString().contains("detectivgame")).findFirst().get(), Void.class);
     }
 
     @Override
@@ -51,7 +52,7 @@ public class DetectivGame extends AbstractGame<Void> {
                         return image;
                     }
                 });
-                chat.addMessage(new Chat.ChatMessage(message, System.currentTimeMillis(), false));
+                chat.addMessage(new Chat.ChatMessageImpl(message, System.currentTimeMillis(), false));
                 gameState.addChat(chat);
             }
         }
@@ -72,12 +73,12 @@ public class DetectivGame extends AbstractGame<Void> {
         }
         target = new DetectiveGameMessage(target.getId(), target.getDelay(), target.getText(), answers, target.isRoot());
         if(target.isEnd()) {
-            return new PlayResultEnd(new Chat.ChatMessage(target));
+            return new PlayResultEnd(new Chat.ChatMessageImpl(target));
         }
         if(target.getAnswers().size() == 1 && target.firstAnswer().getText() == null) {
             answer.getParent().getAnswers().removeIf(elem -> elem.getId() == answer.getId());
-            return new PlayResultMessage(new Chat.ChatMessage(target), new Chat.ChatMessage(target.firstAnswer().firstTarget()));
+            return new PlayResultMessage(new Chat.ChatMessageImpl(target), new Chat.ChatMessageImpl(target.firstAnswer().firstTarget()));
         }
-        return new PlayResultMessage(new Chat.ChatMessage(target));
+        return new PlayResultMessage(new Chat.ChatMessageImpl(target));
     }
 }

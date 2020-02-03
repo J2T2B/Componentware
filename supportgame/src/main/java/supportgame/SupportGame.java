@@ -9,7 +9,7 @@ import java.io.InputStream;
 public class SupportGame extends AbstractGame<Points> {
 
     public SupportGame() throws GameLoadingException {
-        super(SupportGame.class, stream -> stream.filter(url -> url.toString().contains("supportgame")).findFirst().get());
+        super(SupportGame.class, stream -> stream.filter(url -> url.toString().contains("supportgame")).findFirst().get(), PointsImpl.class);
     }
 
     @Override
@@ -34,7 +34,7 @@ public class SupportGame extends AbstractGame<Points> {
 
         if(answer.getTargets().size() == 1) {
             Message target = answer.getTargets().get(0);
-            res = new PlayResultMessage(new Chat.ChatMessage(target));
+            res = new PlayResultMessage(new Chat.ChatMessageImpl(target));
         } else {
             double random = Math.random();
             double sum = 0;
@@ -45,7 +45,7 @@ public class SupportGame extends AbstractGame<Points> {
                     break;
                 }
             }
-            res = new PlayResultMessage(new Chat.ChatMessage(msg));
+            res = new PlayResultMessage(new Chat.ChatMessageImpl(msg));
         }
         return res;
     }

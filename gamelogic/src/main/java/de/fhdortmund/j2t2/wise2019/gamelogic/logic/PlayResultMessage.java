@@ -1,29 +1,28 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic.logic;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
-import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class PlayResultMessage implements PlayResult {
 
-    private List<Chat.ChatMessage> messages;
+    private List<Chat.ChatMessageImpl> messages;
 
-    public PlayResultMessage(Chat.ChatMessage message) {
+    public PlayResultMessage(Chat.ChatMessageImpl message) {
         this.messages = new ArrayList<>();
         this.messages.add(message);
     }
 
-    public PlayResultMessage(Chat.ChatMessage... messages) {
+    public PlayResultMessage(Chat.ChatMessageImpl... messages) {
         this.messages = new ArrayList<>();
-        for(Chat.ChatMessage msg : messages) {
+        for(Chat.ChatMessageImpl msg : messages) {
             this.messages.add(msg);
         }
     }
 
     @Override
-    public List<Chat.ChatMessage> getMessages() {
+    public List<Chat.ChatMessageImpl> getMessages() {
         return messages;
     }
 
