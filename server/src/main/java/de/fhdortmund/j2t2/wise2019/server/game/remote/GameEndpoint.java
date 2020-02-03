@@ -22,7 +22,7 @@ import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-@ApplicationScoped
+//@ApplicationScoped
 @ServerEndpoint(value = "/game/{usertoken}", encoders = MessageCoder.class, decoders = MessageCoder.class)
 public class GameEndpoint implements Serializable {
     private static final int CHAT_CREATION_PERIOD_IN_SECONDS = 45;
