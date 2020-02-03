@@ -226,7 +226,7 @@ export default abstract class AChatsHandler {
      */
     protected onSocketMessage(message: SocketMessage) {
         if (process.env.NODE_ENV !== "production") {
-            console.info("Eingehende Nachricht: ", message);
+            console.info("%cEingehende Nachricht: ", "color: white; background-color: green;", message);
         }
 
         switch (message.command) {
