@@ -59,7 +59,7 @@ public class DetectivGame extends AbstractGame<Void> {
 
     @Override
     protected PlayResult playAnswer(Answer answer) {
-        DetectiveGameMessage target = (DetectiveGameMessage) answer.firstTarget();
+        DetectiveGameMessage target = (DetectiveGameMessage) gameModel.getMessage(answer.firstTarget().getId());
 
         // Create a new DetectiveGameMessage containing only the answers which are to be sent to the client
         List<DetectiveGameAnswer> answers = new ArrayList<>(target.getAnswers());
@@ -75,6 +75,7 @@ public class DetectivGame extends AbstractGame<Void> {
             return new PlayResultEnd(new Chat.ChatMessage(target));
         }
         if(target.getAnswers().size() == 1 && target.firstAnswer().getText() == null) {
+            answer.getParent().getAnswers().removeIf(elem -> elem.getId() == answer.getId());
             return new PlayResultMessage(new Chat.ChatMessage(target), new Chat.ChatMessage(target.firstAnswer().firstTarget()));
         }
         return new PlayResultMessage(new Chat.ChatMessage(target));
