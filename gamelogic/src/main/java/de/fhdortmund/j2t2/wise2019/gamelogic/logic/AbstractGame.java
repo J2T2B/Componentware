@@ -87,13 +87,13 @@ public abstract class AbstractGame<T> implements Game {
     }
 
     @Override
-    public Chat createNewChat() {
+    public CreateChatResult createNewChat() {
         Chatpartner chatpartner = produceSomeChatpartner();
         Chat chat = new ChatImpl(chatpartner);
         Message rootMessage = gameModel.getSomeRootMessage();
         chat.addMessage(new Chat.ChatMessage(rootMessage));
         gameState.addChat(chat);
-        return chat;
+        return new SimpleChatCreation(chat);
     }
 
     protected abstract PlayResult playAnswer(Answer answer);

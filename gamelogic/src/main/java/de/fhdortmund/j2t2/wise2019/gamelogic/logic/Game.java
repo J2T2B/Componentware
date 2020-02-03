@@ -12,7 +12,7 @@ public interface Game {
      */
     PlayResult playAnswer(Chat chat, Answer answer);
 
-    Chat createNewChat();
+    CreateChatResult createNewChat();
 
     GameState<?> getGameState();
 }

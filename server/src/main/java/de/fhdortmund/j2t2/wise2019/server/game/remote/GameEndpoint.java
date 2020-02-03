@@ -1,9 +1,7 @@
 package de.fhdortmund.j2t2.wise2019.server.game.remote;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.*;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.*;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
@@ -18,6 +16,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
@@ -167,14 +166,26 @@ public class GameEndpoint implements Serializable {
     public void createNewChat(){
         System.out.println("Creating new chat");
         Game game = games.get(currentGameIndex);
-        Chat chat = game.createNewChat();
+        CreateChatResult result = game.createNewChat();
+        if(result == null) {
+            return;
+        }
         updateGameIndex();
-        sendCreateChatCommand(chat, game);
+        sendCreateChatCommand(result.getChat(), game);
+        if(result instanceof ChatCreationWithExtraAnswers) {
+            for(Map.Entry<Long, List<Answer>> entry : ((ChatCreationWithExtraAnswers) result).getExtaAnswers().entrySet()) {
+                Chat chat = game.getGameState().getChat(entry.getKey());
+                String remoteMsgId = chat.getMessages().get(chat.getMessages().size() - 1).getId();
+                for(Answer answer : entry.getValue()) {
+                    send(new AddAnswerWebSocketCommand(entry.getKey(), remoteMsgId, answer));
+                }
+            }
+        }
     }
 
-    void updateGameIndex(){
+    void updateGameIndex() {
         currentGameIndex++;
-        currentGameIndex %= games.size(); //Overflow verhindern
+        currentGameIndex %= games.size(); // Overflow verhindern
     }
 
 }

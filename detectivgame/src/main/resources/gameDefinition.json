@@ -27,8 +27,9 @@
         "text": "Stellt doch lieber eine Frage an Steffan Wagner.",
         "targetId": "steffanMain",
         "lockedIf": {
-          "condition": "targetAnswerCountSmallerThan",
-          "data": 2
+          "condition": "evalTargetAnswerCountSmallerThan",
+          "evalTargetId": "steffanMain",
+          "data": 1
         }
       },
       {
@@ -94,15 +95,18 @@
       {
         "targetId": "steffanMain",
         "lockedIf": {
-          "condition": "targetAnswerCountSmallerThan",
-          "data": 2
+          "condition": "evalTargetAnswerCountSmallerThan",
+          "evalTargetId": "steffanMain",
+          "data": 1
         },
-        "removeAnswers": "sohpieMain"
+        "removeAnswers": "sophieMain"
       },
       {
         "targetId": "ende",
         "lockedIf": {
-          "condition": "notSingleChild"
+          "condition": "evalTargetAnswerCountGreaterThan",
+          "evalTargetId": "steffanMain",
+          "data": 0
         }
       }
     ],
@@ -118,8 +122,9 @@
         "text": "Stellt doch lieber eine Frage an Sophie Farber",
         "targetId": "sophieMain",
         "lockedIf": {
-          "condition": "targetAnswerCountSmallerThan",
-          "data": 2
+          "condition": "evalTargetAnswerCountSmallerThan",
+          "evalTargetId": "sophieMain",
+          "data": 1
         }
       },
       {
@@ -164,15 +169,18 @@
       {
         "targetId": "sophieMain",
         "lockedIf": {
-          "condition": "targetAnswerCountSmallerThan",
-          "data": 2
+          "condition": "evalTargetAnswerCountSmallerThan",
+          "evalTargetId": "sophieMain",
+          "data": 1
         },
         "removeAnswers": "steffanMain"
       },
       {
         "targetId": "ende",
         "lockedIf": {
-          "condition": "notSingleChild"
+          "condition": "evalTargetAnswerCountGreaterThan",
+          "evalTargetId": "sophieMain",
+          "data": 0
         }
       }
     ],
