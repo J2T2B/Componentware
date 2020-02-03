@@ -64,7 +64,7 @@ export class ChatListItemComponent extends React.Component<ChatListItemProps, Ch
         if (text.length > 23) {
             text = text.substr(0, 23) + "...";
         }
-        console.log(text);
+        //console.log(text);
 
         if (unreadMessages > 0) {
             unreadBadge = <Badge color="primary" pill>{unreadMessages}</Badge>
