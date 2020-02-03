@@ -10,20 +10,21 @@ import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand
 import de.fhdortmund.j2t2.wise2019.server.game.remote.websocketcommands.*;
 import de.fhdortmund.j2t2.wise2019.server.user.sessionmanager.SessionManager;
 
-import javax.annotation.Resource;
-import javax.ejb.Startup;
-import javax.ejb.Schedule;
-import javax.enterprise.context.SessionScoped;
+import javax.enterprise.context.ApplicationScoped;
 import javax.inject.Inject;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.TimeUnit;
 
 @ServerEndpoint(value = "/game/{usertoken}", encoders = MessageCoder.class, decoders = MessageCoder.class)
-public class GameEndpoint {
-    private static final String CHAT_CREATION_PERIOD_IN_SECONDS = "30";
+public class GameEndpoint implements Serializable {
+    private static final int CHAT_CREATION_PERIOD_IN_SECONDS = 45;
     private int currentGameIndex = 0;
 
     private Session session;
@@ -35,9 +36,10 @@ public class GameEndpoint {
 
     private List<Game> games;
     private String token;
-
+    private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(5);
     @OnOpen
     public void onOpen(Session session, @PathParam("usertoken") String token) {
+        executorService.scheduleAtFixedRate(this::createNewChat, CHAT_CREATION_PERIOD_IN_SECONDS, CHAT_CREATION_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
         System.out.println("Open session with id: " +session.getId());
         this.session = session;
         this.games = sessionManager.getGamesForToken(token);
@@ -79,6 +81,7 @@ public class GameEndpoint {
     @OnClose
     public void onClose(Session session) throws IOException {
         System.out.println("Closing session with id: " + session.getId());
+        executorService.shutdown();
         sessionManager.invalidate(token);
         session.close();
     }
@@ -161,8 +164,8 @@ public class GameEndpoint {
         send(new ChangePointsWebSocketCommand(points));
     }
 
-    @Schedule(second = CHAT_CREATION_PERIOD_IN_SECONDS)
     public void createNewChat(){
+        System.out.println("Creating new chat");
         Game game = games.get(currentGameIndex);
         Chat chat = game.createNewChat();
         updateGameIndex();

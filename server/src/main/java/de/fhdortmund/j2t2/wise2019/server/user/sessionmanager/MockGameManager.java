@@ -131,6 +131,7 @@ public class MockGameManager implements GameManagerLocal {
 
         protected MockGame() throws GameLoadingException {
             super(MockGame.class, stream -> stream.findFirst().get());
+            gameModel.addMessages(Collections.singletonMap(realMessage1.getId(), realMessage1));
         }
 
         @Override
