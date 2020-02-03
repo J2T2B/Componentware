@@ -88,6 +88,7 @@ public abstract class AbstractGame<T> implements Game {
     public Chat createNewChat() {
         Chatpartner chatpartner = produceSomeChatpartner();
         Chat chat = new ChatImpl(chatpartner);
+        Message rootMessage = gameModel.getSomeRootMessage();
         gameState.addChat(chat);
         return chat;
     }

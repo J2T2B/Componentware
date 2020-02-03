@@ -10,6 +10,7 @@ import de.fhdortmund.j2t2.wise2019.server.game.remote.websocketcommands.*;
 import de.fhdortmund.j2t2.wise2019.server.user.sessionmanager.SessionManager;
 
 import javax.ejb.Schedule;
+import javax.enterprise.context.SessionScoped;
 import javax.inject.Inject;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -17,6 +18,7 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.List;
 
+@SessionScoped
 @ServerEndpoint(value = "/game/{usertoken}", encoders = MessageCoder.class, decoders = MessageCoder.class)
 public class GameEndpoint {
     private static final String CHAT_CREATION_PERIOD_IN_SECONDS = "30";
