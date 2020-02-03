@@ -99,13 +99,13 @@ public class GameEndpoint implements Serializable {
     private void handleSubmitCommand(long answerId, String remoteMessageId, long chatId) {
         Game game = chatManager.getGameForRemoteChatId(chatId);
         Chat chat = game.getGameState().getChat(chatId);
-        Chat.ChatMessage chatMessage = chat.getMessage(remoteMessageId);
+        ChatMessage chatMessage = chat.getMessage(remoteMessageId);
         Message lastMessage = (Message) chatMessage.getMsg();
 
         for(Answer answer : lastMessage.getAnswers()) {
             if (answer.getId() == answerId) {
                 PlayResult pr = game.playAnswer(chat, answer);
-                for(Chat.ChatMessage msg : pr.getMessages()) {
+                for(ChatMessage msg : pr.getMessages()) {
                     sendAddMessageCommand(chatId, msg);
                 }
                 Object gameData = pr.getPlayResultData();
@@ -126,7 +126,7 @@ public class GameEndpoint implements Serializable {
     private void handleReadMessageCommand(String messageId, long chatId) {
         Game game = chatManager.getGameForRemoteChatId(chatId);
         Chat chat = game.getGameState().getChat(chatId);
-        Chat.ChatMessage message = chat.getMessage(messageId);
+        ChatMessage message = chat.getMessage(messageId);
         message.setRead(true);
     }
 
@@ -144,7 +144,7 @@ public class GameEndpoint implements Serializable {
         send(new CreateChatWebSocketCommand(chat));
     }
 
-    public void sendAddMessageCommand(long chatId, Chat.ChatMessage chatMessage) {
+    public void sendAddMessageCommand(long chatId, ChatMessage chatMessage) {
         AddMessageWebSocketCommand command = new AddMessageWebSocketCommand(chatId, chatMessage);
         SimpleMessage message = chatMessage.getMsg();
         int duration = 0;

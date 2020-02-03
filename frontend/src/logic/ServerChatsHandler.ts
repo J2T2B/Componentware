@@ -35,7 +35,7 @@ export class ServerChatsHandler extends AChatsHandler {
 
     protected sendMessage(socketMessage: SocketMessage): void | Promise<void> {
         if (process.env.NODE_ENV !== "production") {
-            console.info("Ausgehende Nachricht: ", socketMessage);
+            console.info("%cAusgehende Nachricht: ", "color: white; background-color: red;", socketMessage);
         }
 
         // Socket steht nicht bereit. Try later again
@@ -51,7 +51,7 @@ export class ServerChatsHandler extends AChatsHandler {
         this.connectionListener.onDisconnect();
         console.log("Websocket getrennt. Versuche erneute Verbindung...");
         // Nicht rekursiv starten...
-        window.setTimeout(this.connect, 0);
+        window.setTimeout(this.connect.bind(this), 0);
     }
 
     private onWebSocketMessage(ev: MessageEvent) {

@@ -2,6 +2,7 @@ plugins {
     id 'ear'
     id 'war'
     id 'java'
+    id "io.freefair.lombok" version "4.1.6"
 }
 
 dependencies {
@@ -37,7 +38,7 @@ dependencies {
     implementation 'org.reflections:reflections:0.9.11'
     // https://mvnrepository.com/artifact/com.google.guava/guava
     testCompile group: 'com.google.guava', name: 'guava', version: '28.2-jre'
-
+    // https://mvnrepository.com/artifact/org.projectlombok/lombok
 }
 
 build.dependsOn "war"

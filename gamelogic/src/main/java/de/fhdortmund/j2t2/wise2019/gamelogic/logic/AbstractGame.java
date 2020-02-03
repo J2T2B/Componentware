@@ -1,5 +1,6 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic.logic;
 
+import com.google.gson.Gson;
 import de.fhdortmund.j2t2.wise2019.gamelogic.*;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameModel;
@@ -18,7 +19,7 @@ import java.util.stream.StreamSupport;
  */
 public abstract class AbstractGame<T> implements Game {
     protected GameModel gameModel  = new GameModel();
-    protected GameState<T> gameState = new GameState<>();
+    protected GameState<T> gameState;
 
     /**
      *
@@ -26,7 +27,8 @@ public abstract class AbstractGame<T> implements Game {
      * @throws GameLoadingException wenn die gameDefintion.json nicht geladen werden kann oder ein sonstiger Fehler bei dem Laden
      * der Spieldefinition auftritt
      */
-    protected AbstractGame(Class<? extends Game> gameClass, Function<Stream<URL>, URL> resourceSelector) throws GameLoadingException {
+    protected AbstractGame(Class<? extends Game> gameClass, Function<Stream<URL>, URL> resourceSelector, Class<? extends T> clazz) throws GameLoadingException {
+        gameState = new GameState<>(clazz);
         URL gameDefinitionURL = resourceSelector.apply(getGameDefinitions(gameClass));
         try(InputStream in = gameDefinitionURL.openStream()) {
             loadGame(in);
@@ -63,10 +65,10 @@ public abstract class AbstractGame<T> implements Game {
     public PlayResult playAnswer(Chat chat, Answer answer) {
         PlayResult res;
 
-        Chat.ChatMessage chatMessage = new Chat.ChatMessage(answer.getText(), Calendar.getInstance().getTimeInMillis(), true);
+        Chat.ChatMessageImpl chatMessage = new Chat.ChatMessageImpl(answer.getText(), Calendar.getInstance().getTimeInMillis(), true);
         gameState.getChat(chat.getId()).addMessage(chatMessage);
         res = playAnswer(answer);
-        for(Chat.ChatMessage message : res.getMessages()) {
+        for(ChatMessage message : res.getMessages()) {
             gameState.getChat(chat.getId()).addMessage(message);
         }
         updateGameState(res);
@@ -91,7 +93,7 @@ public abstract class AbstractGame<T> implements Game {
         Chatpartner chatpartner = produceSomeChatpartner();
         Chat chat = new ChatImpl(chatpartner);
         Message rootMessage = gameModel.getSomeRootMessage();
-        chat.addMessage(new Chat.ChatMessage(rootMessage));
+        chat.addMessage(new Chat.ChatMessageImpl(rootMessage));
         gameState.addChat(chat);
         return new SimpleChatCreation(chat);
     }

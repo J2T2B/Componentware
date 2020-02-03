@@ -1,13 +1,13 @@
-import IChatsListener, { isIChatsListener } from "./IChatsListener";
-import IChatListener, { isIChatListener } from "./IChatListener";
-import { Chat } from "../models/Chat";
-import { SocketMessage } from "../models/SocketMessage";
-import { VoidLike } from "./VoidLike";
-import { IMessage, Message } from "../models/Message";
-import { Answer } from "../models/Answer";
+import IChatsListener, {isIChatsListener} from "./IChatsListener";
+import IChatListener, {isIChatListener} from "./IChatListener";
+import {Chat} from "../models/Chat";
+import {SocketMessage} from "../models/SocketMessage";
+import {VoidLike} from "./VoidLike";
+import {IMessage, Message} from "../models/Message";
+import {Answer} from "../models/Answer";
 import IConnectionListener from "./IConnectionListener";
-import { IErrorHandler, isIErrorHandler } from "./IErrorHandler";
-import { NotificationHandler } from "./NotificationHandler";
+import {IErrorHandler, isIErrorHandler} from "./IErrorHandler";
+import {NotificationHandler} from "./NotificationHandler";
 import moment from "moment";
 
 /**
@@ -28,6 +28,22 @@ export default abstract class AChatsHandler {
         this.chats = [];
         this.errorHandlers = [];
         this.connectionListener = connectionListener;
+    }
+
+    private sortChats(): void {
+        this.chats = this.chats.sort((a, b) => {
+            let timeA = Number.MAX_VALUE,
+                timeB = Number.MAX_VALUE;
+
+            if (a.getLastMessage() !== undefined) {
+                timeA = a.getLastMessage()!.created.unix();
+            }
+            if (b.getLastMessage() !== undefined) {
+                timeB = b.getLastMessage()!.created.unix();
+            }
+
+            return timeB - timeA;
+        });
     }
 
     public get currentChat(): Chat | undefined {
@@ -71,11 +87,9 @@ export default abstract class AChatsHandler {
     public attach(listener: IChatListener | IChatsListener | IErrorHandler): void {
         if (isIChatListener(listener)) {
             this.chatListener.push(listener);
-        }
-        else if (isIChatsListener(listener)) {
+        } else if (isIChatsListener(listener)) {
             this.chatsListener.push(listener);
-        }
-        else if (isIErrorHandler(listener)) {
+        } else if (isIErrorHandler(listener)) {
             this.errorHandlers.push(listener);
         }
     }
@@ -87,11 +101,9 @@ export default abstract class AChatsHandler {
     public detatch(listener: IChatsListener | IChatListener | IErrorHandler): void {
         if (isIChatListener(listener)) {
             this.chatListener = this.detatchListener(listener, this.chatListener)
-        }
-        else if (isIChatsListener(listener)) {
+        } else if (isIChatsListener(listener)) {
             this.chatsListener = this.detatchListener(listener, this.chatsListener);
-        }
-        else if (isIErrorHandler(listener)) {
+        } else if (isIErrorHandler(listener)) {
             this.errorHandlers = this.detatchListener(listener, this.errorHandlers);
         }
     }
@@ -163,8 +175,7 @@ export default abstract class AChatsHandler {
 
         if (chat === undefined) {
             throw new Error(`Chat ${chatId} not found. Fatal Error`);
-        }
-        else {
+        } else {
             targetChat = chat;
         }
 
@@ -176,6 +187,8 @@ export default abstract class AChatsHandler {
             let audio = new Audio("eventually.mp3");
             audio.play().then(() => audio.remove());
         }
+
+        this.sortChats();
 
         if (this._currentChat !== undefined && chatId === this._currentChat.chatId) {
             this.chatListener.forEach(c => c.onMessage(this._currentChat!, useMessage));
@@ -213,7 +226,7 @@ export default abstract class AChatsHandler {
      */
     protected onSocketMessage(message: SocketMessage) {
         if (process.env.NODE_ENV !== "production") {
-            console.info("Eingehende Nachricht: ", message);
+            console.info("%cEingehende Nachricht: ", "color: white; background-color: green;", message);
         }
 
         switch (message.command) {
@@ -224,6 +237,7 @@ export default abstract class AChatsHandler {
                         this.onMessage(message.chat.chatId, m);
                     }
                 }
+                this.sortChats();
                 this.chatsListener.forEach(c => c.onChatChange(this.chats));
                 break;
             case "AddMessage":
