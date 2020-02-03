@@ -1,4 +1,4 @@
-import {Button, Jumbotron} from "reactstrap";
+import {Jumbotron} from "reactstrap";
 import React from "react";
 import {faBookDead} from "@fortawesome/free-solid-svg-icons";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";

@@ -20,7 +20,7 @@ import java.util.UUID;
 public class SessionManagerBean implements LocalSessionManager, RemoteSessionManager {
 
     @Inject
-    private GameManagerLocal gameManager;// = new MockGameManager();
+    private GameManagerLocal gameManager;
     private Map<String, Session> sessions = new HashMap<>();
 
     public SessionManagerBean() throws GameLoadingException {

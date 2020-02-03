@@ -6,10 +6,10 @@ public class SubmitAnswerWebSocketCommand extends AbstractWebSocketCommand {
 
     private static final String COMMAND = "SubmitAnswer";
     private final long answerId;
-    private final long chatId;
+    private final String chatId;
     private final String messageId;
 
-    public SubmitAnswerWebSocketCommand(int answerId, int chatId, String messageId) {
+    public SubmitAnswerWebSocketCommand(int answerId, String chatId, String messageId) {
         super(COMMAND);
         this.answerId = answerId;
         this.chatId = chatId;
@@ -21,7 +21,7 @@ public class SubmitAnswerWebSocketCommand extends AbstractWebSocketCommand {
     }
 
     public long getChatId() {
-        return chatId;
+        return Long.parseLong(chatId);
     }
 
     public String getMessageId() {

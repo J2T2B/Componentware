@@ -39,9 +39,11 @@ public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
     }
 
     @Override
-    public boolean login(LoginCredentials credentials) {
+    public boolean login(LoginCredentials credentials) throws UserDoesntExistException {
         User target = users.get(credentials.getUsername());
-
+        if(target == null){
+            throw new UserDoesntExistException(credentials.getUsername());
+        }
         return hashUserData(credentials).equals(target.getHash());
     }
 

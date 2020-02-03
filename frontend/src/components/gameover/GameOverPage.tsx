@@ -14,9 +14,9 @@ export function GameOverPage(): JSX.Element {
                 GameOver <span role="img">☠</span>
             </h1>
             Du wurdest entlassen. <br/>
+            Dein Konto wurde gelöscht. Du musst ein neues erstellen um wieder zu spielen
             <p className="lead">
-                <Button color="primary">
-                    // TODO: Gib mir eine Funktion
+                <Button color="primary" onClick={()=>window.location.reload()}>
                     Neues Leben beginnen
                 </Button>
             </p>
