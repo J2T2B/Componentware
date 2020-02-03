@@ -7,31 +7,25 @@ import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketComman
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
 import de.fhdortmund.j2t2.wise2019.server.game.remote.websocketcommands.*;
-import de.fhdortmund.j2t2.wise2019.server.user.UserManager;
 import de.fhdortmund.j2t2.wise2019.server.user.sessionmanager.SessionManager;
 
-import javax.annotation.Resource;
-import javax.ejb.Startup;
-import javax.ejb.TimerService;
+import javax.ejb.Schedule;
 import javax.inject.Inject;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.util.List;
-import java.util.concurrent.Executor;
-import java.util.concurrent.Executors;
-import java.util.concurrent.ScheduledExecutorService;
 
 @ServerEndpoint(value = "/game/{usertoken}", encoders = MessageCoder.class, decoders = MessageCoder.class)
 public class GameEndpoint {
+    private static final String CHAT_CREATION_PERIOD_IN_SECONDS = "30";
+    private int currentGameIndex = 0;
 
     private Session session;
 
     @Inject
     private SessionManager sessionManager;
-    @Inject
-    private UserManager userManager;
     @Inject
     private RemoteChatManager chatManager;
 
@@ -39,7 +33,7 @@ public class GameEndpoint {
     private String token;
 
     @OnOpen
-    public void onOpen(Session session, @PathParam("usertoken") String token) throws IOException, EncodeException {
+    public void onOpen(Session session, @PathParam("usertoken") String token) {
         System.out.println("Open session with id: " +session.getId());
         this.session = session;
         this.games = sessionManager.getGamesForToken(token);
@@ -48,7 +42,7 @@ public class GameEndpoint {
     }
 
     @OnMessage
-    public void onMessage(AbstractWebSocketCommand command, Session session) throws IOException, EncodeException {
+    public void onMessage(AbstractWebSocketCommand command, Session session) {
         System.out.println("Empfangen: "+command.toString() + "for session id: "+session.getId());
             switch (command.getCommand()) {
                 case "Reinit":
@@ -86,7 +80,7 @@ public class GameEndpoint {
     }
 
 
-    private void handleReinitcommand() throws IOException, EncodeException {
+    private void handleReinitcommand() {
         for(Game game : games){
             GameState<?> gameState = game.getGameState();
             for(Chat chat : gameState.getOpenChats()){
@@ -96,7 +90,7 @@ public class GameEndpoint {
         }
     }
 
-    private void handleSubmitCommand(long answerId, String messageId, long chatId) throws IOException, EncodeException {
+    private void handleSubmitCommand(long answerId, String messageId, long chatId) {
         Game game = chatManager.getGameForRemoteChatId(chatId);
         Chat chat = game.getGameState().getChat(chatId);
         Chat.ChatMessage chatMessage = chat.getMessage(messageId);
@@ -153,4 +147,18 @@ public class GameEndpoint {
     public void sendChangePointsCommand(Points points) {
         send(new ChangePointsWebSocketCommand(points));
     }
+
+    @Schedule(second = CHAT_CREATION_PERIOD_IN_SECONDS)
+    public void createNewChat(){
+        Game game = games.get(currentGameIndex);
+        Chat chat = game.createNewChat();
+        updateGameIndex();
+        sendCreateChatCommand(chat, game);
+    }
+
+    void updateGameIndex(){
+        currentGameIndex++;
+        currentGameIndex %= games.size(); //Overflow verhindern
+    }
+
 }
