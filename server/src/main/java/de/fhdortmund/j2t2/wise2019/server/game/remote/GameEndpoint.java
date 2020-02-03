@@ -16,11 +16,12 @@ import javax.websocket.*;
 import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
+import java.io.Serializable;
 import java.util.List;
 
 @SessionScoped
 @ServerEndpoint(value = "/game/{usertoken}", encoders = MessageCoder.class, decoders = MessageCoder.class)
-public class GameEndpoint {
+public class GameEndpoint implements Serializable {
     private static final String CHAT_CREATION_PERIOD_IN_SECONDS = "30";
     private int currentGameIndex = 0;
 
