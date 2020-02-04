@@ -13,6 +13,9 @@ public class DetectivGame extends AbstractGame<DetectiveGameData> {
 
     public DetectivGame() throws GameLoadingException {
         super(DetectivGame.class, stream -> stream.filter(url -> url.toString().contains("detectivgame")).findFirst().get(), DetectiveGameData.class);
+        if(gameState.getData() == null) {
+            gameState.setData(new DetectiveGameData());
+        }
     }
 
     @Override
@@ -35,6 +38,7 @@ public class DetectivGame extends AbstractGame<DetectiveGameData> {
             gameState.getData().setTelefonDatenSent(true);
             rootMessage = (DetectiveGameMessage) gameModel.getMessage("telefonDaten");
         } else {
+            gameState.getData().setSendTelefonDatenCount(gameState.getData().getSendTelefonDatenCount() + 1);
             return null;
         }
         List<Answer> unlockedTotal = unlockAll(rootMessage.getUnlockKeys());

@@ -15,6 +15,7 @@ import javax.websocket.server.PathParam;
 import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.Executors;
@@ -117,6 +118,7 @@ public class GameEndpoint implements Serializable {
                 if(pr.isEnd()){
                     sendGameOverCommand();
                 }
+                break;
             }
         }
     }
