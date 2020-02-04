@@ -2,7 +2,7 @@
   {
     "id": "mainRoot",
     "delay": 0,
-    "text": "Hi William, ich habe mal wieder zu viele Fälle die ich gleichzeitig lösen muss. Du hast mir ja schonmal mit einem schwierigen Fall geholfen vielleicht kannst du diesen hier ja auch für mich lösen. Hier sind die relaventen Details die mein Team bisher gesammelt hat: Es geht um einen Mord durch Brandstiftung. Der Name des Opfers ist Markus Farber. Markus Farber war der Geschäftsführer von \"Farber Medical Industries\", einem Pharmaunternehmen. Er ist am 03.01.2020 bei dem Hausbrand in seinem Haus gestorben. Der Brand wurde um 20:07 von einem Nachbarn bemerkt und die Feuerwehr alarmiert. Durch den Löschvorgang wurde der Großteil der Spuren zunichte gemacht. Es hat sogar eine ganze Weile gedauert bis wir festgestellt haben dass dabei jemand gestorben ist. Die relevantesten Personen die wir bis jetzt zu dem Fall befragt haben sind Markus Farber's Frau Sophie und Steffan Wagenar, der CFO von Markus' Unternehmen. Sophie hat uns Zugriff auf das E-Mail Postfach ihres Mannes beschafft wo wir eine Droh-Mail gefunden haben. In dieser Mail wird Markus aufgefordert sich nicht weiter mit \"dem Thema\" zu befassen, ansonsten würden Konsequenzen folgen. Genauere Schlüsse konnten aus der Mail allerdings nicht gezogen werden. Interessant war allerdings eine weitere E-Mail von Steffan Wagenar an Markus Farber, die eine Aufforderung an Markus enthält, wieder zu Verstand zu kommen. Wir haben Steffan vorgeladen aber sind noch nicht dazu gekommen ihn zu Verhören.",
+    "text": "Hi William,\n\n ich habe mal wieder zu viele Fälle die ich gleichzeitig lösen muss. Du hast mir ja schonmal mit einem schwierigen Fall geholfen vielleicht kannst du diesen hier ja auch für mich lösen. Hier sind die relaventen Details die mein Team bisher gesammelt hat: Es geht um einen Mord durch Brandstiftung. Der Name des Opfers ist Markus Farber. Markus Farber war der Geschäftsführer von \"Farber Medical Industries\", einem Pharmaunternehmen. Er ist am 03.01.2020 bei dem Hausbrand in seinem Haus gestorben. Der Brand wurde um 20:07 von einem Nachbarn bemerkt und die Feuerwehr alarmiert. Durch den Löschvorgang wurde der Großteil der Spuren zunichte gemacht. Es hat sogar eine ganze Weile gedauert bis wir festgestellt haben dass dabei jemand gestorben ist. Die relevantesten Personen die wir bis jetzt zu dem Fall befragt haben sind Markus Farber's Frau Sophie und Steffan Wagenar, der CFO von Markus' Unternehmen. Sophie hat uns Zugriff auf das E-Mail Postfach ihres Mannes beschafft wo wir eine Droh-Mail gefunden haben. In dieser Mail wird Markus aufgefordert sich nicht weiter mit \"dem Thema\" zu befassen, ansonsten würden Konsequenzen folgen. Genauere Schlüsse konnten aus der Mail allerdings nicht gezogen werden. Interessant war allerdings eine weitere E-Mail von Steffan Wagenar an Markus Farber, die eine Aufforderung an Markus enthält, wieder zu Verstand zu kommen. Wir haben Steffan vorgeladen aber sind noch nicht dazu gekommen ihn zu Verhören. Wir sind gerade noch dabei die Mobilfunkdaten aller beteiligten Personen auszuwerten aber das kann noch eine Weile dauern. Du bekommst ne Nachricht von der IT-Abteilung wenn sie die Daten haben.",
     "answers": [
       {
         "text": "Stell zuerst eine Frage an Sophie Farber.",
@@ -101,7 +101,7 @@
   {
     "id": "sophieBreakdown",
     "delay": 42,
-    "text": "Das war eine sehr gute Idee!, Sophie hatte einen Nervenzusammenbruch und hat gestanden ihren Mann umgebracht zu haben. Sie hat im Theater von ihrer Freundin erfahren, dass Markus sie betrogen hat. Daraufhin ist sie nach Hause gefahren um ihn zur Rede zu stellen und hat ihn dann im Affekt umgebracht.",
+    "text": "Das war eine sehr gute Idee! Sophie hatte einen Nervenzusammenbruch und hat gestanden ihren Mann umgebracht zu haben. Sie hat im Theater von ihrer Freundin erfahren, dass Markus sie betrogen hat. Daraufhin ist sie nach Hause gefahren um ihn zur Rede zu stellen und hat ihn dann im Affekt umgebracht.",
     "answers": [
       {
         "text": "Könnte es sein, dass sie Haus danach angezündet hat, um die Spuren zu verwischen?",
@@ -187,7 +187,7 @@
   },
   {
     "id": "steffanAnwalt",
-    "delay": 5,
+    "delay": 1,
     "text": "Deine Theorie hat nicht so gut funktioniert. Er sagt bei solch schwerwiegenden Unterstellungen möchte er ohne seinen Anwalt nicht weitersprechen. Das mag verdächtig erscheinen aber hilft uns leider so garnicht weiter. Ab jetzt werden wir wohl nichts nützliches mehr aus ihm heraus bekommen.",
     "answers": [
       {
@@ -219,6 +219,7 @@
       {
         "text": "Ist das dein ernst? Ist dir langweilig oder so?",
         "targetId": "sorrii",
+        "locked": true,
         "unlockKey": "imernst"
       }
     ],
@@ -230,7 +231,7 @@
   {
     "id": "ende",
     "delay": 20,
-    "text": "Haha, sehr gut! Du warst ziemlich gut. Ehrlich gesagt war das ein Fall der schon gelöst wurde. Ich dachte nur dass du im Kundensupport bestimmt super gelangweilt bist und dachte das wäre eine super Idee um deine Produktivität ein bisschen zu senken. \uD83E\uDD23\n\nDu bist sicherlich am tatsächlichen Ergebniss dieses Falls interessiert:\nDass Sophie Markus getötet hat hast du ja schon herausgefunden. Im laufe der Untersuchungen ist herausgekommen, dass Steffan Wagenar Gelder des Unternehmens veruntreut hat um Drogenhandel zu betreiben. Markus war kurz davor das herauszufinden und hatte bereits mit Steffan über Unstimmigkeiten in den Finanzen gesprochen. Steffan hat Panik bekommen und das Haus von Markus angezündet um die Akten zu vernichten die Markus mit nach hause genommen hatte. Laut eigener Aussage konnte er zu diesem Zeitpunkt nicht klar denken und hat nicht darüber nachgedacht, dass Personen im Haus sein könnten.",
+    "text": "Haha, sehr gut! Du warst ziemlich gut. Ehrlich gesagt war das ein Fall der schon gelöst wurde. Ich dachte nur dass du im Kundensupport bestimmt super gelangweilt bist und dachte das wäre eine super Idee um deine Produktivität ein bisschen zu senken. \uD83E\uDD23\r\n\r\nDu bist sicherlich am tatsächlichen Ergebniss dieses Falls interessiert:\r\nDass Sophie Markus getötet hat hast du ja schon herausgefunden. Im laufe der Untersuchungen ist herausgekommen, dass Steffan Wagenar Gelder des Unternehmens veruntreut hat um Drogenhandel zu betreiben. Markus war kurz davor das herauszufinden und hatte bereits mit Steffan über Unstimmigkeiten in den Finanzen gesprochen. Steffan hat Panik bekommen und das Haus von Markus angezündet um die Akten zu vernichten die Markus mit nach hause genommen hatte. Laut eigener Aussage konnte er zu diesem Zeitpunkt nicht klar denken und hat nicht darüber nachgedacht, dass Personen im Haus sein könnten.",
     "answers": [],
     "root": false,
     "unlockKeys": [],
@@ -246,7 +247,7 @@
     "end": true
   },
   {
-    "id": "sorii",
+    "id": "sorrii",
     "delay": 1,
     "text": "Sorrí \uD83D\uDE1D",
     "answers": [],
