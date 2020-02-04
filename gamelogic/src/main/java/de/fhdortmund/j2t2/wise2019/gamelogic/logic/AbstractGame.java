@@ -27,7 +27,7 @@ public abstract class AbstractGame<T> implements Game {
      * der Spieldefinition auftritt
      */
     protected AbstractGame(Class<? extends Game> gameClass, Function<Stream<URL>, URL> resourceSelector, Class<? extends T> clazz) throws GameLoadingException {
-        gameState = new GameState<>(clazz);
+        gameState = new GameState<>(clazz, gameClass);
         URL gameDefinitionURL = resourceSelector.apply(getGameDefinitions(gameClass));
         try(InputStream in = gameDefinitionURL.openStream()) {
             loadGame(in);
@@ -98,4 +98,13 @@ public abstract class AbstractGame<T> implements Game {
     }
 
     protected abstract PlayResult playAnswer(Answer answer);
+
+    public void setGameState(GameState gameState) {
+        this.gameState = gameState;
+    }
+
+    @Override
+    public Message getMessageById(String messageId){
+        return gameModel.getMessages().get(messageId);
+    }
 }

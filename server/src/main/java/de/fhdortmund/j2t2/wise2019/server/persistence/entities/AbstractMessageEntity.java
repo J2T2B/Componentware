@@ -13,5 +13,4 @@ public abstract class AbstractMessageEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long db_id;
-    private String text;
 }

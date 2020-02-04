@@ -9,5 +9,5 @@ import java.security.NoSuchAlgorithmException;
 public interface UserManager {
     void createUser(NewUserData user) throws UserAlreadyExistsException, NoSuchAlgorithmException;
     User getUser(String name);
-    boolean login(LoginCredentials credentials) throws UserDoesntExistException, NoSuchAlgorithmException;
+    boolean login(LoginCredentials credentials) throws UserDoesntExistException, NoSuchAlgorithmException, IllegalAccessException, InstantiationException, ClassNotFoundException;
 }

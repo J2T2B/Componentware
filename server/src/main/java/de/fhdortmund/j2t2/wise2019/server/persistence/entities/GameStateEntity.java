@@ -17,4 +17,8 @@ public class GameStateEntity {
     @ManyToOne
     private UserEntity owner;
     private String data;
+    @Column(nullable = false)
+    private String clazz;
+    @Column(nullable = false)
+    private String gameClazz;
 }

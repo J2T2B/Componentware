@@ -3,7 +3,10 @@ package de.fhdortmund.j2t2.wise2019.gamelogic.logic;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
+import jdk.nashorn.internal.objects.annotations.Getter;
+import jdk.nashorn.internal.objects.annotations.Setter;
 
+import java.beans.Transient;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.NoSuchElementException;
@@ -16,11 +19,13 @@ public class GameState<T> {
     private List<Chat> openChats = new ArrayList<>();
     private T data;
     private String serializedData;
-    private Gson gson = new Gson();
-    private Class<? extends T> clazz;
+    private transient Gson gson = new Gson();
+    private final Class<? extends T> clazz;
+    private final Class<? extends Game> gameClazz;
 
-    public GameState(Class<? extends T> clazz){
+    public GameState(Class<? extends T> clazz, Class<? extends Game> gameClazz){
         this.clazz = clazz;
+        this.gameClazz = gameClazz;
     }
 
     public List<Chat> getOpenChats() {
@@ -60,5 +65,17 @@ public class GameState<T> {
             serializeData();
         }
         return serializedData;
+    }
+
+    public void setSerializedData(String serializedData){
+        this.serializedData = serializedData;
+    }
+
+    public Class<? extends T> getClazz() {
+        return clazz;
+    }
+
+    public Class<? extends Game> getGameClazz() {
+        return gameClazz;
     }
 }

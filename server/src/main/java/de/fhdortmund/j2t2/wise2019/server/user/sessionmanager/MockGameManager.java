@@ -170,5 +170,10 @@ public class MockGameManager implements GameManagerLocal {
             }
             return res;
         }
+
+        @Override
+        public void updateGameModel() {
+
+        }
     }
 }

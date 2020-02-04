@@ -12,6 +12,7 @@ public class UserEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private long id;
+    @Column(name = "username", nullable = false, unique = true)
     private String username;
     private String hash;
     @OneToMany(mappedBy = "owner")

@@ -2,6 +2,7 @@ package de.fhdortmund.j2t2.wise2019.gamelogic.logic;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
+import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 
 public interface Game {
 
@@ -15,4 +16,10 @@ public interface Game {
     CreateChatResult createNewChat();
 
     GameState<?> getGameState();
+
+    void setGameState(GameState<?> gameState);
+
+    Message getMessageById(String messageId);
+
+    void updateGameModel();
 }

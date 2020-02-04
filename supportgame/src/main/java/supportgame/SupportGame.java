@@ -59,4 +59,9 @@ public class SupportGame extends AbstractGame<Points> {
         }
         return res;
     }
+
+    @Override
+    public void updateGameModel() {
+        //nichts zu tun
+    }
 }

@@ -8,10 +8,12 @@ import java.util.List;
 public class DefaultUserImpl implements User {
     private final String name;
     private final String hash;
+    private List<Game> games;
 
-    DefaultUserImpl(String name, String hash){
+    public DefaultUserImpl(String name, String hash, List<Game> games){
         this.name = name;
         this.hash = hash;
+        this.games = games;
     }
 
     @Override

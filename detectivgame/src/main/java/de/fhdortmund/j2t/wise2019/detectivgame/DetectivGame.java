@@ -81,6 +81,11 @@ public class DetectivGame extends AbstractGame<DetectiveGameData> {
         return new SimpleChatCreation(chat);
     }
 
+    @Override
+    public void updateGameModel() {
+        //TODO @Jan H
+    }
+
     protected void loadGame(InputStream gameDefinitionInputStream) throws GameLoadingException {
         gameModel.addMessages(new GameLoader(() -> gameDefinitionInputStream).loadGame(DetectiveGameMessage[].class, (answer, id) -> {
             ((DetectiveGameAnswer) answer).setId(id);

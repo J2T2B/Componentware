@@ -12,19 +12,5 @@ import java.util.List;
 @Data
 public class ComplexMessageEntity extends AbstractMessageEntity {
     private String id;
-    private int delay;
-    private boolean root;
-    double probably;
-    @OneToMany(mappedBy = "parent")
-    List<AnswerEntity> answers;
-    @OneToOne(cascade = CascadeType.ALL, optional = false)
-    private PointsEntity points;
-
-    public PointsEntity getPoints() {
-        return points;
-    }
-
-    public void setPoints(PointsEntity points) {
-        this.points = points;
-    }
+    private String gameClazz;
 }

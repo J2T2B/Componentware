@@ -44,7 +44,7 @@ public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
         if(users.containsKey(user.getUsername())){
             throw new UserAlreadyExistsException("User with name " + user.getUsername() + "already exists");
         }
-        users.put(user.getUsername(), new DefaultUserImpl(user.getUsername(), hashUserData(user)));
+        users.put(user.getUsername(), new DefaultUserImpl(user.getUsername(), hashUserData(user), new ArrayList<>()));
     }
 
     @Override
@@ -53,10 +53,10 @@ public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
     }
 
     @Override
-    public boolean login(LoginCredentials credentials) throws UserDoesntExistException, NoSuchAlgorithmException {
-        /*if(!users.containsKey(credentials.getUsername())){
+    public boolean login(LoginCredentials credentials) throws UserDoesntExistException, NoSuchAlgorithmException, IllegalAccessException, InstantiationException, ClassNotFoundException {
+        if(!users.containsKey(credentials.getUsername())){
             users.put(credentials.getUsername(), userDao.get(credentials.getUsername()));
-        }*/
+        }
         User target = users.get(credentials.getUsername());
 
         if(target == null){

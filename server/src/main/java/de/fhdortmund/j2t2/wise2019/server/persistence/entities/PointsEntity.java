@@ -1,5 +1,6 @@
 package de.fhdortmund.j2t2.wise2019.server.persistence.entities;
 
+import de.fhdortmund.j2t2.wise2019.gamelogic.Points;
 import lombok.Data;
 
 import javax.persistence.Entity;
@@ -9,11 +10,11 @@ import javax.persistence.Id;
 
 @Entity
 @Data
-public class PointsEntity {
+public class PointsEntity implements Points {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
-    private int chefSatisfication;
+    private int chefSatisfaction;
     private int customerExperience;
     private int budget;
 }

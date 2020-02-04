@@ -1,6 +1,9 @@
 package de.fhdortmund.j2t2.wise2019.server.persistence.daos;
 
+import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
 import de.fhdortmund.j2t2.wise2019.gamelogic.ChatMessage;
+import de.fhdortmund.j2t2.wise2019.gamelogic.SimpleMessage;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
 import de.fhdortmund.j2t2.wise2019.server.persistence.entities.AbstractMessageEntity;
 import de.fhdortmund.j2t2.wise2019.server.persistence.entities.ChatEntity;
 import de.fhdortmund.j2t2.wise2019.server.persistence.entities.ChatMessageEntity;
@@ -29,11 +32,18 @@ public class ChatMessageDao extends AbstractDao{
             chatMessageEntity.setOwner(chatEntity);
             chatMessageEntity.setCreationTime(message.getTimestamp());
             chatMessageEntity.setAlreadySeen(message.isRead());
-            AbstractMessageEntity messageEntity = messageDao.persist(message.getMsg());
+            AbstractMessageEntity messageEntity = messageDao.persist(message.getMsg(), chatEntity.getGameState());
             chatMessageEntity.setMessage(messageEntity);
             em.persist(chatEntity);
         }
         em.getTransaction().commit();
         em.close();
+    }
+
+    public ChatMessage deserialize(ChatMessageEntity chatMessageEntity, GameState gameState) {
+        SimpleMessage simpleMessage = messageDao.deserialize(chatMessageEntity.getMessage(), gameState);
+        Chat.ChatMessageImpl chatMessage = new Chat.ChatMessageImpl(simpleMessage, chatMessageEntity.getCreationTime(), chatMessageEntity.isAnswer());
+        chatMessage.setRead(chatMessageEntity.isAlreadySeen());
+        return chatMessage;
     }
 }
