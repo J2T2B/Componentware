@@ -2,15 +2,15 @@
   {
     "id": "mainRoot",
     "delay": 0,
-    "text": "Hi William, ich habe mal wieder zu viele Fälle die ich gleichzeitig lösen muss. Du hast mir ja schonmal mit einem schwierigen Fall geholfen vielleicht kannst du diesen hier ja auch für mich lösen. Hier sind die relaventen Details die mein Team bisher gesammelt hat: Es geht um einen Mord durch Brandstiftung. Der Name des Opfers ist Markus Farber. Markus Farber war der Geschäftsführer von \"Farber Medical Industries\", einem Pharmaunternehmen. Er ist am 03.01.2020 bei dem Hausbrand in seinem Haus gestorben. Der Brand wurde um 20:07 von einem Nachbarn bemerkt und die Feuerwehr alarmiert. Durch den Löschvorgang wurde der Großteil der Spuren zunichte gemacht. Es hat sogar eine ganze Weile gedauert bis wir festgestellt haben dass dabei jemand gestorben ist. Die relevantesten Personen die wir bis jetzt zu dem Fall befragt haben sind Markus Farber's Frau Sophie und Steffan Wagenar, der CFO von Markus' Unternehmen. // TODO restliche infos",
+    "text": "Hi William, ich habe mal wieder zu viele Fälle die ich gleichzeitig lösen muss. Du hast mir ja schonmal mit einem schwierigen Fall geholfen vielleicht kannst du diesen hier ja auch für mich lösen. Hier sind die relaventen Details die mein Team bisher gesammelt hat: Es geht um einen Mord durch Brandstiftung. Der Name des Opfers ist Markus Farber. Markus Farber war der Geschäftsführer von \"Farber Medical Industries\", einem Pharmaunternehmen. Er ist am 03.01.2020 bei dem Hausbrand in seinem Haus gestorben. Der Brand wurde um 20:07 von einem Nachbarn bemerkt und die Feuerwehr alarmiert. Durch den Löschvorgang wurde der Großteil der Spuren zunichte gemacht. Es hat sogar eine ganze Weile gedauert bis wir festgestellt haben dass dabei jemand gestorben ist. Die relevantesten Personen die wir bis jetzt zu dem Fall befragt haben sind Markus Farber's Frau Sophie und Steffan Wagenar, der CFO von Markus' Unternehmen. Sophie hat uns Zugriff auf das E-Mail Postfach ihres Mannes beschafft wo wir eine Droh-Mail gefunden haben. In dieser Mail wird Markus aufgefordert sich nicht weiter mit \"dem Thema\" zu befassen, ansonsten würden Konsequenzen folgen. Genauere Schlüsse konnten aus der Mail allerdings nicht gezogen werden. Interessant war allerdings eine weitere E-Mail von Steffan Wagenar an Markus Farber, die eine Aufforderung an Markus enthält, wieder zu Verstand zu kommen. Wir haben Steffan vorgeladen aber sind noch nicht dazu gekommen ihn zu Verhören.",
     "answers": [
       {
         "text": "Stell zuerst eine Frage an Sophie Farber.",
-        "targetId": "sophieMain"
+        "targetId": "sophieFix"
       },
       {
         "text": "Stell zuerst eine Frage an Steffan Wagenar.",
-        "targetId": "steffanMain"
+        "targetId": "steffanFix"
       }
     ],
     "root": true,
@@ -19,8 +19,32 @@
     "unlockKeys": []
   },
   {
+    "id": "sophieFix",
+    "delay": 3,
+    "text": "Alles klar ich hole Sophie zum Verhör. Warte kurz.",
+    "answers": [
+      {
+        "targetId": "sophieMain"
+      }
+    ],
+    "root": false,
+    "unlockKeys": []
+  },
+  {
+    "id": "steffanFix",
+    "delay": 3,
+    "text": "Alles klar ich hole Steffan zum Verhör. Warte kurz.",
+    "answers": [
+      {
+        "targetId": "steffanMain"
+      }
+    ],
+    "root": false,
+    "unlockKeys": []
+  },
+  {
     "id": "sophieMain",
-    "delay": 0,
+    "delay": 20,
     "text": "Wonach soll ich Sophie fragen?",
     "answers": [
       {
@@ -52,7 +76,7 @@
   },
   {
     "id": "markusFeinde",
-    "delay": 0,
+    "delay": 13,
     "text": "Sie geht davon aus, dass Markus sicherlich einige Feinde hat, da sich dies als Firmenchef nicht vermeiden ließe. Allerdings weiß sie nichts genaueres und kann sich nicht vorstellen, dass jemand deshalb sein Haus anzünden würde.",
     "answers": [
       {
@@ -64,7 +88,7 @@
   },
   {
     "id": "markusVerhalten",
-    "delay": 0,
+    "delay": 16,
     "text": "Laut Sophie war Markus Farber in naher Vergangenheit sehr häufig mit seinem Unternehmen und des dazugehörigen Dokumenten beschäftigt. Deutlich häufiger als sonst.",
     "answers": [
       {
@@ -76,7 +100,7 @@
   },
   {
     "id": "sophieBreakdown",
-    "delay": 0,
+    "delay": 42,
     "text": "Das war eine sehr gute Idee!, Sophie hatte einen Nervenzusammenbruch und hat gestanden ihren Mann umgebracht zu haben. Sie hat im Theater von ihrer Freundin erfahren, dass Markus sie betrogen hat. Daraufhin ist sie nach Hause gefahren um ihn zur Rede zu stellen und hat ihn dann im Affekt umgebracht.",
     "answers": [
       {
@@ -89,7 +113,7 @@
   },
   {
     "id": "sophieHausbrand",
-    "delay": 0,
+    "delay": 12,
     "text": "Sie hat zwar gestanden ihn umgebracht zu haben, aber sagt der Hausbrand habe nichts mit ihr zu tun. Sie klingt dabei sehr glaubwürdig wenn du mich fragst. Sie ist in keiner Verfassung in der sie es jetzt noch abstreiten würde wenn sie den Brand tatsächlich gelegt hätte.",
     "answers": [
       {
@@ -115,7 +139,7 @@
   },
   {
     "id": "steffanMain",
-    "delay": 0,
+    "delay": 23,
     "text": "Wonach soll ich Steffan fragen?",
     "answers": [
       {
