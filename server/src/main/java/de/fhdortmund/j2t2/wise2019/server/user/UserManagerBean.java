@@ -54,9 +54,9 @@ public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
 
     @Override
     public boolean login(LoginCredentials credentials) throws UserDoesntExistException, NoSuchAlgorithmException {
-        if(users.containsKey(credentials.getUsername())){
+        /*if(!users.containsKey(credentials.getUsername())){
             users.put(credentials.getUsername(), userDao.get(credentials.getUsername()));
-        }
+        }*/
         User target = users.get(credentials.getUsername());
 
         if(target == null){
