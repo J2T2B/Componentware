@@ -1,6 +1,6 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic.gameloader;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.Chatpartner;
+import de.fhdortmund.j2t2.wise2019.gamelogic.ChatPartner;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import org.apache.commons.lang3.RandomUtils;
 
@@ -8,15 +8,15 @@ import java.util.*;
 import java.util.stream.Collectors;
 
 public class GameModel {
-    private List<Chatpartner> chatpartners = new ArrayList<>();
+    private List<ChatPartner> chatPartners = new ArrayList<>();
     private Map<String, Message> messages = new HashMap<>();
 
     public void addMessages(Map<String, ? extends Message> messages){
         this.messages.putAll(messages);
     }
 
-    public void addChatpartners(Collection<? extends Chatpartner> chatpartners){
-        this.chatpartners.addAll(chatpartners);
+    public void addChatpartners(Collection<? extends ChatPartner> chatpartners){
+        this.chatPartners.addAll(chatpartners);
     }
 
     public Map<String, Message> getMessages(){
@@ -27,8 +27,8 @@ public class GameModel {
         return messages.get(id);
     }
 
-    public ArrayList<Chatpartner> getChatpartners(){
-        return new ArrayList<>(chatpartners);
+    public ArrayList<ChatPartner> getChatPartners(){
+        return new ArrayList<>(chatPartners);
     }
 
     public Message getSomeRootMessage(){

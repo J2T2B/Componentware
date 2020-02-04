@@ -1,0 +1,27 @@
+<persistence xmlns="http://xmlns.jcp.org/xml/ns/persistence" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://xmlns.jcp.org/xml/ns/persistence http://xmlns.jcp.org/xml/ns/persistence/persistence_2_1.xsd" version="2.1">
+
+    <persistence-unit name="de.fhdortmund.j2t2.wise2019.server.persistence">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>de.fhdortmund.j2t2.wise2019.server.persistence.entities.AnswerEntity</class>
+        <class>de.fhdortmund.j2t2.wise2019.server.persistence.entities.SimpleMessageEntity</class>
+        <class>de.fhdortmund.j2t2.wise2019.server.persistence.entities.ChatEntity</class>
+        <class>de.fhdortmund.j2t2.wise2019.server.persistence.entities.ChatMessageEntity</class>
+        <class>de.fhdortmund.j2t2.wise2019.server.persistence.entities.GameStateEntity</class>
+        <class>de.fhdortmund.j2t2.wise2019.server.persistence.entities.ComplexMessageEntity</class>
+        <class>de.fhdortmund.j2t2.wise2019.server.persistence.entities.PointsEntity</class>
+        <class>de.fhdortmund.j2t2.wise2019.server.persistence.entities.UserEntity</class>
+        <class>de.fhdortmund.j2t2.wise2019.server.persistence.entities.SimpleMessageEntity</class>
+        <class>de.fhdortmund.j2t2.wise2019.server.persistence.entities.ChatPartnerEntity</class>
+        <class>de.fhdortmund.j2t2.wise2019.server.persistence.entities.TargetId</class>
+        <properties>
+            <property name="hibernate.connection.driver_class" value="com.mysql.jdbc.Driver"/>
+            <property name="hibernate.dialect" value="org.hibernate.dialect.MySQL5Dialect"/>
+            <property name="hibernate.connection.url" value="jdbc:mysql://localhost:3306/cw_test"/>
+            <property name="hibernate.connection.username" value="test"/>
+            <property name="hibernate.connection.password" value="test"/>
+            <property name="hibernate.hbm2ddl.auto" value="create"/>
+            <property name="hibernate.show_sql" value="true"/>
+            <property name="hibernate.format_sql" value="true"/>
+        </properties>
+    </persistence-unit>
+</persistence>

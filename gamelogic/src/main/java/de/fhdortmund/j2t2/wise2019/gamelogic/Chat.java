@@ -8,7 +8,7 @@ public interface Chat {
 
     public long getId();
 
-    Chatpartner getChatpartner();
+    ChatPartner getChatpartner();
 
     void addMessage(ChatMessage message);
     List<ChatMessage> getMessages();

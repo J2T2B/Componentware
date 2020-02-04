@@ -11,20 +11,20 @@ import java.util.NoSuchElementException;
 public class ChatImpl implements Chat, Serializable {
     final long id;
 
-    private Chatpartner chatPartner;
+    private ChatPartner chatPartner;
     private List<ChatMessage> messages;
 
     public ChatImpl(){
-        this(new ChatpartnerImpl());
+        this(new ChatPartnerImpl());
     }
 
     public ChatImpl(Chat chat) {
         id = chat.getId();
-        chatPartner = new ChatpartnerImpl(chat.getChatpartner());
+        chatPartner = new ChatPartnerImpl(chat.getChatpartner());
         messages = chat.getMessages();
     }
 
-    public ChatImpl(Chatpartner chatpartner){
+    public ChatImpl(ChatPartner chatpartner){
         id = RandomUtils.nextLong();
         this.chatPartner = chatpartner;
         messages = new ArrayList<>();
@@ -35,7 +35,7 @@ public class ChatImpl implements Chat, Serializable {
     }
 
     @Override
-    public Chatpartner getChatpartner() {
+    public ChatPartner getChatpartner() {
         return chatPartner;
     }
 

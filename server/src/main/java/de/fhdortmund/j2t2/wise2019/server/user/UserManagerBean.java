@@ -1,6 +1,7 @@
 package de.fhdortmund.j2t2.wise2019.server.user;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
+import de.fhdortmund.j2t2.wise2019.server.persistence.daos.UserDao;
 import de.fhdortmund.j2t2.wise2019.server.user.login.LoginCredentials;
 import de.fhdortmund.j2t2.wise2019.server.user.register.NewUserData;
 import de.fhdortmund.j2t2.wise2019.server.user.register.UserAlreadyExistsException;
@@ -9,6 +10,7 @@ import javax.ejb.Singleton;
 import javax.ejb.Stateful;
 import javax.enterprise.context.Dependent;
 import javax.enterprise.inject.Default;
+import javax.inject.Inject;
 import javax.inject.Named;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -21,6 +23,9 @@ import java.util.Map;
 public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
     Map<String, User> users = new HashMap<>();
 
+    @Inject
+    private UserDao userDao;
+
     public List<Chat> getChatsForUser(String token) {
         return new ArrayList<>(); // TODO
     }
@@ -31,6 +36,7 @@ public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
             throw new UserAlreadyExistsException("User with name " + user.getUsername() + "already exists");
         }
         users.put(user.getUsername(), new DefaultUserImpl(user.getUsername(), hashUserData(user)));
+        userDao.persist(users.get(user.getUsername()));
     }
 
     @Override

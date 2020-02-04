@@ -145,8 +145,8 @@ public class MockGameManager implements GameManagerLocal {
         }
 
         @Override
-        public Chatpartner produceSomeChatpartner() {
-            return new ChatpartnerImpl();
+        public ChatPartner produceSomeChatpartner() {
+            return new ChatPartnerImpl();
         }
 
         @Override

@@ -1,6 +1,5 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic.logic;
 
-import com.google.gson.Gson;
 import de.fhdortmund.j2t2.wise2019.gamelogic.*;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameModel;
@@ -79,7 +78,7 @@ public abstract class AbstractGame<T> implements Game {
      * Erstelle irgendeinen Chatpartner
      * @return erstellten Chatpartner
      */
-    public abstract Chatpartner produceSomeChatpartner();
+    public abstract ChatPartner produceSomeChatpartner();
 
 
 
@@ -90,7 +89,7 @@ public abstract class AbstractGame<T> implements Game {
 
     @Override
     public Chat createNewChat() {
-        Chatpartner chatpartner = produceSomeChatpartner();
+        ChatPartner chatpartner = produceSomeChatpartner();
         Chat chat = new ChatImpl(chatpartner);
         Message rootMessage = gameModel.getSomeRootMessage();
         chat.addMessage(new Chat.ChatMessageImpl(rootMessage));

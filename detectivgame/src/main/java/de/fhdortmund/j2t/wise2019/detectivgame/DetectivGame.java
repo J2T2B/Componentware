@@ -1,6 +1,5 @@
 package de.fhdortmund.j2t.wise2019.detectivgame;
 
-import com.google.gson.Gson;
 import de.fhdortmund.j2t2.wise2019.gamelogic.*;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoader;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
@@ -23,8 +22,8 @@ public class DetectivGame extends AbstractGame<Void> {
     }
 
     @Override
-    public Chatpartner produceSomeChatpartner() {
-        return new ChatpartnerImpl();
+    public ChatPartner produceSomeChatpartner() {
+        return new ChatPartnerImpl();
     }
 
     protected void loadGame(InputStream gameDefinitionInputStream) throws GameLoadingException {
@@ -37,7 +36,7 @@ public class DetectivGame extends AbstractGame<Void> {
         }));
         for(Message message : gameModel.getMessages().values()) {
             if(message.isRoot()) {
-                Chat chat = new DetectiveGameChat(message.getId().hashCode(), new Chatpartner() {
+                Chat chat = new DetectiveGameChat(message.getId().hashCode(), new ChatPartner() {
 
                     private String name = message.getId();
                     private String image = ((DetectiveGameMessage)message).getChatImage();

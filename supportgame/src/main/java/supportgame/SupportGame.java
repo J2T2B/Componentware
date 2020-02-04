@@ -19,7 +19,7 @@ public class SupportGame extends AbstractGame<Points> {
     }
 
     @Override
-    public Chatpartner produceSomeChatpartner() {
+    public ChatPartner produceSomeChatpartner() {
         return null;
     }
 

@@ -1,5 +1,6 @@
 package de.fhdortmund.j2t2.wise2019.server.user.register;
 
+import de.fhdortmund.j2t2.wise2019.server.persistence.daos.UserDao;
 import de.fhdortmund.j2t2.wise2019.server.user.UserManager;
 
 import javax.inject.Inject;
