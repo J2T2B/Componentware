@@ -49,10 +49,10 @@ export class LoginCardComponent extends React.Component<React.PropsWithChildren<
             <Card className={(this.state.width > 992 ? "mx-auto w-50" : "mx-auto") + " transparent"}>
                 <CardHeader>
                     <CardTitle>
-                        <h5 className="">
+                        <h4 className="">
                             {this.props.mode === "login" && "Anmelden"}
                             {this.props.mode === "register" && "Registrieren"}
-                        </h5>
+                        </h4>
                     </CardTitle>
                 </CardHeader>
                 <CardBody>
