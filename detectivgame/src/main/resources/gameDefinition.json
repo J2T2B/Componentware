@@ -117,7 +117,7 @@
     "text": "Sie hat zwar gestanden ihn umgebracht zu haben, aber sagt der Hausbrand habe nichts mit ihr zu tun. Sie klingt dabei sehr glaubwürdig wenn du mich fragst. Sie ist in keiner Verfassung in der sie es jetzt noch abstreiten würde wenn sie den Brand tatsächlich gelegt hätte.",
     "answers": [
       {
-        "targetId": "steffanMain",
+        "targetId": "steffanFix",
         "lockedIf": {
           "condition": "evalTargetAnswerCountSmallerThan",
           "evalTargetId": "steffanMain",
@@ -161,7 +161,7 @@
   },
   {
     "id": "steffanEmail",
-    "delay": 0,
+    "delay": 12,
     "text": "In der E-Mail ging es anscheinend um einige größere Investments die momentan anstehen. Steffan und Markus haben unterschiedliche Standpunkte bezüglich der geplanten Ausgaben und Steffan hat Markus deshalb in einem Moment geistiger Abwesenheit eine wütende E-Mail geschrieben. Er sagt allerdigs, dass dieses Thema nicht wirklich so kritisch ist wie es in der E-Mail scheint. Die Investitionen wurden bereits getätigt und es hat dem Unternehmen bis jetzt nicht geschadet.",
     "answers": [
       {
@@ -174,7 +174,7 @@
   },
   {
     "id": "steffanInvest",
-    "delay": 0,
+    "delay": 9,
     "text": "Es standen einige Investments bezüglich Forschungsprojekten an. Dazu mussten neue Labore gebaut und Maschinen eingekauft werden. Steffan und Markus waren sich dabei uneinig wie umfangreich diese Investments gestaltet werden sollten. Wenn man sich Steffan's Reaktion auf das Thema anschaut scheint es aber tatsächlich nicht so als wären die Außeinandersetzungen zu diesem Thema besonders schlimm gewesen.",
     "answers": [
       {
@@ -187,11 +187,11 @@
   },
   {
     "id": "steffanAnwalt",
-    "delay": 0,
+    "delay": 5,
     "text": "Deine Theorie hat nicht so gut funktioniert. Er sagt bei solch schwerwiegenden Unterstellungen möchte er ohne seinen Anwalt nicht weitersprechen. Das mag verdächtig erscheinen aber hilft uns leider so garnicht weiter. Ab jetzt werden wir wohl nichts nützliches mehr aus ihm heraus bekommen.",
     "answers": [
       {
-        "targetId": "sophieMain",
+        "targetId": "sophieFix",
         "lockedIf": {
           "condition": "evalTargetAnswerCountSmallerThan",
           "evalTargetId": "sophieMain",
@@ -229,7 +229,7 @@
   },
   {
     "id": "ende",
-    "delay": 0,
+    "delay": 20,
     "text": "Haha, sehr gut! Du warst ziemlich gut. Ehrlich gesagt war das ein Fall der schon gelöst wurde. Ich dachte nur dass du im Kundensupport bestimmt super gelangweilt bist und dachte das wäre eine super Idee um deine Produktivität ein bisschen zu senken. \uD83E\uDD23\n\nDu bist sicherlich am tatsächlichen Ergebniss dieses Falls interessiert:\nDass Sophie Markus getötet hat hast du ja schon herausgefunden. Im laufe der Untersuchungen ist herausgekommen, dass Steffan Wagenar Gelder des Unternehmens veruntreut hat um Drogenhandel zu betreiben. Markus war kurz davor das herauszufinden und hatte bereits mit Steffan über Unstimmigkeiten in den Finanzen gesprochen. Steffan hat Panik bekommen und das Haus von Markus angezündet um die Akten zu vernichten die Markus mit nach hause genommen hatte. Laut eigener Aussage konnte er zu diesem Zeitpunkt nicht klar denken und hat nicht darüber nachgedacht, dass Personen im Haus sein könnten.",
     "answers": [],
     "root": false,
@@ -238,7 +238,7 @@
   },
   {
     "id": "ende1",
-    "delay": 0,
+    "delay": 1,
     "text": "Ja natürlich.",
     "answers": [],
     "root": false,
@@ -247,7 +247,7 @@
   },
   {
     "id": "sorii",
-    "delay": 0,
+    "delay": 1,
     "text": "Sorrí \uD83D\uDE1D",
     "answers": [],
     "root": false,
