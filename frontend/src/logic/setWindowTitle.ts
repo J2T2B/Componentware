@@ -2,10 +2,10 @@ export default function setWindowTitle(title?: string) : void {
     const titleNode = document.querySelector("title");
 
     if (title === undefined) {
-        title = "Telekilo";
+        title = "LWB William Walker";
     }
     else {
-        title += " | Telekilo";
+        title += " | LWB William Walker";
     }
 
     titleNode!.innerText = title;
