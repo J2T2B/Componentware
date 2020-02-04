@@ -103,7 +103,7 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
         } else {
             return <Container>
                 <div className="contact-profile">
-                    <img className="contact-picture" src={this.state.chat!.partner.imageUrl}
+                    <img className="contact-picture" src={this.state.chat!.partner.imageUrl != "" ? this.state.chat!.partner.imageUrl : "./default.jpg"}
                          alt={this.state.chat!.partner.name}/>
                     <div className="contact-name">{this.state.chat!.partner.name}</div>
                 </div>
