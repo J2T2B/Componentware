@@ -2,14 +2,14 @@
   {
     "id": "mainRoot",
     "delay": 0,
-    "text": "Hi William, ich habe mal wieder zu viele Fälle die ich gleichzeitig lösen muss. Du hast mir ja schonmal mit einem schwierigen Fall geholfen vielleicht kannst du diesen hier ja auch für mich lösen. Hier sind die relaventen Details die mein Team bisher gesammelt hat: Es geht um einen Mord durch Brandstiftung. Der Name des Opfers ist Markus Farber. Markus Farber war der Geschäftsführer von \"Farber Medical Industries\", einem Pharmaunternehmen. Er ist am 03.01.2020 bei dem Hausbrand in seinem Haus gestorben. Der Brand wurde um 20:07 von einem Nachbarn bemerkt und die Feuerwehr alarmiert. Durch den Löschvorgang wurde der Großteil der Spuren zunichte gemacht. Es hat sogar eine ganze Weile gedauert bis wir festgestellt haben dass dabei jemand gestorben ist. Die relevantesten Personen die wir bis jetzt zu dem Fall befragt haben sind Markus Farber's Frau Sophie und Steffan Wagenar, der CFO von Markus' Unternehmen. ",
+    "text": "Hi William, ich habe mal wieder zu viele Fälle die ich gleichzeitig lösen muss. Du hast mir ja schonmal mit einem schwierigen Fall geholfen vielleicht kannst du diesen hier ja auch für mich lösen. Hier sind die relaventen Details die mein Team bisher gesammelt hat: Es geht um einen Mord durch Brandstiftung. Der Name des Opfers ist Markus Farber. Markus Farber war der Geschäftsführer von \"Farber Medical Industries\", einem Pharmaunternehmen. Er ist am 03.01.2020 bei dem Hausbrand in seinem Haus gestorben. Der Brand wurde um 20:07 von einem Nachbarn bemerkt und die Feuerwehr alarmiert. Durch den Löschvorgang wurde der Großteil der Spuren zunichte gemacht. Es hat sogar eine ganze Weile gedauert bis wir festgestellt haben dass dabei jemand gestorben ist. Die relevantesten Personen die wir bis jetzt zu dem Fall befragt haben sind Markus Farber's Frau Sophie und Steffan Wagenar, der CFO von Markus' Unternehmen. // TODO restliche infos",
     "answers": [
       {
-        "text": "Stellt zuerst eine Frage an Sophie Farber.",
+        "text": "Stell zuerst eine Frage an Sophie Farber.",
         "targetId": "sophieMain"
       },
       {
-        "text": "Stellt zuerst eine Frage an Steffan Wagenar.",
+        "text": "Stell zuerst eine Frage an Steffan Wagenar.",
         "targetId": "steffanMain"
       }
     ],
@@ -21,10 +21,10 @@
   {
     "id": "sophieMain",
     "delay": 0,
-    "text": "Wonach sollen wir Sophie fragen?",
+    "text": "Wonach soll ich Sophie fragen?",
     "answers": [
       {
-        "text": "Stellt doch lieber eine Frage an Steffan Wagenar.",
+        "text": "Stell doch lieber eine Frage an Steffan Wagenar.",
         "targetId": "steffanMain",
         "lockedIf": {
           "condition": "evalTargetAnswerCountSmallerThan",
@@ -33,7 +33,7 @@
         }
       },
       {
-        "text": "Fragt nach möglichen Feinden von Markus Farber.",
+        "text": "Frag mal nach möglichen Feinden von Markus Farber.",
         "targetId": "markusFeinde"
       },
       {
@@ -41,7 +41,7 @@
         "targetId": "markusVerhalten"
       },
       {
-        "text": "Sophie hat angegeben, dass sie zur Tatzeit im Theater sei aber die Mobilfunkdaten stimmen damit nicht überein. Sie scheint gelogen zu haben, konfrontiert sie mal damit.",
+        "text": "Sophie hat angegeben, dass sie zur Tatzeit im Theater war aber die Mobilfunkdaten stimmen damit nicht überein. Sie scheint gelogen zu haben, konfrontier sie mal damit.",
         "targetId": "sophieBreakdown",
         "locked": true,
         "unlockKey": "telefon"
@@ -77,7 +77,7 @@
   {
     "id": "sophieBreakdown",
     "delay": 0,
-    "text": "Nervernzusammenbruch // TODO",
+    "text": "Das war eine sehr gute Idee!, Sophie hatte einen Nervenzusammenbruch und hat gestanden ihren Mann umgebracht zu haben. Sie hat im Theater von ihrer Freundin erfahren, dass Markus sie betrogen hat. Daraufhin ist sie nach Hause gefahren um ihn zur Rede zu stellen und hat ihn dann im Affekt umgebracht.",
     "answers": [
       {
         "text": "Könnte es sein, dass sie Haus danach angezündet hat, um die Spuren zu verwischen?",
@@ -90,7 +90,7 @@
   {
     "id": "sophieHausbrand",
     "delay": 0,
-    "text": "Sie hat zwar gestanden ihn umgebracht zu haben, aber sagt der Hausbrand habe nichts mit ihr zu tun. Klingt sehr glaubwürdig wenn du mich fragst.",
+    "text": "Sie hat zwar gestanden ihn umgebracht zu haben, aber sagt der Hausbrand habe nichts mit ihr zu tun. Sie klingt dabei sehr glaubwürdig wenn du mich fragst. Sie ist in keiner Verfassung in der sie es jetzt noch abstreiten würde wenn sie den Brand tatsächlich gelegt hätte.",
     "answers": [
       {
         "targetId": "steffanMain",
@@ -116,10 +116,10 @@
   {
     "id": "steffanMain",
     "delay": 0,
-    "text": "Wonach sollen wir Steffan fragen?",
+    "text": "Wonach soll ich Steffan fragen?",
     "answers": [
       {
-        "text": "Stellt doch lieber eine Frage an Sophie Farber",
+        "text": "Stell doch lieber eine Frage an Sophie Farber",
         "targetId": "sophieMain",
         "lockedIf": {
           "condition": "evalTargetAnswerCountSmallerThan",
@@ -128,7 +128,7 @@
         }
       },
       {
-        "text": "Fragt nach der E-Mail",
+        "text": "Diese E-Mail Sache klingt interessant. Frag da doch mal etwas nach.",
         "targetId": "steffanEmail"
       }
     ],
@@ -151,10 +151,10 @@
   {
     "id": "steffanInvest",
     "delay": 0,
-    "text": "Investments. Langweilig. // TODO",
+    "text": "Es standen einige Investments bezüglich Forschungsprojekten an. Dazu mussten neue Labore gebaut und Maschinen eingekauft werden. Steffan und Markus waren sich dabei uneinig wie umfangreich diese Investments gestaltet werden sollten. Wenn man sich Steffan's Reaktion auf das Thema anschaut scheint es aber nicht so als wären die Außeinandersetzungen zu diesem Thema besonders schlimm gewesen.",
     "answers": [
       {
-        "text": "Stellt ihn doch einfach mal unter Tatverdacht und macht ein bisschen Druck mit der Brandstiftung.",
+        "text": "Ich habe das Gefühl, dass er trotzdem etwas damit zu tun hat. Auch wenn wir die Droh-E-Mail nicht direkt ihm zuordnen können finde ich, dass es einen Versuch wert ist ihn mal damit zu konfrontieren und ihm die Brandstiftung zu unterstellen. Vielleicht zeigt er unter ein bisschen Stress ja ein paar interessante Reaktionen.",
         "targetId": "steffanAnwalt"
       }
     ],
@@ -164,7 +164,7 @@
   {
     "id": "steffanAnwalt",
     "delay": 0,
-    "text": "Er will seinen Anwalt.",
+    "text": "Deine Theorie hat nicht so gut funktioniert. Er sagt bei solch schwerwiegenden Unterstellungen möchte er ohne seinen Anwalt nicht weitersprechen. Das mag verdächtig erscheinen aber hilft uns leider so garnicht weiter. Ab jetzt werden wir wohl nichts nützliches mehr aus ihm heraus bekommen.",
     "answers": [
       {
         "targetId": "sophieMain",
@@ -189,7 +189,7 @@
   },
   {
     "id": "telefonDaten",
-    "delay": 300,
+    "delay": 0,
     "text": "Telefon daten // TODO",
     "answers": [],
     "root": true,

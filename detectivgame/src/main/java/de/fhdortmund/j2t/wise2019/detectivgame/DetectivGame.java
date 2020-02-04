@@ -13,24 +13,6 @@ public class DetectivGame extends AbstractGame<DetectiveGameData> {
 
     public DetectivGame() throws GameLoadingException {
         super(DetectivGame.class, stream -> stream.filter(url -> url.toString().contains("detectivgame")).findFirst().get(), DetectiveGameData.class);
-        if (gameState.getData() == null) {
-            gameState.setData(new DetectiveGameData());
-        }
-        if (gameState.getData() == null) {
-            gameState.setData(new DetectiveGameData());
-        } else {
-            DetectiveGameData data = gameState.getData();
-            gameState.setData(new DetectiveGameData());
-            gameState.getData().setTelefonDatenSent(data.isTelefonDatenSent());
-            gameState.getData().setSendTelefonDatenCount(data.getSendTelefonDatenCount());
-            for (String removeAnswers : data.getRemovedAnswerIds()) {
-                removeAnswers(removeAnswers);
-            }
-            unlockAll(data.getUnlockKeys());
-            for (Map.Entry<String, Integer> entry : data.getSingleRemovedAnswers().entrySet()) {
-                removeSingleAnswer(entry.getKey(), entry.getValue());
-            }
-        }
     }
 
     @Override
@@ -83,7 +65,21 @@ public class DetectivGame extends AbstractGame<DetectiveGameData> {
 
     @Override
     public void updateGameModel() {
-        //TODO @Jan H
+        if (gameState.getData() == null) {
+            gameState.setData(new DetectiveGameData());
+        } else {
+            DetectiveGameData data = gameState.getData();
+            gameState.setData(new DetectiveGameData());
+            gameState.getData().setTelefonDatenSent(data.isTelefonDatenSent());
+            gameState.getData().setSendTelefonDatenCount(data.getSendTelefonDatenCount());
+            for (String removeAnswers : data.getRemovedAnswerIds()) {
+                removeAnswers(removeAnswers);
+            }
+            unlockAll(data.getUnlockKeys());
+            for (Map.Entry<String, Integer> entry : data.getSingleRemovedAnswers().entrySet()) {
+                removeSingleAnswer(entry.getKey(), entry.getValue());
+            }
+        }
     }
 
     protected void loadGame(InputStream gameDefinitionInputStream) throws GameLoadingException {

@@ -15,15 +15,28 @@ Setting: Haus wurde abgebrannt, Typ im Haus war vorher schon tot.
 
 Grund für Hausbrand: Brandstiftung. Brandstifter wollte Akten vernichten die ihn belastet hätten und dabei den Typ aus dem Weg räumen der ihn belasten wollte.
 
-Grund für Tod des Typen im Haus: Frau von Typ im Haus war mit einer Freundin im Theater; hat dort erfahren, dass ihr Mann sie betrügt, ist in der Pause des Stückes nach Hause gefahren hat ihn
-zur Rede gestellt und im Affekt umgebracht.
+Grund für Tod des Typen im Haus: Frau von Typ im Haus war mit einer Freundin im Theater; hat dort erfahren, dass ihr Mann sie betrügt,
+ist in der Pause des Stückes nach Hause gefahren hat ihn zur Rede gestellt und im Affekt umgebracht.
 
 
 Spiel beginnt mit Anfrage der Polizei an Spieler: Polizei möchte Hilfe bei der Auswertung der Verhöre.
 
 Frau des Toten behauptet im Verhör zum Zeitpunkt des Verbrechens mit einer Freundin im Theater gewesen zu sein.
 
-Im Verlauf des Spieles wird dem Spieler die Positions-Auswertung der Handys (Mobilfunkzellen) zur verfügung gestellt, sodass erkannt werden kann, dass die Frau des Toten nicht die ganze Zeit im Theater war.
-Wenn die Frau darauf angesprochen wird bekommt sie einen Nervenzusammenbruch und gesteht.
+Im Verlauf des Spieles wird dem Spieler die Positions-Auswertung der Handys (Mobilfunkzellen) zur verfügung gestellt, sodass erkannt werden kann,
+dass die Frau des Toten nicht die ganze Zeit im Theater war. Wenn die Frau darauf angesprochen wird bekommt sie einen Nervenzusammenbruch und gesteht.
 
 Der Brandstifter wird verdächtigt, da auf der restaurierten Festplatte des Laptops des Toten eine Droh-E-Mail (oder ähnliches) des Brandstifters gefunden wird.
+
+
+
+Datum: 03.01.2020
+19:30 - Pause im Theater, Sophie Farber fährt los
+19:42 - Sophie Farber kommt zuhause an
+19:45 - Theater geht weiter
+19:46 - Sophie eskaliert und bringt Markus um
+19:51 - Sophie fährt wieder richtung theater
+19:53 - Seffan legt feuer
+20:04 - Sophie kommt wieder am Theater an, wartet draußen
+20:07 - Nachbar sieht feuer und alamiert polizei
+20:45 - Vorstellung endet, sophie erzählt ihrer freundin alles und beide überlegen sich das alibi.
