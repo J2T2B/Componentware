@@ -42,6 +42,6 @@ public class Session {
     }
 
     public void invalidate() {
-        //TODO speichere relevante Session Daten
+        //speichere Daten. Aber derzeit nichts zu speichern
     }
 }

@@ -26,8 +26,12 @@ public class LoginEndpoint {
             success = userManager.login(loginCredentials);
         } catch (UserDoesntExistException e) {
             throw new NotAuthorizedException("False username or password!");
+        } catch (Exception e){
+            throw new InternalServerErrorException(e);
+        } finally {
+            loginCredentials.clean();
         }
-        loginCredentials.clean();
+
 
         if(success){
             sessionToken = sessionManager.createSession(userManager.getUser(loginCredentials.getUsername()));

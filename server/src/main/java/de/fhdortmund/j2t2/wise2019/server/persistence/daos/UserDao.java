@@ -30,4 +30,7 @@ public class UserDao extends AbstractDao{
         em.close();
     }
 
+    public User get(String username) {
+        return null;
+    }
 }

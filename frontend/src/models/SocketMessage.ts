@@ -29,7 +29,7 @@ export type SocketMessage =
         command: "Reinit"
     } |
     {
-        command: "ReadMessage", //TODO was der Sinn ?
+        command: "ReadMessage",
         messageId: string,
         chatId: string
     } |

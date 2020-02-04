@@ -23,9 +23,6 @@ public class SessionManagerBean implements LocalSessionManager, RemoteSessionMan
     private GameManagerLocal gameManager;
     private Map<String, Session> sessions = new HashMap<>();
 
-    public SessionManagerBean() throws GameLoadingException {
-    }
-
     @Override
     public String createSession(User user) {
         String sessionId = UUID.randomUUID().toString();

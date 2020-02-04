@@ -13,7 +13,7 @@ public class HashUtil {
         MessageDigest digest = MessageDigest.getInstance("SHA-256");
         byte[] hash = digest.digest(charToBytes(data));
 
-        return toHexString(hash); //TODO
+        return toHexString(hash);
     }
 
     private static byte[] charToBytes(char[] chars){

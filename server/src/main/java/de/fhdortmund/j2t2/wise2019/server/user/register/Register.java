@@ -1,13 +1,9 @@
 package de.fhdortmund.j2t2.wise2019.server.user.register;
 
-import de.fhdortmund.j2t2.wise2019.server.persistence.daos.UserDao;
 import de.fhdortmund.j2t2.wise2019.server.user.UserManager;
 
 import javax.inject.Inject;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.NotAuthorizedException;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
+import javax.ws.rs.*;
 
 @Path("register")
 public class Register {
@@ -22,6 +18,8 @@ public class Register {
             userManager.createUser(user);
         } catch (UserAlreadyExistsException e) {
             throw new NotAuthorizedException(e.getMessage());
+        } catch (Exception e) {
+            throw new InternalServerErrorException(e);
         } finally {
             user.clean();
         }
