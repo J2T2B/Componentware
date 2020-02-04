@@ -1,4 +1,4 @@
-import { Card, CardBody, Form, Button, ButtonGroup, CardHeader, CardTitle } from "reactstrap";
+import {Card, CardBody, Form, Button, ButtonGroup, CardHeader, CardTitle, Jumbotron, Container} from "reactstrap";
 import "../../styles/elements/login.scss";
 import React from "react";
 
@@ -40,24 +40,31 @@ export class LoginCardComponent extends React.Component<React.PropsWithChildren<
     }
 
     render() {
-        return <Card className={(this.state.width > 992 ? "mx-auto w-50" : "mx-auto") + " transparent"}>
-            <CardHeader>
-                <CardTitle>
-                    <h5 className="">
-                        {this.props.mode === "login" && "Anmelden"}
-                        {this.props.mode === "register" && "Registrieren"}
-                    </h5>
-                </CardTitle>
-            </CardHeader>
-            <CardBody>
-                <ButtonGroup>
-                    <Button color="primary" active={this.props.mode === "login"} href="#/login" tag="a">Anmelden</Button>
-                    <Button color="primary" active={this.props.mode === "register"} href="#/register" tag="a">Registrieren</Button>
-                </ButtonGroup>
-                <Form>
-                    {this.props.children}
-                </Form>
-            </CardBody>
-        </Card>
+        return <Container>
+            <Jumbotron className="transparent text-center">
+                <h2 className="display-4 headline-font">
+                    Life-Work-Balance von William Walker
+                </h2>
+            </Jumbotron>
+            <Card className={(this.state.width > 992 ? "mx-auto w-50" : "mx-auto") + " transparent"}>
+                <CardHeader>
+                    <CardTitle>
+                        <h5 className="">
+                            {this.props.mode === "login" && "Anmelden"}
+                            {this.props.mode === "register" && "Registrieren"}
+                        </h5>
+                    </CardTitle>
+                </CardHeader>
+                <CardBody>
+                    <ButtonGroup>
+                        <Button color="primary" active={this.props.mode === "login"} href="#/login" tag="a">Anmelden</Button>
+                        <Button color="primary" active={this.props.mode === "register"} href="#/register" tag="a">Registrieren</Button>
+                    </ButtonGroup>
+                    <Form>
+                        {this.props.children}
+                    </Form>
+                </CardBody>
+            </Card>
+        </Container>
     }
 }

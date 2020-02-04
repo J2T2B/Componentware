@@ -1,10 +1,11 @@
-@import "var";
+@import "globals/font";
+@import "globals/var";
 @import "~bootstrap/scss/bootstrap";
-@import "gloabal";
+@import "globals/gloabal";
 @import "elements/nav";
-@import "chat/profiles";
-@import "chat/sidebar";
-@import "chat/chat";
+@import "elements/profiles";
+@import "elements/sidebar";
+@import "elements/chat";
 @import "elements/gameover";
 @import "elements/transparent";
 @import "elements/scrollbar";

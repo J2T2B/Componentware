@@ -8,7 +8,7 @@ export interface NavbarProps {
 export function NavbarComponent({toggleChatsList}: NavbarProps): JSX.Element {
     return <Navbar color="faded" dark className="mb-3">
         <NavbarBrand href="#" className="mr-auto">
-            Telekilo
+            Life-Work-Balance von William Walker
         </NavbarBrand>
         <Nav>
             <NavItem className="d-md-none">

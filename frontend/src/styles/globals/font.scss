@@ -1,0 +1,23 @@
+@font-face {
+  font-family: 'broken-detroit';
+  font-style: normal;
+  font-weight: 400;
+  src: local('fonts/Broken-Detroit.ttf'),
+    url('../fonts/Broken-Detroit.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: normal;
+  font-weight: 400;
+  src: local('fonts/SourceSansPro-Regular.ttf'),
+  url('../fonts/SourceSansPro-Regular.ttf') format('truetype');
+}
+
+@font-face {
+  font-family: 'Source Sans Pro';
+  font-style: italic;
+  font-weight: 400;
+  src: local('fonts/SourceSansPro-Italic.ttf'),
+  url('../fonts/SourceSansPro-Italic.ttf') format('truetype');
+}
