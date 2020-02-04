@@ -7,5 +7,5 @@ import java.util.List;
 
 @Local
 public interface UserManagerLocal extends UserManager {
-    public List<Chat> getChatsForUser(String token);
+
 }

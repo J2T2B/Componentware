@@ -9,7 +9,7 @@ public class DefaultUserImpl implements User {
     private final String name;
     private final String hash;
 
-    DefaultUserImpl(String name, String hash){
+    public DefaultUserImpl(String name, String hash){
         this.name = name;
         this.hash = hash;
     }
@@ -20,7 +20,7 @@ public class DefaultUserImpl implements User {
     }
 
     @Override
-    public String getHash() {
+    public String getPasswordHash() {
         return hash;
     }
 
