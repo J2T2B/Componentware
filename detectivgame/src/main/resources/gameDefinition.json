@@ -2,19 +2,19 @@
   {
     "id": "mainRoot",
     "delay": 0,
-    "text": "INTRODUCTORY TEXT // TODO",
+    "text": "Hi William, ich habe mal wieder zu viele Fälle die ich gleichzeitig lösen muss. Du hast mir ja schonmal mit einem schwierigen Fall geholfen vielleicht kannst du diesen hier ja auch für mich lösen. Hier sind die relaventen Details die mein Team bisher gesammelt hat: Es geht um einen Mord durch Brandstiftung. Der Name des Opfers ist Markus Farber. Markus Farber war der Geschäftsführer von \"Farber Medical Industries\", einem Pharmaunternehmen. Er ist am 03.01.2020 bei dem Hausbrand in seinem Haus gestorben. Der Brand wurde um 20:07 von einem Nachbarn bemerkt und die Feuerwehr alarmiert. Durch den Löschvorgang wurde der Großteil der Spuren zunichte gemacht. Es hat sogar eine ganze Weile gedauert bis wir festgestellt haben dass dabei jemand gestorben ist. Die relevantesten Personen die wir bis jetzt zu dem Fall befragt haben sind Markus Farber's Frau Sophie und Steffan Wagenar, der CFO von Markus' Unternehmen. ",
     "answers": [
       {
         "text": "Stellt zuerst eine Frage an Sophie Farber.",
         "targetId": "sophieMain"
       },
       {
-        "text": "Stellt zuerst eine Frage an Steffan Wagner.",
+        "text": "Stellt zuerst eine Frage an Steffan Wagenar.",
         "targetId": "steffanMain"
       }
     ],
     "root": true,
-    "chatName": "DETECTIVECHAT MAIN // TODO",
+    "chatName": "Herlock Sholmes",
     "chatImage": "/image/detectivemain.png",
     "unlockKeys": []
   },
@@ -24,8 +24,13 @@
     "text": "Wonach sollen wir Sophie fragen?",
     "answers": [
       {
-        "text": "Stellt doch lieber eine Frage an Steffan Wagner.",
-        "targetId": "steffanMain"
+        "text": "Stellt doch lieber eine Frage an Steffan Wagenar.",
+        "targetId": "steffanMain",
+        "lockedIf": {
+          "condition": "evalTargetAnswerCountSmallerThan",
+          "evalTargetId": "steffanMain",
+          "data": 1
+        }
       },
       {
         "text": "Fragt nach möglichen Feinden von Markus Farber.",
@@ -85,14 +90,24 @@
   {
     "id": "sophieHausbrand",
     "delay": 0,
-    "text": "Nope. Das war sie nicht.",
+    "text": "Sie hat zwar gestanden ihn umgebracht zu haben, aber sagt der Hausbrand habe nichts mit ihr zu tun. Klingt sehr glaubwürdig wenn du mich fragst.",
     "answers": [
       {
-        "targetId": "steffanMain"
+        "targetId": "steffanMain",
+        "lockedIf": {
+          "condition": "evalTargetAnswerCountSmallerThan",
+          "evalTargetId": "steffanMain",
+          "data": 1
+        },
+        "removeAnswers": "sophieMain"
       },
       {
         "targetId": "ende",
-        "locked": true
+        "lockedIf": {
+          "condition": "evalTargetAnswerCountGreaterThan",
+          "evalTargetId": "steffanMain",
+          "data": 0
+        }
       }
     ],
     "root": false,
@@ -105,7 +120,12 @@
     "answers": [
       {
         "text": "Stellt doch lieber eine Frage an Sophie Farber",
-        "targetId": "sophieMain"
+        "targetId": "sophieMain",
+        "lockedIf": {
+          "condition": "evalTargetAnswerCountSmallerThan",
+          "evalTargetId": "sophieMain",
+          "data": 1
+        }
       },
       {
         "text": "Fragt nach der E-Mail",
@@ -123,10 +143,6 @@
       {
         "text": "Größere Investments?",
         "targetId": "steffanInvest"
-      },
-      {
-        "text": "Stellt ihn doch einfach mal unter tatverdacht und macht ein bisschen Druck mit der Brandstiftung.",
-        "targetId": "steffanAnwalt"
       }
     ],
     "root": false,
@@ -138,7 +154,7 @@
     "text": "Investments. Langweilig. // TODO",
     "answers": [
       {
-        "text": "Stellt ihn doch einfach mal unter tatverdacht und macht ein bisschen Druck mit der Brandstiftung.",
+        "text": "Stellt ihn doch einfach mal unter Tatverdacht und macht ein bisschen Druck mit der Brandstiftung.",
         "targetId": "steffanAnwalt"
       }
     ],
@@ -146,17 +162,26 @@
     "unlockKeys": []
   },
   {
-    "id": "steffanEmail",
+    "id": "steffanAnwalt",
     "delay": 0,
-    "text": "E-Maik fuckup // TODO",
+    "text": "Er will seinen Anwalt.",
     "answers": [
       {
-        "text": "Größere Investments?",
-        "targetId": "steffanInvest"
+        "targetId": "sophieMain",
+        "lockedIf": {
+          "condition": "evalTargetAnswerCountSmallerThan",
+          "evalTargetId": "sophieMain",
+          "data": 1
+        },
+        "removeAnswers": "steffanMain"
       },
       {
-        "text": "Stellt ihn doch einfach mal unter tatverdacht und macht ein bisschen Druck mit der Brandstiftung.",
-        "targetId": "steffanAnwalt"
+        "targetId": "ende",
+        "lockedIf": {
+          "condition": "evalTargetAnswerCountGreaterThan",
+          "evalTargetId": "sophieMain",
+          "data": 0
+        }
       }
     ],
     "root": false,

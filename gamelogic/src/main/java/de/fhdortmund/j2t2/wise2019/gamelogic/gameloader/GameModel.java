@@ -33,6 +33,6 @@ public class GameModel {
 
     public Message getSomeRootMessage(){
         List<Message> rootMessages = messages.values().stream().filter(Message::isRoot).collect(Collectors.toList());
-        return rootMessages.get(RandomUtils.nextInt(0, rootMessages.size()-1));
+        return rootMessages.get(RandomUtils.nextInt(0, rootMessages.size()));
     }
 }

@@ -67,7 +67,7 @@ public abstract class AbstractGame<T> implements Game {
         Chat.ChatMessageImpl chatMessage = new Chat.ChatMessageImpl(answer.getText(), Calendar.getInstance().getTimeInMillis(), true);
         gameState.getChat(chat.getId()).addMessage(chatMessage);
         res = playAnswer(answer);
-        for(Chat.ChatMessageImpl message : res.getMessages()) {
+        for(ChatMessage message : res.getMessages()) {
             gameState.getChat(chat.getId()).addMessage(message);
         }
         updateGameState(res);
@@ -88,13 +88,13 @@ public abstract class AbstractGame<T> implements Game {
     }
 
     @Override
-    public Chat createNewChat() {
+    public CreateChatResult createNewChat() {
         ChatPartner chatpartner = produceSomeChatpartner();
         Chat chat = new ChatImpl(chatpartner);
         Message rootMessage = gameModel.getSomeRootMessage();
         chat.addMessage(new Chat.ChatMessageImpl(rootMessage));
         gameState.addChat(chat);
-        return chat;
+        return new SimpleChatCreation(chat);
     }
 
     protected abstract PlayResult playAnswer(Answer answer);

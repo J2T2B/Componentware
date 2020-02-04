@@ -2,18 +2,22 @@ package de.fhdortmund.j2t.wise2019.detectivgame;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
+import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameModel;
 
 import java.util.Collections;
 import java.util.List;
 
 public class DetectiveGameAnswer implements Answer {
 
-    private transient DetectiveGameMessage parent;
-    private transient int id;
     private String text;
     private String targetId;
     private String unlockKey;
     private boolean locked;
+    private LockedIfCondition lockedIf;
+    private String removeAnswers;
+
+    private transient DetectiveGameMessage parent;
+    private transient int id;
     private transient DetectiveGameMessage target;
 
     @Override
@@ -43,8 +47,12 @@ public class DetectiveGameAnswer implements Answer {
         return unlockKey;
     }
 
-    public boolean isLocked() {
-        return locked;
+    public boolean isLocked(GameModel model) {
+        return locked || (lockedIf != null && lockedIf.isLocked(model,this));
+    }
+
+    public String getRemoveAnswers() {
+        return removeAnswers;
     }
 
     @Override
@@ -59,5 +67,9 @@ public class DetectiveGameAnswer implements Answer {
     @Override
     public List<String> getTargetIds() {
         return Collections.singletonList(targetId);
+    }
+
+    public void setLocked(boolean locked) {
+        this.locked = locked;
     }
 }

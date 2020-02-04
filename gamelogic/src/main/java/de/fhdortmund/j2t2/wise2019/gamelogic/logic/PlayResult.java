@@ -1,12 +1,12 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic.logic;
 
-import de.fhdortmund.j2t2.wise2019.gamelogic.Chat;
+import de.fhdortmund.j2t2.wise2019.gamelogic.ChatMessage;
 
 import java.util.List;
 
 public interface PlayResult {
 
-    List<Chat.ChatMessageImpl> getMessages();
+    List<ChatMessage> getMessages();
 
     boolean isEnd();
 

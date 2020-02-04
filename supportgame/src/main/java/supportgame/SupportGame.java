@@ -1,6 +1,7 @@
 package supportgame;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.*;
+import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoader;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.*;
 
@@ -10,22 +11,31 @@ public class SupportGame extends AbstractGame<Points> {
 
     public SupportGame() throws GameLoadingException {
         super(SupportGame.class, stream -> stream.filter(url -> url.toString().contains("supportgame")).findFirst().get(), PointsImpl.class);
+        if(gameState.getData() == null) {
+            gameState.setData(new PointsImpl(50, 50, 50));
+        }
     }
 
     @Override
     protected void updateGameState(PlayResult res) {
         Points points = gameState.getData();
-        res.getMessages();
+        gameState.setData(((PointsImpl)gameState.getData()).add(points));
     }
 
     @Override
     public ChatPartner produceSomeChatpartner() {
-        return null;
+        return new ChatPartnerImpl();
     }
 
     @Override
     protected void loadGame(InputStream gameDefinitionInputStream) throws GameLoadingException {
-
+        gameModel.addMessages(new GameLoader(() -> gameDefinitionInputStream).loadGame(MessageImpl[].class, (answer, id) -> {
+            ((AnswerImpl) answer).setId(id);
+            return (parent, targets) -> {
+                ((AnswerImpl) answer).setParent(parent);
+                ((AnswerImpl) answer).setTargets(targets);
+            };
+        }));
     }
 
     @Override

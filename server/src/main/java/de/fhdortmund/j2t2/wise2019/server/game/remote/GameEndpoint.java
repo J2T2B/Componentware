@@ -1,9 +1,7 @@
 package de.fhdortmund.j2t2.wise2019.server.game.remote;
 
 import de.fhdortmund.j2t2.wise2019.gamelogic.*;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.*;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
@@ -18,14 +16,14 @@ import javax.websocket.server.ServerEndpoint;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.List;
+import java.util.Map;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
-//@ApplicationScoped
 @ServerEndpoint(value = "/game/{usertoken}", encoders = MessageCoder.class, decoders = MessageCoder.class)
 public class GameEndpoint implements Serializable {
-    private static final int CHAT_CREATION_PERIOD_IN_SECONDS = 45;
+    private static final int CHAT_CREATION_PERIOD_IN_SECONDS = 15;
     private int currentGameIndex = 0;
 
     private Session session;
@@ -40,7 +38,7 @@ public class GameEndpoint implements Serializable {
     private ScheduledExecutorService executorService = Executors.newScheduledThreadPool(5);
     @OnOpen
     public void onOpen(Session session, @PathParam("usertoken") String token) {
-        executorService.scheduleAtFixedRate(this::createNewChat, CHAT_CREATION_PERIOD_IN_SECONDS, CHAT_CREATION_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
+        executorService.scheduleAtFixedRate(this::createNewChat, 1, CHAT_CREATION_PERIOD_IN_SECONDS, TimeUnit.SECONDS);
         System.out.println("Open session with id: " +session.getId());
         this.session = session;
         this.games = sessionManager.getGamesForToken(token);
@@ -95,6 +93,9 @@ public class GameEndpoint implements Serializable {
                 //ChatImpl chatImpl = new ChatImpl(chat);
                 sendCreateChatCommand(chat, game);
             }
+            if(game.getGameState().getData() instanceof Points){
+                sendChangePointsCommand((Points) game.getGameState().getData());
+            }
         }
     }
 
@@ -107,12 +108,11 @@ public class GameEndpoint implements Serializable {
         for(Answer answer : lastMessage.getAnswers()) {
             if (answer.getId() == answerId) {
                 PlayResult pr = game.playAnswer(chat, answer);
-                for(Chat.ChatMessageImpl msg : pr.getMessages()) {
+                for(ChatMessage msg : pr.getMessages()) {
                     sendAddMessageCommand(chatId, msg);
                 }
-                Object gameData = pr.getPlayResultData();
-                if(gameData instanceof Points){
-                    sendChangePointsCommand((Points) gameData);
+                if(game.getGameState().getData() instanceof Points){
+                    sendChangePointsCommand((Points) game.getGameState().getData());
                 }
                 if(pr.isEnd()){
                     sendGameOverCommand();
@@ -146,7 +146,7 @@ public class GameEndpoint implements Serializable {
         send(new CreateChatWebSocketCommand(chat));
     }
 
-    public void sendAddMessageCommand(long chatId, Chat.ChatMessageImpl chatMessage) {
+    public void sendAddMessageCommand(long chatId, ChatMessage chatMessage) {
         AddMessageWebSocketCommand command = new AddMessageWebSocketCommand(chatId, chatMessage);
         SimpleMessage message = chatMessage.getMsg();
         int duration = 0;
@@ -167,15 +167,27 @@ public class GameEndpoint implements Serializable {
 
     public void createNewChat(){
         System.out.println("Creating new chat");
-        Game game = games.get(currentGameIndex);
-        Chat chat = game.createNewChat();
         updateGameIndex();
-        sendCreateChatCommand(chat, game);
+        Game game = games.get(currentGameIndex);
+        CreateChatResult result = game.createNewChat();
+        if(result == null) {
+            return;
+        }
+        sendCreateChatCommand(result.getChat(), game);
+        if(result instanceof ChatCreationWithExtraAnswers) {
+            for(Map.Entry<Long, List<Answer>> entry : ((ChatCreationWithExtraAnswers) result).getExtaAnswers().entrySet()) {
+                Chat chat = game.getGameState().getChat(entry.getKey());
+                String remoteMsgId = chat.getMessages().get(chat.getMessages().size() - 1).getId();
+                for(Answer answer : entry.getValue()) {
+                    send(new AddAnswerWebSocketCommand(entry.getKey(), remoteMsgId, answer));
+                }
+            }
+        }
     }
 
-    void updateGameIndex(){
+    void updateGameIndex() {
         currentGameIndex++;
-        currentGameIndex %= games.size(); //Overflow verhindern
+        currentGameIndex %= games.size(); // Overflow verhindern
     }
 
 }
