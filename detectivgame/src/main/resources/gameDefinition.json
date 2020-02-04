@@ -65,7 +65,7 @@
         "targetId": "markusVerhalten"
       },
       {
-        "text": "Sophie hat angegeben, dass sie zur Tatzeit im Theater war aber die Mobilfunkdaten stimmen damit nicht überein. Sie scheint gelogen zu haben, konfrontier sie mal damit.",
+        "text": "Sophie hat angegeben, dass sie zur Tatzeit im Theater war aber die Mobilfunkdaten stimmen damit nicht überein. Sie scheint gelogen zu haben, konfrontiere sie doch mal damit.",
         "targetId": "sophieBreakdown",
         "locked": true,
         "unlockKey": "telefon"
@@ -162,7 +162,7 @@
   {
     "id": "steffanEmail",
     "delay": 0,
-    "text": "E-Maik fuckup // TODO",
+    "text": "In der E-Mail ging es anscheinend um einige größere Investments die momentan anstehen. Steffan und Markus haben unterschiedliche Standpunkte bezüglich der geplanten Ausgaben und Steffan hat Markus deshalb in einem Moment geistiger Abwesenheit eine wütende E-Mail geschrieben. Er sagt allerdigs, dass dieses Thema nicht wirklich so kritisch ist wie es in der E-Mail scheint. Die Investitionen wurden bereits getätigt und es hat dem Unternehmen bis jetzt nicht geschadet.",
     "answers": [
       {
         "text": "Größere Investments?",
@@ -175,7 +175,7 @@
   {
     "id": "steffanInvest",
     "delay": 0,
-    "text": "Es standen einige Investments bezüglich Forschungsprojekten an. Dazu mussten neue Labore gebaut und Maschinen eingekauft werden. Steffan und Markus waren sich dabei uneinig wie umfangreich diese Investments gestaltet werden sollten. Wenn man sich Steffan's Reaktion auf das Thema anschaut scheint es aber nicht so als wären die Außeinandersetzungen zu diesem Thema besonders schlimm gewesen.",
+    "text": "Es standen einige Investments bezüglich Forschungsprojekten an. Dazu mussten neue Labore gebaut und Maschinen eingekauft werden. Steffan und Markus waren sich dabei uneinig wie umfangreich diese Investments gestaltet werden sollten. Wenn man sich Steffan's Reaktion auf das Thema anschaut scheint es aber tatsächlich nicht so als wären die Außeinandersetzungen zu diesem Thema besonders schlimm gewesen.",
     "answers": [
       {
         "text": "Ich habe das Gefühl, dass er trotzdem etwas damit zu tun hat. Auch wenn wir die Droh-E-Mail nicht direkt ihm zuordnen können finde ich, dass es einen Versuch wert ist ihn mal damit zu konfrontieren und ihm die Brandstiftung zu unterstellen. Vielleicht zeigt er unter ein bisschen Stress ja ein paar interessante Reaktionen.",
@@ -215,7 +215,13 @@
     "id": "telefonDaten",
     "delay": 0,
     "text": "Telefon daten // TODO",
-    "answers": [],
+    "answers": [
+      {
+        "text": "Ist das dein ernst? Ist dir langweilig oder so?",
+        "targetId": "sorrii",
+        "unlockKey": "imernst"
+      }
+    ],
     "root": true,
     "chatName": "IT-Forensik",
     "chatImage": "/images/detectivephone.png",
@@ -224,10 +230,28 @@
   {
     "id": "ende",
     "delay": 0,
-    "text": "Ende // TODO",
+    "text": "Haha, sehr gut! Du warst ziemlich gut. Ehrlich gesagt war das ein Fall der schon gelöst wurde. Ich dachte nur dass du im Kundensupport bestimmt super gelangweilt bist und dachte das wäre eine super Idee um deine Produktivität ein bisschen zu senken. \uD83E\uDD23\n\nDu bist sicherlich am tatsächlichen Ergebniss dieses Falls interessiert:\nDass Sophie Markus getötet hat hast du ja schon herausgefunden. Im laufe der Untersuchungen ist herausgekommen, dass Steffan Wagenar Gelder des Unternehmens veruntreut hat um Drogenhandel zu betreiben. Markus war kurz davor das herauszufinden und hatte bereits mit Steffan über Unstimmigkeiten in den Finanzen gesprochen. Steffan hat Panik bekommen und das Haus von Markus angezündet um die Akten zu vernichten die Markus mit nach hause genommen hatte. Laut eigener Aussage konnte er zu diesem Zeitpunkt nicht klar denken und hat nicht darüber nachgedacht, dass Personen im Haus sein könnten.",
     "answers": [],
     "root": false,
     "unlockKeys": [],
+    "end": true
+  },
+  {
+    "id": "ende1",
+    "delay": 0,
+    "text": "Ja natürlich.",
+    "answers": [],
+    "root": false,
+    "unlockKeys": ["imernst"],
+    "end": true
+  },
+  {
+    "id": "sorii",
+    "delay": 0,
+    "text": "Sorrí \uD83D\uDE1D",
+    "answers": [],
+    "root": false,
+    "unlockKeys": ["imernst"],
     "end": true
   }
 ]
