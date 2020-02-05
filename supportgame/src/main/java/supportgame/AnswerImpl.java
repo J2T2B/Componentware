@@ -11,9 +11,9 @@ public class AnswerImpl implements Answer {
     private String text;
     private List<String> targets;
 
-    private transient MessageImpl parent;
-    private transient int id;
-    private transient List<MessageImpl> resolvedTargets;
+    private MessageImpl parent;
+    private int id;
+    private List<MessageImpl> resolvedTargets;
 
     @Override
     public Message getParent() {
