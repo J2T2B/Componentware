@@ -16,9 +16,9 @@ public class DetectiveGameAnswer implements Answer {
     private LockedIfCondition lockedIf;
     private String removeAnswers;
 
-    private transient DetectiveGameMessage parent;
-    private transient int id;
-    private transient DetectiveGameMessage target;
+    private DetectiveGameMessage parent;
+    private int id;
+    private DetectiveGameMessage target;
 
     @Override
     public Message getParent() {
