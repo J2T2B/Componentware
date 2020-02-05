@@ -1,11 +1,12 @@
 package de.fhdortmund.j2t.wise2019.detectivgame;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DetectiveGameData {
+public class DetectiveGameData implements Serializable {
 
     private int sendTelefonDatenCount = 0;
     private boolean telefonDatenSent = false;

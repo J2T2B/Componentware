@@ -10,14 +10,15 @@ import de.fhdortmund.j2t2.wise2019.server.user.register.NewUserData;
 import de.fhdortmund.j2t2.wise2019.server.user.register.UserAlreadyExistsException;
 import org.apache.commons.lang3.ArrayUtils;
 
-import javax.annotation.PostConstruct;
 import javax.annotation.PreDestroy;
+import javax.ejb.EJBTransactionRolledbackException;
 import javax.ejb.Singleton;
-import javax.ejb.Stateful;
 import javax.enterprise.context.Dependent;
-import javax.enterprise.inject.Default;
 import javax.inject.Inject;
 import javax.inject.Named;
+import javax.persistence.NoResultException;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -44,7 +45,9 @@ public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
         if(users.containsKey(user.getUsername())){
             throw new UserAlreadyExistsException("User with name " + user.getUsername() + "already exists");
         }
-        users.put(user.getUsername(), new DefaultUserImpl(user.getUsername(), hashUserData(user), new ArrayList<>()));
+        User createdUser = new DefaultUserImpl(user.getUsername(), hashUserData(user), new ArrayList<>());
+        users.put(user.getUsername(), createdUser);
+        userDao.persist(createdUser);
     }
 
     @Override
@@ -55,13 +58,14 @@ public class UserManagerBean implements UserManagerRemote, UserManagerLocal {
     @Override
     public boolean login(LoginCredentials credentials) throws UserDoesntExistException, NoSuchAlgorithmException, IllegalAccessException, InstantiationException, ClassNotFoundException {
         if(!users.containsKey(credentials.getUsername())){
-            users.put(credentials.getUsername(), userDao.get(credentials.getUsername()));
+            try {
+                users.put(credentials.getUsername(), userDao.get(credentials.getUsername()));
+            } catch (EJBTransactionRolledbackException | IOException e){
+                throw new UserDoesntExistException(credentials.getUsername());
+            }
+
         }
         User target = users.get(credentials.getUsername());
-
-        if(target == null){
-            throw new UserDoesntExistException(credentials.getUsername());
-        }
         return hashUserData(credentials).equals(target.getHash());
     }
 

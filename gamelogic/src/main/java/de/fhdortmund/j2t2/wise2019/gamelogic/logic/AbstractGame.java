@@ -6,6 +6,7 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameModel;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.Serializable;
 import java.net.URL;
 import java.util.*;
 import java.util.function.Function;
@@ -16,7 +17,7 @@ import java.util.stream.StreamSupport;
  * Implementierende Klassen müssen eine gameDefinition.json auf dem Root der Jar haben.
  * @param <T> Typ der Daten, die GameState halten soll
  */
-public abstract class AbstractGame<T> implements Game {
+public abstract class AbstractGame<T extends Serializable> implements Game, Serializable {
     protected GameModel gameModel  = new GameModel();
     protected GameState<T> gameState;
 
@@ -26,8 +27,8 @@ public abstract class AbstractGame<T> implements Game {
      * @throws GameLoadingException wenn die gameDefintion.json nicht geladen werden kann oder ein sonstiger Fehler bei dem Laden
      * der Spieldefinition auftritt
      */
-    protected AbstractGame(Class<? extends Game> gameClass, Function<Stream<URL>, URL> resourceSelector, Class<? extends T> clazz) throws GameLoadingException {
-        gameState = new GameState<>(clazz, gameClass);
+    protected AbstractGame(Class<? extends Game> gameClass, Function<Stream<URL>, URL> resourceSelector) throws GameLoadingException {
+        gameState = new GameState<>();
         URL gameDefinitionURL = resourceSelector.apply(getGameDefinitions(gameClass));
         try(InputStream in = gameDefinitionURL.openStream()) {
             loadGame(in);

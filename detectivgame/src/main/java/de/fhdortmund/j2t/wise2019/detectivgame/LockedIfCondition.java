@@ -4,11 +4,13 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.Answer;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameModel;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 
-public class LockedIfCondition {
+import java.io.Serializable;
+
+public class LockedIfCondition implements Serializable {
 
     private String condition;
     private String evalTargetId;
-    private Object data;
+    private Serializable data;
 
     boolean isLocked(GameModel model, Answer answer) {
         if(condition.equals("evalTargetAnswerCountSmallerThan")) {

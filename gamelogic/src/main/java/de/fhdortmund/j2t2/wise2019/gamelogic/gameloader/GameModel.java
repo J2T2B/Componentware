@@ -4,10 +4,11 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.ChatPartner;
 import de.fhdortmund.j2t2.wise2019.gamelogic.Message;
 import org.apache.commons.lang3.RandomUtils;
 
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class GameModel {
+public class GameModel implements Serializable {
     private List<ChatPartner> chatPartners = new ArrayList<>();
     private Map<String, Message> messages = new HashMap<>();
 

@@ -27,7 +27,7 @@ public class LoginEndpoint {
         } catch (UserDoesntExistException e) {
             throw new NotAuthorizedException("False username or password!");
         } catch (Exception e){
-            throw new InternalServerErrorException(e);
+            throw new InternalServerErrorException(e.getMessage());
         } finally {
             loginCredentials.clean();
         }

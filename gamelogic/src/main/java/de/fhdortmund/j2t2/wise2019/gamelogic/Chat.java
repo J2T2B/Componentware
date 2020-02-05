@@ -1,10 +1,11 @@
 package de.fhdortmund.j2t2.wise2019.gamelogic;
 
+import java.io.Serializable;
 import java.util.Calendar;
 import java.util.List;
 import java.util.UUID;
 
-public interface Chat {
+public interface Chat extends Serializable {
 
     public long getId();
 
@@ -15,7 +16,7 @@ public interface Chat {
 
     ChatMessage getMessage(String messageId);
 
-    public class ChatMessageImpl implements ChatMessage {
+    public class ChatMessageImpl implements ChatMessage, Serializable {
 
         private final String messageId = UUID.randomUUID().toString();
         private final SimpleMessage msg;
