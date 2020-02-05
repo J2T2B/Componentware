@@ -45,6 +45,8 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
             mode: AppStateMode.GAME
         });
         chatsHandler.attach(this);
+
+        (window as any).currentChatsHandler = chatsHandler;
     }
 
     onDisconnect(): void {

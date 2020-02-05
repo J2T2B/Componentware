@@ -1,14 +1,14 @@
 import React from "react";
-import {Button, Container, ListGroup, ListGroupItem, Modal, ModalBody, ModalFooter, ModalHeader} from "reactstrap";
+import {Button, Container} from "reactstrap";
 import {Chat} from "../../models/Chat";
 import IChatListener from "../../logic/IChatListener";
 import {DefaultComponentProps} from "../../DefaultComponentProps";
 import {Message} from "../../models/Message";
-import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPaperPlane, faSmile} from "@fortawesome/free-regular-svg-icons";
 import {Answer} from "../../models/Answer";
-import {text} from "@fortawesome/fontawesome-svg-core";
+import {MessageComponent} from "./MessageComponent";
+import {SelectAnswerComponent} from "./SelectAnswerComponent";
 
 export interface ChatMessageStates {
     chat?: Chat;
@@ -79,10 +79,6 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
         }
     }
 
-    ln2br(text: string) {
-        return {__html: text.replace("\n", "<br />")};
-    }
-
     render() {
         if (this.state.chat === undefined) {
             return <Container>
@@ -106,30 +102,19 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                 </div>
             </Container>
         } else {
+            const chat: Chat = this.state.chat;
+
             return <Container>
                 <div className="contact-profile">
-                    <img className="contact-picture" src={this.state.chat!.partner.imageUrl != "" ? this.state.chat!.partner.imageUrl : "./default.jpg"}
+                    <img className="contact-picture"
+                         src={this.state.chat!.partner.imageUrl != "" ? this.state.chat!.partner.imageUrl : "./default.jpg"}
                          alt=""/>
                     <div className="contact-name">{this.state.chat!.partner.name}</div>
                 </div>
                 <div className="messages col-md-12">
                     {
-                        this.state.chat && this.state.chat.messages.map(m => {
-                            return <div className="row" key={m.id}>
-                                <div className="message">
-                                    <div className={"bubble" + (m.isAnswer ? " reply" : " receive")}>
-                                        <div className="content">
-                                            <p dangerouslySetInnerHTML={this.ln2br(m.text)} />
-                                            <p className="time">
-                                                {m.created.isBefore(moment().startOf('day')) && m.created.format('L')}
-                                                &nbsp;
-                                                {m.created.format('HH:mm')}
-                                            </p>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        })
+                        chat.messages.map(m => <MessageComponent m={m} chatId={chat.chatId}
+                                                                 key={chat.chatId + "/" + m.id}/>)
                     }
                     <div style={{float: "left", clear: "both", margin: "10px"}}
                          ref={(el) => {
@@ -137,35 +122,14 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                          }}>
                     </div>
                     {
-                        this.state.chat.getLastMessage() && (this.state.chat.getLastMessage()!.answers.length > 0) ?
-                            <div className="row">
-                                <Modal isOpen={this.state.openAnswers} toggle={() => this.toggleModal()}>
-                                    <ModalHeader toggle={() => this.toggleModal()}>Ihre
-                                        Antwortmöglichkeiten</ModalHeader>
-                                    <ModalBody>
-                                        <ListGroup>
-                                            {
-                                                this.state.chat.getLastMessage()!.answers.map(a => {
-                                                    return <ListGroupItem tag="button"
-                                                                          className={this.state.chosenAnswer === a ? 'active' : ''}
-                                                                          onClick={() => this.onAnswerChoose(a)}
-                                                                          id={"answer-" + a.id}>
-                                                        {a.text}
-                                                    </ListGroupItem>
-                                                })
-                                            }
-                                        </ListGroup>
-                                    </ModalBody>
-                                    <ModalFooter>
-                                        <Button color="secondary" onClick={() => this.toggleModal()}>Abbrechen
-                                        </Button>
-                                    </ModalFooter>
-                                </Modal>
-                            </div>
-                            :
-                            ''
+                        this.state.chat.getLastMessage() && (this.state.chat.getLastMessage()!.answers.length > 0) &&
+                        <SelectAnswerComponent choosenAnswer={this.state.chosenAnswer}
+                                               isOpen={this.state.openAnswers}
+                                               lastMessage={this.state.chat!.getLastMessage()!}
+                                               onAnswerChoose={this.onAnswerChoose.bind(this)}
+                                               toggle={this.toggleModal.bind(this)}
+                        />
                     }
-
                 </div>
                 <div className="message-input">
                     <div className="row text-center">
@@ -198,5 +162,3 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
         }
     }
 }
-
-// todo: Harvey Specter => conatct name

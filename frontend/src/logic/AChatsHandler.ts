@@ -130,7 +130,7 @@ export default abstract class AChatsHandler {
         this.onMessage(chatId, {
             answers: [],
             created: moment(),
-            id: answerId.toString(),
+            id: messageId + "/" + answerId.toString(),
             isAnswer: true,
             image: "",
             text: answer.text,
