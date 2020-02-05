@@ -7,7 +7,6 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.logic.AbstractGame;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResultMessage;
-import de.fhdortmund.j2t2.wise2019.server.game.local.GameManagerLocal;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.RandomUtils;
 
@@ -18,7 +17,7 @@ import java.util.List;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
-public class MockGameManager implements GameManagerLocal {
+public class MockGameManager {
 
 
     private Game game = new MockGame();
@@ -28,7 +27,6 @@ public class MockGameManager implements GameManagerLocal {
         game.getGameState().getOpenChats().get(0).addMessage(message1);
     }
 
-    @Override
     public List<Game> getGamesForUser(String session) {
         return Collections.singletonList(game);
     }
@@ -130,7 +128,7 @@ public class MockGameManager implements GameManagerLocal {
     private static class MockGame extends AbstractGame<String> {
 
         protected MockGame() throws GameLoadingException {
-            super(MockGame.class, stream -> stream.findFirst().get(), String.class);
+            super(MockGame.class, stream -> stream.findFirst().get());
             gameModel.addMessages(Collections.singletonMap(realMessage1.getId(), realMessage1));
         }
 

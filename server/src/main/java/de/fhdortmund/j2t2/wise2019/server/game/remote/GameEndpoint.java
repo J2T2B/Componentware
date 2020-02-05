@@ -6,9 +6,11 @@ import de.fhdortmund.j2t2.wise2019.server.commons.remote.AbstractWebSocketComman
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.ErrorWebSocketCommand;
 import de.fhdortmund.j2t2.wise2019.server.commons.remote.WebSocketCreatedCommand;
 import de.fhdortmund.j2t2.wise2019.server.game.remote.websocketcommands.*;
+import de.fhdortmund.j2t2.wise2019.server.persistence.daos.UserDao;
 import de.fhdortmund.j2t2.wise2019.server.user.sessionmanager.SessionManager;
+import lombok.SneakyThrows;
 
-import javax.enterprise.context.ApplicationScoped;
+import javax.annotation.PreDestroy;
 import javax.inject.Inject;
 import javax.websocket.*;
 import javax.websocket.server.PathParam;
@@ -32,6 +34,8 @@ public class GameEndpoint implements Serializable {
 
     private Session session;
 
+    @Inject
+    private UserDao userDao;
     @Inject
     private SessionManager sessionManager;
     @Inject
@@ -70,6 +74,7 @@ public class GameEndpoint implements Serializable {
                 default:
                     throw new UnsupportedOperationException(command.getCommand());
             }
+            userDao.persist(sessionManager.getSession(token).getUser());
     }
 
 
@@ -87,6 +92,12 @@ public class GameEndpoint implements Serializable {
         executorService.shutdown();
         sessionManager.invalidate(token);
         session.close();
+    }
+
+    @SneakyThrows
+    @PreDestroy
+    public void destroy() {
+        onClose(session);
     }
 
 
@@ -152,6 +163,7 @@ public class GameEndpoint implements Serializable {
     public void sendCreateChatCommand(Chat chat, Game game) {
         chatManager.registerChat(chat, game);
         send(new CreateChatWebSocketCommand(chat));
+        userDao.persist(sessionManager.getSession(token).getUser());
     }
 
     public void sendAddMessageCommand(long chatId, ChatMessage chatMessage) {
@@ -167,10 +179,12 @@ public class GameEndpoint implements Serializable {
         } else {
             send(command);
         }
+        userDao.persist(sessionManager.getSession(token).getUser());
     }
 
     public void sendChangePointsCommand(Points points) {
         send(new ChangePointsWebSocketCommand(points));
+        userDao.persist(sessionManager.getSession(token).getUser());
     }
 
     public void createNewChat(){
@@ -185,6 +199,7 @@ public class GameEndpoint implements Serializable {
         if(result instanceof ChatCreationWithExtraAnswers) {
             sendExtraAnswers(game, ((ChatCreationWithExtraAnswers) result).getExtaAnswers().entrySet());
         }
+        userDao.persist(sessionManager.getSession(token).getUser());
     }
 
     void updateGameIndex() {

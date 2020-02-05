@@ -6,13 +6,14 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.*;
 
 import java.io.InputStream;
+import java.io.Serializable;
 import java.util.*;
 import java.util.stream.Collectors;
 
-public class DetectivGame extends AbstractGame<DetectiveGameData> {
+public class DetectivGame extends AbstractGame<DetectiveGameData> implements Serializable {
 
     public DetectivGame() throws GameLoadingException {
-        super(DetectivGame.class, stream -> stream.filter(url -> url.toString().contains("detectivgame")).findFirst().get(), DetectiveGameData.class);
+        super(DetectivGame.class, stream -> stream.filter(url -> url.toString().contains("detectivgame")).findFirst().get());
         if(gameState.getData() == null) {
             gameState.setData(new DetectiveGameData());
         }

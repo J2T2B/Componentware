@@ -11,4 +11,6 @@ public interface User {
     String getName();
     String getHash();
     List<Game> getGames();
+
+    void setGames(List<Game> games);
 }

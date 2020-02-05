@@ -1,51 +1,70 @@
 package de.fhdortmund.j2t2.wise2019.server.persistence.daos;
 
+import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.Game;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.GameState;
-import de.fhdortmund.j2t2.wise2019.server.persistence.entities.GameStateEntity;
 import de.fhdortmund.j2t2.wise2019.server.persistence.entities.UserEntity;
 import de.fhdortmund.j2t2.wise2019.server.user.DefaultUserImpl;
 import de.fhdortmund.j2t2.wise2019.server.user.User;
-import de.fhdortmund.j2t2.wise2019.server.user.register.NewUserData;
-import org.hibernate.Criteria;
+import org.hibernate.SessionFactory;
 
+import javax.annotation.PostConstruct;
+import javax.ejb.Stateful;
 import javax.ejb.Stateless;
 import javax.inject.Inject;
 import javax.inject.Named;
-import javax.persistence.EntityManager;
-import javax.persistence.NoResultException;
-import javax.persistence.TypedQuery;
+import javax.persistence.*;
 import javax.persistence.criteria.CriteriaBuilder;
+import javax.persistence.criteria.CriteriaDelete;
 import javax.persistence.criteria.CriteriaQuery;
 import javax.persistence.criteria.Root;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.stream.Collectors;
+import java.io.*;
 
 @Named
-@Stateless
-public class UserDao extends AbstractDao{
-    @Inject
-    private GameStateDao gameStateDao;
+@Stateful
+public class UserDao{
+    private EntityManagerFactory entityManagerFactory = Persistence.createEntityManagerFactory("de.fhdortmund.j2t2.wise2019.server.persistence");
 
     public void persist(User user) {
-        EntityManager em = sessionFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
         em.getTransaction().begin();
-        UserEntity userEntity = new UserEntity();
-        userEntity.setUsername(user.getName());
-        userEntity.setHash(user.getHash());
-        userEntity.setGames(new ArrayList<>());
-        em.persist(userEntity);
-        user.getGames().stream().map(Game::getGameState).forEach(gs -> gameStateDao.persist(gs, userEntity));
+        try(ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            ObjectOutputStream oos = new ObjectOutputStream(bos)
+        ) {
+            delete(user);
+            UserEntity userEntity = new UserEntity();
+            userEntity.setUsername(user.getName());
+            oos.writeObject(user);
+            userEntity.setData(bos.toByteArray());
+            em.persist(userEntity);
+            em.getTransaction().commit();
+        } catch (IOException e) {
+            em.getTransaction().rollback();
+            e.printStackTrace();
+        } finally {
+            em.close();
+        }
+    }
+
+    public void delete(User user){
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
+        CriteriaBuilder builder = em.getCriteriaBuilder();
+        CriteriaDelete<UserEntity> criteria = builder.createCriteriaDelete(UserEntity.class);
+        Root<UserEntity> from = criteria.from(UserEntity.class);
+        criteria.where(builder.equal(from.get("username"), user.getName()));
+        Query query = em.createQuery(criteria);
+        query.executeUpdate();
         em.getTransaction().commit();
         em.close();
     }
 
-    public User get(String username) throws ClassNotFoundException, IllegalAccessException, InstantiationException {
+    public User get(String username) throws ClassNotFoundException, IllegalAccessException, InstantiationException, IOException {
         UserEntity entity;
 
-        EntityManager em = sessionFactory.createEntityManager();
+        EntityManager em = entityManagerFactory.createEntityManager();
+        em.getTransaction().begin();
         CriteriaBuilder builder = em.getCriteriaBuilder();
         CriteriaQuery<UserEntity> criteria = builder.createQuery(UserEntity.class);
         Root<UserEntity> from = criteria.from(UserEntity.class);
@@ -56,17 +75,17 @@ public class UserDao extends AbstractDao{
             entity = query.getSingleResult();
         } catch (NoResultException e){
             throw e;
+        } finally {
+            em.getTransaction().commit();
         }
-
-        List<GameState> gameStates = entity.getGames().stream().map(gameStateDao::deserialize).collect(Collectors.toList());
-        List<Game> games = new ArrayList<>();
-        for(GameState gameState : gameStates){
-            Class<? extends Game> gameClass = gameState.getGameClazz();
-            Game game = gameClass.newInstance();
-            game.setGameState(gameState);
+        User user;
+        try(ByteArrayInputStream bis = new ByteArrayInputStream(entity.getData());
+            ObjectInputStream ois = new ObjectInputStream(bis)
+        ) {
+            user = (User) ois.readObject();
+        } finally {
+            em.close();
         }
-
-        User user = new DefaultUserImpl(entity.getUsername(), entity.getHash(), games);
         return user;
     }
 }

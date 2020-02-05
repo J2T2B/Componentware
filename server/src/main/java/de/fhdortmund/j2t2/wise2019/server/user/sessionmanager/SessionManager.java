@@ -13,4 +13,6 @@ public interface SessionManager extends Serializable {
     List<Game> getGamesForToken(String token);
 
     void invalidate(String token);
+
+    Session getSession(String token);
 }
