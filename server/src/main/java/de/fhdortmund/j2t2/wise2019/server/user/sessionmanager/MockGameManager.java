@@ -80,6 +80,11 @@ public class MockGameManager {
                 public int getBudget() {
                     return 1337;
                 }
+
+                @Override
+                public Points add(Points points) {
+                    return this;
+                }
             };
         }
 

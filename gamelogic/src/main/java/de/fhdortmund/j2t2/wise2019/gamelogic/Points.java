@@ -6,4 +6,5 @@ public interface Points extends Serializable {
     int getChefSatisfaction();
     int getCustomerExperience();
     int getBudget();
+    Points add(Points points);
 }

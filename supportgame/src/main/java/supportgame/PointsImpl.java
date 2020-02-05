@@ -29,9 +29,14 @@ public class PointsImpl implements Points {
         return budget;
     }
 
+    @Override
     public Points add(Points points) {
-        return new PointsImpl(chefSatisfaction + points.getChefSatisfaction(),
-                customerExperience + points.getCustomerExperience(),
-                budget + points.getBudget());
+        return new PointsImpl(calc(chefSatisfaction + points.getChefSatisfaction()),
+                calc(customerExperience + points.getCustomerExperience()),
+                calc(budget + points.getBudget()));
+    }
+
+    private static int calc(int points) {
+        return Math.min(points, 100);
     }
 }

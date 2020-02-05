@@ -3,7 +3,9 @@ package supportgame;
 import de.fhdortmund.j2t2.wise2019.gamelogic.*;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoader;
 import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
-import de.fhdortmund.j2t2.wise2019.gamelogic.logic.*;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.AbstractGame;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
+import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResultMessage;
 
 import java.io.InputStream;
 
@@ -11,15 +13,25 @@ public class SupportGame extends AbstractGame<Points> {
 
     public SupportGame() throws GameLoadingException {
         super(SupportGame.class, stream -> stream.filter(url -> url.toString().contains("supportgame")).findFirst().get());
-        if(gameState.getData() == null) {
+        if (gameState.getData() == null) {
             gameState.setData(new PointsImpl(50, 50, 50));
         }
     }
 
     @Override
     protected void updateGameState(PlayResult res) {
-        Points points = gameState.getData();
-        gameState.setData(((PointsImpl)gameState.getData()).add(points));
+        Points nextPoints = gameState.getData();
+
+        for (ChatMessage cm : res.getMessages()) {
+            SimpleMessage sm = cm.getMsg();
+
+            if (sm instanceof Message) {
+                Message m = (Message) sm;
+                nextPoints = nextPoints.add(m.getPoints());
+            }
+        }
+
+        gameState.setData(nextPoints);
     }
 
     @Override
@@ -42,7 +54,7 @@ public class SupportGame extends AbstractGame<Points> {
     protected PlayResult playAnswer(Answer answer) {
         PlayResult res;
 
-        if(answer.getTargets().size() == 1) {
+        if (answer.getTargets().size() == 1) {
             Message target = answer.getTargets().get(0);
             res = new PlayResultMessage(new Chat.ChatMessageImpl(target));
         } else {
