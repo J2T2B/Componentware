@@ -8,6 +8,7 @@ import moment from "moment";
 import {FontAwesomeIcon} from "@fortawesome/react-fontawesome";
 import {faPaperPlane, faSmile} from "@fortawesome/free-regular-svg-icons";
 import {Answer} from "../../models/Answer";
+import {text} from "@fortawesome/fontawesome-svg-core";
 
 export interface ChatMessageStates {
     chat?: Chat;
@@ -78,6 +79,10 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
         }
     }
 
+    ln2br(text: string) {
+        return {__html: text.replace("\n", "<br />")};
+    }
+
     render() {
         if (this.state.chat === undefined) {
             return <Container>
@@ -104,7 +109,7 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
             return <Container>
                 <div className="contact-profile">
                     <img className="contact-picture" src={this.state.chat!.partner.imageUrl != "" ? this.state.chat!.partner.imageUrl : "./default.jpg"}
-                         alt={this.state.chat!.partner.name}/>
+                         alt=""/>
                     <div className="contact-name">{this.state.chat!.partner.name}</div>
                 </div>
                 <div className="messages col-md-12">
@@ -114,7 +119,7 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                                 <div className="message">
                                     <div className={"bubble" + (m.isAnswer ? " reply" : " receive")}>
                                         <div className="content">
-                                            <p>{m.text}</p>
+                                            <p dangerouslySetInnerHTML={this.ln2br(m.text)} />
                                             <p className="time">
                                                 {m.created.isBefore(moment().startOf('day')) && m.created.format('L')}
                                                 &nbsp;
