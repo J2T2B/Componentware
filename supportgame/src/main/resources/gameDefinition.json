@@ -398,5 +398,61 @@
       "budget": 0
     },
     "isRoot": false
+  },
+  {
+    "delay":  0,
+    "id":  "m13",
+    "text":  "hab ich garantie",
+    "answers":  [
+      {
+        "targets":  [
+          "m14"
+        ],
+        "text":  "Hallo, um welches Gerät handelt es sich und wann haben Sie es gekauft?"
+      },
+      {
+        "targets":  [
+          "notHelpfullBadLanguage"
+        ],
+        "text":  "Pauschal Nein."
+      }
+    ],
+    "points":  {
+      "chefSatisfaction":  0,
+      "customerExperience":  0,
+      "budget":  0
+    },
+    "isRoot":  true
+  },
+  {
+    "delay":  0,
+    "id":  "m14",
+    "text":  "hab ich iPhone 8 und gekauft in märz 2018",
+    "answers":  [
+      {
+        "targets":  [
+          "goodHelpfullBadLanguage"
+        ],
+        "text":  "Dann haben Sie noch Garantie. Ich leite Sie an die Fachkraft weiterleiten."
+      },
+      {
+        "targets":  [
+          "notHelpfullBadLanguage"
+        ],
+        "text":  "Da kann ich Ihnen nicht helfen."
+      },
+      {
+        "targets":  [
+          "notHelpfullBadLanguage"
+        ],
+        "text":  "Schön für Sie"
+      }
+    ],
+    "points":  {
+      "chefSatisfaction":  0,
+      "customerExperience":  0,
+      "budget":  0
+    },
+    "isRoot":  false
   }
 ]
