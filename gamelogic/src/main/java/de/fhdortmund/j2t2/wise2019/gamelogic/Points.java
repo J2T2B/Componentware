@@ -7,4 +7,5 @@ public interface Points extends Serializable {
     int getCustomerExperience();
     int getBudget();
     Points add(Points points);
+    boolean anyZeroOrLower();
 }

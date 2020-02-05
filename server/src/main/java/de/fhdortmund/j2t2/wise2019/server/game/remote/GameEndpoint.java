@@ -126,13 +126,17 @@ public class GameEndpoint implements Serializable {
                 for(ChatMessage msg : pr.getMessages()) {
                     sendAddMessageCommand(chatId, msg);
                 }
+                boolean gameOver = pr.isEnd();
                 if(game.getGameState().getData() instanceof Points){
                     sendChangePointsCommand((Points) game.getGameState().getData());
+                    if(((Points) game.getGameState().getData()).anyZeroOrLower()) {
+                        gameOver = true;
+                    }
                 }
                 if(pr.getPlayResultData() instanceof ExtraAnswerPlayResultData) {
                     sendExtraAnswers(game, ((ExtraAnswerPlayResultData) pr.getPlayResultData()).getExtraAnswers().entrySet());
                 }
-                if(pr.isEnd()){
+                if(gameOver){
                     sendGameOverCommand();
                 }
                 break;

@@ -36,6 +36,11 @@ public class PointsImpl implements Points {
                 calc(budget + points.getBudget()));
     }
 
+    @Override
+    public boolean anyZeroOrLower() {
+        return chefSatisfaction <= 0 || customerExperience <= 0 || budget <= 0;
+    }
+
     private static int calc(int points) {
         return Math.min(points, 100);
     }

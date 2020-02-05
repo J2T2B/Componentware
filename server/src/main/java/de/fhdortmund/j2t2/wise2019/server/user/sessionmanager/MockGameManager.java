@@ -85,6 +85,11 @@ public class MockGameManager {
                 public Points add(Points points) {
                     return this;
                 }
+
+                @Override
+                public boolean anyZeroOrLower() {
+                    return false;
+                }
             };
         }
 

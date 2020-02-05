@@ -92,6 +92,11 @@ public class DetectiveGameMessage implements Message {
         public Points add(Points p) {
             return this;
         }
+
+        @Override
+        public boolean anyZeroOrLower() {
+            return false;
+        }
     };
 
     @Override
