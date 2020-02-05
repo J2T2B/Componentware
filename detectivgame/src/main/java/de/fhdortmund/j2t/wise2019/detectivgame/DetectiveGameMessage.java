@@ -87,6 +87,11 @@ public class DetectiveGameMessage implements Message {
         public int getBudget() {
             return 0;
         }
+
+        @Override
+        public Points add(Points p) {
+            return this;
+        }
     };
 
     @Override
