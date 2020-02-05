@@ -8,7 +8,11 @@ public class ChatPartnerImpl implements ChatPartner, Serializable {
     private String imageUri;
 
     public ChatPartnerImpl(){
-        this.name = "Bill";
+        this("Bill");
+    }
+
+    public ChatPartnerImpl(String name) {
+        this.name = name;
         this.imageUri = "https://s3.amazonaws.com/baconmockup/img/bm-home-140.jpg";
     }
 

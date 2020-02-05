@@ -2,7 +2,7 @@
   {
     "id": "mainRoot",
     "delay": 0,
-    "text": "Hi William,\n\n ich habe mal wieder zu viele Fälle die ich gleichzeitig lösen muss. Du hast mir ja schonmal mit einem schwierigen Fall geholfen vielleicht kannst du diesen hier ja auch für mich lösen. Hier sind die relaventen Details die mein Team bisher gesammelt hat: Es geht um einen Mord durch Brandstiftung. Der Name des Opfers ist Markus Farber. Markus Farber war der Geschäftsführer von \"Farber Medical Industries\", einem Pharmaunternehmen. Er ist am 03.01.2020 bei dem Hausbrand in seinem Haus gestorben. Der Brand wurde um 20:07 von einem Nachbarn bemerkt und die Feuerwehr alarmiert. Durch den Löschvorgang wurde der Großteil der Spuren zunichte gemacht. Es hat sogar eine ganze Weile gedauert bis wir festgestellt haben dass dabei jemand gestorben ist. Die relevantesten Personen die wir bis jetzt zu dem Fall befragt haben sind Markus Farber's Frau Sophie und Steffan Wagenar, der CFO von Markus' Unternehmen. Sophie hat uns Zugriff auf das E-Mail Postfach ihres Mannes beschafft wo wir eine Droh-Mail gefunden haben. In dieser Mail wird Markus aufgefordert sich nicht weiter mit \"dem Thema\" zu befassen, ansonsten würden Konsequenzen folgen. Genauere Schlüsse konnten aus der Mail allerdings nicht gezogen werden. Interessant war allerdings eine weitere E-Mail von Steffan Wagenar an Markus Farber, die eine Aufforderung an Markus enthält, wieder zu Verstand zu kommen. Wir haben Steffan vorgeladen aber sind noch nicht dazu gekommen ihn zu Verhören. Wir sind gerade noch dabei die Mobilfunkdaten aller beteiligten Personen auszuwerten aber das kann noch eine Weile dauern. Du bekommst ne Nachricht von der IT-Abteilung wenn sie die Daten haben.",
+    "text": "Hi William,\n\n ich habe mal wieder zu viele Fälle die ich gleichzeitig lösen muss. Du hast mir ja schonmal mit einem schwierigen Fall geholfen vielleicht kannst du diesen hier ja auch für mich lösen. Hier sind die relaventen Details die mein Team bisher gesammelt hat: Es geht um einen Mord durch Brandstiftung. Der Name des Opfers ist Markus Farber. Markus Farber war der Geschäftsführer von \"Farber Medical Industries\", einem Pharmaunternehmen. Er ist am 03.01.2020 bei dem Hausbrand in seinem Haus gestorben. Der Brand wurde um 20:07 von einem Nachbarn bemerkt und die Feuerwehr alarmiert. Durch den Löschvorgang wurde der Großteil der Spuren zunichte gemacht. Es hat sogar eine ganze Weile gedauert bis wir festgestellt haben dass dabei jemand gestorben ist. Die relevantesten Personen die wir bis jetzt zu dem Fall befragt haben sind Markus Farber's Frau Sophie und Steffan Wagenar, der CFO von Markus' Unternehmen. Sophie war zum Tatzeitpunkt mit einer Freundin im Theater, sie hat also ein Alibi. Sie hat uns Zugriff auf das E-Mail Postfach ihres Mannes beschafft wo wir eine Droh-Mail gefunden haben. In dieser Mail wird Markus aufgefordert sich nicht weiter mit \"dem Thema\" zu befassen, ansonsten würden Konsequenzen folgen. Genauere Schlüsse konnten aus der Mail allerdings nicht gezogen werden. Interessant war allerdings eine weitere E-Mail von Steffan Wagenar an Markus Farber, die eine Aufforderung an Markus enthält, wieder zu Verstand zu kommen. Wir haben Steffan vorgeladen aber sind noch nicht dazu gekommen ihn zu Verhören. Wir sind gerade noch dabei die Mobilfunkdaten aller beteiligten Personen auszuwerten aber das kann noch eine Weile dauern. Du bekommst ne Nachricht von der IT-Abteilung wenn sie die Daten haben.",
     "answers": [
       {
         "text": "Stell zuerst eine Frage an Sophie Farber.",
@@ -15,7 +15,7 @@
     ],
     "root": true,
     "chatName": "Herlock Sholmes",
-    "chatImage": "/image/detectivemain.png",
+    "chatImage": "https://i.pravatar.cc/100",
     "unlockKeys": []
   },
   {
@@ -214,7 +214,34 @@
   {
     "id": "telefonDaten",
     "delay": 0,
-    "text": "Telefon daten // TODO",
+    "text": "Hi, hier die Analyse der Mobilfunkdaten ist durch. Du musst dafür folgendes wissen: Sophie und Markus Farber's Haus liegt in Innenstadt Ost. Das Theater liegt in Innenstadt West.",
+    "answers": [
+      {
+        "text": "Willst du mir die Analyse auch schicken oder soll mir das reichen?",
+        "targetId": "telefonDaten1"
+      }
+    ],
+    "root": true,
+    "chatName": "IT-Forensik",
+    "chatImage": "https://i.pravatar.cc/100",
+    "unlockKeys": []
+  },
+  {
+    "id": "telefonDaten1",
+    "delay": 0,
+    "text": "Ups sorry hab vergessen die eigentliche Analyse zu schicken. Hier ist sie:",
+    "answers": [
+      {
+        "targetId": "telefonDaten2"
+      }
+    ],
+    "root": false,
+    "unlockKeys": ["telefon"]
+  },
+  {
+    "id": "telefonDaten2",
+    "delay": 0,
+    "text": "========== MOBILFUNK ANALYSE ==========\n\nGEBIETE: \ng1: Innenstadt West, \ng2: Innenstadt Ost, \ng3: Innenstadt Nord \n\nPERSONEN: \nsf: Sophie Farber, \n sw: Steffan Wagenar \n\nDATEN: [19:00|sf:g1;sw:g3] \n[19:10|sf:g1;sw:g3] \n[19:20|sf:g1;sw:g3] \n[19:30|sf:g1;sw:g3] \n[19:40|sf:g2;sw:g3] \n[19:50|sf:g2;sw:g3] \n[19:50|sf:g1;sw:g3] \n[20:00|sf:g1;sw:g3] \n[20:10|sf:g1;sw:g3] \n[20:20|sf:g1;sw:g3] \n[20:30|sf:g1;sw:g3] \n[20:40|sf:g1;sw:g3] \n[20:50|sf:g1;sw:g3] \n[21:00|sf:g1;sw:g3]",
     "answers": [
       {
         "text": "Ist das dein ernst? Ist dir langweilig oder so?",
@@ -223,16 +250,19 @@
         "unlockKey": "imernst"
       }
     ],
-    "root": true,
-    "chatName": "IT-Forensik",
-    "chatImage": "/images/detectivephone.png",
+    "root": false,
     "unlockKeys": ["telefon"]
   },
   {
     "id": "ende",
     "delay": 20,
-    "text": "Haha, sehr gut! Du warst ziemlich gut. Ehrlich gesagt war das ein Fall der schon gelöst wurde. Ich dachte nur dass du im Kundensupport bestimmt super gelangweilt bist und dachte das wäre eine super Idee um deine Produktivität ein bisschen zu senken. \uD83E\uDD23\r\n\r\nDu bist sicherlich am tatsächlichen Ergebniss dieses Falls interessiert:\r\nDass Sophie Markus getötet hat hast du ja schon herausgefunden. Im laufe der Untersuchungen ist herausgekommen, dass Steffan Wagenar Gelder des Unternehmens veruntreut hat um Drogenhandel zu betreiben. Markus war kurz davor das herauszufinden und hatte bereits mit Steffan über Unstimmigkeiten in den Finanzen gesprochen. Steffan hat Panik bekommen und das Haus von Markus angezündet um die Akten zu vernichten die Markus mit nach hause genommen hatte. Laut eigener Aussage konnte er zu diesem Zeitpunkt nicht klar denken und hat nicht darüber nachgedacht, dass Personen im Haus sein könnten.",
-    "answers": [],
+    "text": "Haha, sehr gut! Du warst ziemlich gut. Ehrlich gesagt war das ein Fall der schon gelöst wurde. Ich dachte nur dass du im Kundensupport bestimmt super gelangweilt bist und dachte das wäre eine super Idee um deine Produktivität ein bisschen zu senken. \uD83E\uDD23\n\nDu bist sicherlich am tatsächlichen Ergebniss dieses Falls interessiert:\nDass Sophie Markus getötet hat hast du ja schon herausgefunden. Im laufe der Untersuchungen ist herausgekommen, dass Steffan Wagenar Gelder des Unternehmens veruntreut hat um Drogenhandel zu betreiben. Markus war kurz davor das herauszufinden und hatte bereits mit Steffan über Unstimmigkeiten in den Finanzen gesprochen. Steffan hat Panik bekommen und das Haus von Markus angezündet um die Akten zu vernichten die Markus mit nach hause genommen hatte. Laut eigener Aussage konnte er zu diesem Zeitpunkt nicht klar denken und hat nicht darüber nachgedacht, dass Personen im Haus sein könnten.",
+    "answers": [
+      {
+        "text": "Heißt das die \"Daten von der IT-Abteilung\" sind auch von dir?",
+        "targetId": "ende1"
+      }
+    ],
     "root": false,
     "unlockKeys": [],
     "end": true
