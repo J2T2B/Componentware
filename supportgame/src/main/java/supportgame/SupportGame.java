@@ -24,7 +24,7 @@ public class SupportGame extends AbstractGame<Points> {
 
     @Override
     public ChatPartner produceSomeChatpartner() {
-        return new ChatPartnerImpl();
+        return new ChatPartnerImpl(Names.random());
     }
 
     @Override
