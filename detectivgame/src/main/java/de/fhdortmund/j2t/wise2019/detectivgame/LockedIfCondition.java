@@ -10,7 +10,7 @@ public class LockedIfCondition implements Serializable {
 
     private String condition;
     private String evalTargetId;
-    private Serializable data;
+    private Object data;
 
     boolean isLocked(GameModel model, Answer answer) {
         if(condition.equals("evalTargetAnswerCountSmallerThan")) {
