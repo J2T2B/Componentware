@@ -9,6 +9,7 @@ import IConnectionListener from "./IConnectionListener";
 import {IErrorHandler, isIErrorHandler} from "./IErrorHandler";
 import {NotificationHandler} from "./NotificationHandler";
 import moment from "moment";
+import {IGameOverListener, isGameOverListener} from "./IGameOverListener";
 
 /**
  * Verwaltet alle Chats und Nachrichten und kommuniziert über die angehangenden Listener
@@ -21,12 +22,14 @@ export default abstract class AChatsHandler {
     private _currentChat?: Chat;
     private errorHandlers: IErrorHandler[];
     protected connectionListener: IConnectionListener;
+    protected gameOverListeners: IGameOverListener[];
 
     constructor(connectionListener: IConnectionListener) {
         this.chatListener = [];
         this.chatsListener = [];
         this.chats = [];
         this.errorHandlers = [];
+        this.gameOverListeners = [];
         this.connectionListener = connectionListener;
     }
 
@@ -84,13 +87,15 @@ export default abstract class AChatsHandler {
      * Hängt den Listener an den Handler. Sollte in componentDidMount() aufgerufen werden
      * @param listener Listener
      */
-    public attach(listener: IChatListener | IChatsListener | IErrorHandler): void {
+    public attach(listener: IChatListener | IChatsListener | IErrorHandler | IGameOverListener): void {
         if (isIChatListener(listener)) {
             this.chatListener.push(listener);
         } else if (isIChatsListener(listener)) {
             this.chatsListener.push(listener);
         } else if (isIErrorHandler(listener)) {
             this.errorHandlers.push(listener);
+        } else if (isGameOverListener(listener)) {
+            this.gameOverListeners.push(listener);
         }
     }
 
@@ -254,6 +259,10 @@ export default abstract class AChatsHandler {
                 break;
             case "WebSocketCreated":
                 console.log("WebSocket erzeugt. Juhu");
+                break;
+            case "GameOver":
+                console.log("GameOver....");
+                this.gameOverListeners.forEach(l => l.onGameOver());
                 break;
             default:
                 throw new Error(`The Command ${message.command} is unknown`);

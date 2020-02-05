@@ -15,6 +15,7 @@ import Error404Component from "./components/Error404Component";
 import ReconnectingComponent from "./components/ReconnectingComponent";
 import {GameOverPage} from "./components/gameover/GameOverPage";
 import {ErrorComponent} from "./components/globals/ErrorComponent";
+import {IGameOverListener} from "./logic/IGameOverListener";
 
 interface AppStates {
     isChatListOpen: boolean;
@@ -23,7 +24,7 @@ interface AppStates {
     connector: Connector;
 }
 
-export class App extends React.Component<{}, AppStates> implements IConnectionListener {
+export class App extends React.Component<{}, AppStates> implements IConnectionListener, IGameOverListener {
 
     constructor(props: {}) {
         super(props);
@@ -43,6 +44,7 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
             chatsHandler,
             mode: AppStateMode.GAME
         });
+        chatsHandler.attach(this);
     }
 
     onDisconnect(): void {
@@ -101,6 +103,12 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
                 </HashRouter>
             </Container>
         </>
+    }
+
+    onGameOver(): void {
+        this.setState({
+            mode: AppStateMode.GAMEOVER
+        });
     }
 
 }
