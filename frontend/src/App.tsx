@@ -66,6 +66,12 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
         })
     }
 
+    onReset(): void {
+        this.setState({
+            mode: AppStateMode.LOGIN
+        });
+    }
+
     private renderLoginBody() {
         return <>
             <Route path="/login" exact render={() => <LoginComponent connector={this.state.connector}/>}/>

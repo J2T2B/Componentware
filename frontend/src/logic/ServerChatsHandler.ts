@@ -7,6 +7,7 @@ export class ServerChatsHandler extends AChatsHandler {
     private readonly baseUrl: string;
     private readonly token: string;
     private wsConnection?: WebSocket;
+    private retrys: number = 0;
 
     constructor(connectionListener: IConnectionListener, baseUrl: string, token: string) {
         super(connectionListener);
@@ -15,6 +16,7 @@ export class ServerChatsHandler extends AChatsHandler {
     }
 
     connect(): Promise<boolean> {
+        this.retrys++;
         const url = new URL(`${this.baseUrl}/game/${this.token}`);
         url.protocol = "ws:";
 
@@ -29,6 +31,7 @@ export class ServerChatsHandler extends AChatsHandler {
                 console.log("Websocket verbunden!");
                 res(true);
                 this.connectionListener.onConnect(this);
+                this.retrys = 0;
             };
         });
     }
@@ -41,17 +44,21 @@ export class ServerChatsHandler extends AChatsHandler {
         // Socket steht nicht bereit. Try later again
         if (this.wsConnection === undefined || this.wsConnection.readyState !== 1) {
             window.setTimeout(() => this.sendMessage(socketMessage), 1000);
-        }
-        else {
+        } else {
             this.wsConnection.send(JSON.stringify(socketMessage));
         }
     }
 
     private onCloseOrError() {
-        this.connectionListener.onDisconnect();
-        console.log("Websocket getrennt. Versuche erneute Verbindung...");
-        // Nicht rekursiv starten...
-        window.setTimeout(this.connect.bind(this), 0);
+        if (this.retrys < 5) {
+            this.connectionListener.onDisconnect();
+            console.log("Websocket getrennt. Versuche erneute Verbindung...");
+            // Nicht rekursiv starten...
+            window.setTimeout(this.connect.bind(this), 0);
+        } else {
+            // Neuer Loginstate
+            this.connectionListener.onReset();
+        }
     }
 
     private onWebSocketMessage(ev: MessageEvent) {
