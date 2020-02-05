@@ -18,12 +18,15 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 import java.util.concurrent.TimeUnit;
 
 @ServerEndpoint(value = "/game/{usertoken}", encoders = MessageCoder.class, decoders = MessageCoder.class)
 public class GameEndpoint implements Serializable {
+    private static final boolean DEBUG_IGNORE_DELAYS = false;
+
     private static final int CHAT_CREATION_PERIOD_IN_SECONDS = 15;
     private int currentGameIndex = 0;
 
@@ -115,6 +118,9 @@ public class GameEndpoint implements Serializable {
                 if(game.getGameState().getData() instanceof Points){
                     sendChangePointsCommand((Points) game.getGameState().getData());
                 }
+                if(pr.getPlayResultData() instanceof ExtraAnswerPlayResultData) {
+                    sendExtraAnswers(game, ((ExtraAnswerPlayResultData) pr.getPlayResultData()).getExtraAnswers().entrySet());
+                }
                 if(pr.isEnd()){
                     sendGameOverCommand();
                 }
@@ -156,7 +162,7 @@ public class GameEndpoint implements Serializable {
         if(message instanceof Message){
             duration = ((Message) message).getDelay();
         }
-        if(duration > 0){
+        if(duration > 0 && !DEBUG_IGNORE_DELAYS){
             new CommandDelayer<>(command, duration, () -> send(command));
         } else {
             send(command);
@@ -177,13 +183,7 @@ public class GameEndpoint implements Serializable {
         }
         sendCreateChatCommand(result.getChat(), game);
         if(result instanceof ChatCreationWithExtraAnswers) {
-            for(Map.Entry<Long, List<Answer>> entry : ((ChatCreationWithExtraAnswers) result).getExtaAnswers().entrySet()) {
-                Chat chat = game.getGameState().getChat(entry.getKey());
-                String remoteMsgId = chat.getMessages().get(chat.getMessages().size() - 1).getId();
-                for(Answer answer : entry.getValue()) {
-                    send(new AddAnswerWebSocketCommand(entry.getKey(), remoteMsgId, answer));
-                }
-            }
+            sendExtraAnswers(game, ((ChatCreationWithExtraAnswers) result).getExtaAnswers().entrySet());
         }
     }
 
@@ -192,4 +192,13 @@ public class GameEndpoint implements Serializable {
         currentGameIndex %= games.size(); // Overflow verhindern
     }
 
+    private void sendExtraAnswers(Game game, Set<Map.Entry<Long, List<Answer>>> entrySet) {
+        for (Map.Entry<Long, List<Answer>> entry : entrySet) {
+            Chat chat = game.getGameState().getChat(entry.getKey());
+            String remoteMsgId = chat.getMessages().get(chat.getMessages().size() - 1).getId();
+            for (Answer answer : entry.getValue()) {
+                send(new AddAnswerWebSocketCommand(entry.getKey(), remoteMsgId, answer));
+            }
+        }
+    }
 }

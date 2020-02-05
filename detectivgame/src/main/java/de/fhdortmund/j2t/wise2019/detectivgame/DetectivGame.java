@@ -46,22 +46,7 @@ public class DetectivGame extends AbstractGame<DetectiveGameData> {
         chat.addMessage(new Chat.ChatMessageImpl(rootMessage));
         gameState.addChat(chat);
         if (unlockedTotal.size() > 0) {
-            Map<Long, List<Answer>> unlockedPerChat = new HashMap<>();
-            for (Chat openChat : gameState.getOpenChats()) {
-                SimpleMessage msg = openChat.getMessages().get(openChat.getMessages().size() - 1).getMsg();
-                if (msg instanceof ChatMessage) {
-                    msg = ((ChatMessage) msg).getMsg();
-                }
-                if (msg instanceof DetectiveGameMessage) {
-                    DetectiveGameMessage realMsg = (DetectiveGameMessage) gameModel.getMessage(((DetectiveGameMessage) msg).getId());
-                    for (DetectiveGameAnswer answer : realMsg.getAnswers()) {
-                        if (unlockedTotal.contains(answer)) {
-                            unlockedPerChat.computeIfAbsent(openChat.getId(), l -> new ArrayList<>()).add(answer);
-                            ((DetectiveGameMessage) msg).getAnswers().add(answer);
-                        }
-                    }
-                }
-            }
+            Map<Long, List<Answer>> unlockedPerChat = getUnlockedPerChat(unlockedTotal);
             return new ChatCreationWithExtraAnswers(chat, unlockedPerChat);
         }
         return new SimpleChatCreation(chat);
@@ -101,7 +86,8 @@ public class DetectivGame extends AbstractGame<DetectiveGameData> {
         DetectiveGameAnswer answer = (DetectiveGameAnswer) answerOrig;
         DetectiveGameMessage target = (DetectiveGameMessage) gameModel.getMessage(answer.firstTarget().getId());
 
-        target.getUnlockKeys().forEach(this::unlock);
+        List<Answer> unlocked = unlockAll(target.getUnlockKeys());
+        Map<Long, List<Answer>> unlockedPerChat = getUnlockedPerChat(unlocked);
 
         if (answer.getRemoveAnswers() != null) {
             this.removeAnswers(answer.getRemoveAnswers());
@@ -124,9 +110,19 @@ public class DetectivGame extends AbstractGame<DetectiveGameData> {
             List<ChatMessage> resultMessages = new ArrayList<>();
             resultMessages.add(new Chat.ChatMessageImpl(target));
             resultMessages.addAll(firstAnswerTargetResult.getMessages());
-            return new PlayResultMessage(resultMessages.toArray(new Chat.ChatMessageImpl[0]));
+            return new PlayResultMessage(resultMessages.toArray(new Chat.ChatMessageImpl[0])) {
+                @Override
+                public PlayResultData getPlayResultData() {
+                    return new ExtraAnswerPlayResultData(unlockedPerChat);
+                }
+            };
         }
-        return new PlayResultMessage(new Chat.ChatMessageImpl(target));
+        return new PlayResultMessage(new Chat.ChatMessageImpl(target)) {
+            @Override
+            public PlayResultData getPlayResultData() {
+                return new ExtraAnswerPlayResultData(unlockedPerChat);
+            }
+        };
     }
 
     private void removeAnswers(String removeAnswers) {
@@ -184,5 +180,25 @@ public class DetectivGame extends AbstractGame<DetectiveGameData> {
                 return image;
             }
         };
+    }
+
+    private Map<Long, List<Answer>> getUnlockedPerChat(List<Answer> unlockedTotal) {
+        Map<Long, List<Answer>> unlockedPerChat = new HashMap<>();
+        for (Chat openChat : gameState.getOpenChats()) {
+            SimpleMessage msg = openChat.getMessages().get(openChat.getMessages().size() - 1).getMsg();
+            if (msg instanceof ChatMessage) {
+                msg = ((ChatMessage) msg).getMsg();
+            }
+            if (msg instanceof DetectiveGameMessage) {
+                DetectiveGameMessage realMsg = (DetectiveGameMessage) gameModel.getMessage(((DetectiveGameMessage) msg).getId());
+                for (DetectiveGameAnswer answer : realMsg.getAnswers()) {
+                    if (unlockedTotal.contains(answer)) {
+                        unlockedPerChat.computeIfAbsent(openChat.getId(), l -> new ArrayList<>()).add(answer);
+                        ((DetectiveGameMessage) msg).getAnswers().add(answer);
+                    }
+                }
+            }
+        }
+        return unlockedPerChat;
     }
 }

@@ -15,7 +15,7 @@
     ],
     "root": true,
     "chatName": "Herlock Sholmes",
-    "chatImage": "/image/detectivemain.png",
+    "chatImage": "https://i.pravatar.cc/100",
     "unlockKeys": []
   },
   {
@@ -223,7 +223,7 @@
     ],
     "root": true,
     "chatName": "IT-Forensik",
-    "chatImage": "/images/detectivephone.png",
+    "chatImage": "https://i.pravatar.cc/100",
     "unlockKeys": []
   },
   {
@@ -236,7 +236,7 @@
       }
     ],
     "root": false,
-    "unlockKeys": []
+    "unlockKeys": ["telefon"]
   },
   {
     "id": "telefonDaten2",
@@ -257,7 +257,12 @@
     "id": "ende",
     "delay": 20,
     "text": "Haha, sehr gut! Du warst ziemlich gut. Ehrlich gesagt war das ein Fall der schon gelöst wurde. Ich dachte nur dass du im Kundensupport bestimmt super gelangweilt bist und dachte das wäre eine super Idee um deine Produktivität ein bisschen zu senken. \uD83E\uDD23\n\nDu bist sicherlich am tatsächlichen Ergebniss dieses Falls interessiert:\nDass Sophie Markus getötet hat hast du ja schon herausgefunden. Im laufe der Untersuchungen ist herausgekommen, dass Steffan Wagenar Gelder des Unternehmens veruntreut hat um Drogenhandel zu betreiben. Markus war kurz davor das herauszufinden und hatte bereits mit Steffan über Unstimmigkeiten in den Finanzen gesprochen. Steffan hat Panik bekommen und das Haus von Markus angezündet um die Akten zu vernichten die Markus mit nach hause genommen hatte. Laut eigener Aussage konnte er zu diesem Zeitpunkt nicht klar denken und hat nicht darüber nachgedacht, dass Personen im Haus sein könnten.",
-    "answers": [],
+    "answers": [
+      {
+        "text": "Heißt das die \"Daten von der IT-Abteilung\" sind auch von dir?",
+        "targetId": "ende1"
+      }
+    ],
     "root": false,
     "unlockKeys": [],
     "end": true
