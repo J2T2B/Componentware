@@ -6,6 +6,7 @@ import de.fhdortmund.j2t2.wise2019.gamelogic.gameloader.GameLoadingException;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.AbstractGame;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResult;
 import de.fhdortmund.j2t2.wise2019.gamelogic.logic.PlayResultMessage;
+import supportgame.members.ProfileLoader;
 
 import java.io.InputStream;
 
@@ -36,7 +37,7 @@ public class SupportGame extends AbstractGame<Points> {
 
     @Override
     public ChatPartner produceSomeChatpartner() {
-        return new ChatPartnerImpl(Names.random());
+        return ProfileLoader.getRandom();
     }
 
     @Override
