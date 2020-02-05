@@ -48,10 +48,12 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
     }
 
     onDisconnect(): void {
-        this.setState({
-            chatsHandler: undefined,
-            mode: AppStateMode.CONNECTING
-        });
+        if (this.state.mode !== AppStateMode.GAMEOVER) {
+            this.setState({
+                chatsHandler: undefined,
+                mode: AppStateMode.CONNECTING
+            });
+        }
     }
 
     toggleChatsList() {
