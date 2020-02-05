@@ -35,9 +35,17 @@ export class Connector {
 
         const response = await request.text();
 
+        // the response is empty, if the login failed
         if (request.status === 200) {
             await this.connectToWebSocket(response);
+        } else if (request.status === 401) {
+            // console.log(request);
+            throw new Error("Password is incorrect.");
+        } else if (request.status === 500) {
+            // console.log(request);
+            throw new Error("User not found.");
         } else {
+            console.log(request);
             throw new Error(response);
         }
     }
@@ -59,6 +67,7 @@ export class Connector {
         if (request.status === 200 || request.status === 204) {
             await this.login(username, password);
         } else {
+            console.log(response);
             throw new Error(response);
         }
     }
