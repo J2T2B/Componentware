@@ -454,5 +454,29 @@
       "budget":  0
     },
     "isRoot":  false
+  },
+  {
+    "delay":  0,
+    "id":  "notHelpfullBadLanguage",
+    "text":  "eh was ist das für eine firma",
+    "answers":  [],
+    "points":  {
+      "chefSatisfaction":  -4,
+      "customerExperience":  -8,
+      "budget":  0
+    },
+    "isRoot":  false
+  },
+  {
+    "delay":  0,
+    "points":  {
+      "chefSatisfaction":  2,
+      "customerExperience":  5,
+      "budget":  5
+    },
+    "id":  "goodHelpfullBadLanguage",
+    "text":  "ok danke bro",
+    "isRoot":  false,
+    "answers": []
   }
 ]
