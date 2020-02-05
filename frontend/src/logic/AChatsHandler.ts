@@ -174,14 +174,10 @@ export default abstract class AChatsHandler {
      */
     private onMessage(chatId: string, message: IMessage) {
         let useMessage = new Message(message);
-        let targetChat: Chat;
+        const targetChat = this.chats.find(c => c.chatId === chatId);
 
-        const chat = this.chats.find(c => c.chatId === chatId);
-
-        if (chat === undefined) {
+        if (targetChat === undefined) {
             throw new Error(`Chat ${chatId} not found. Fatal Error`);
-        } else {
-            targetChat = chat;
         }
 
         targetChat.addMessage(useMessage);
@@ -197,6 +193,7 @@ export default abstract class AChatsHandler {
 
         if (this._currentChat !== undefined && chatId === this._currentChat.chatId) {
             this.chatListener.forEach(c => c.onMessage(this._currentChat!, useMessage));
+            this.readAllMessages();
         }
         this.chatsListener.forEach(c => c.onChatChange(this.chats));
     }
