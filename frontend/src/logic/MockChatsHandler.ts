@@ -79,9 +79,11 @@ export class MockChatsHandler extends AChatsHandler {
         const rand = () => Math.round(Math.random() * 100);
         this.simulateMessage({
             command: "ChangePoints",
-            budget: rand(),
-            chefSatisfaction: rand(),
-            customerExperience: rand()
+            points: {
+                budget: rand(),
+                chefSatisfaction: rand(),
+                customerExperience: rand()
+            }
         })
     }
 
