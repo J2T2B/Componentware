@@ -33,9 +33,10 @@ export type SocketMessage =
         messageId: string,
         chatId: string
     } |
-    ({
+    {
         command: "ChangePoints",
-    } & Points) | // Enthält alle Felder aus Points 
+        points: Points
+    } | // Enthält alle Felder aus Points
     {
         command: "GameOver"
     } |

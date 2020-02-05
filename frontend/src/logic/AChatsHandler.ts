@@ -247,7 +247,7 @@ export default abstract class AChatsHandler {
                 this.onAnswer(message.chatId, message.messageId, message.answer);
                 break;
             case "ChangePoints":
-                this.chatsListener.forEach(c => c.onPointsChange(message));
+                this.chatsListener.forEach(c => c.onPointsChange(message.points));
                 break;
             case "HandleError":
                 this.errorHandlers.forEach(e => e.onError(message.message));
