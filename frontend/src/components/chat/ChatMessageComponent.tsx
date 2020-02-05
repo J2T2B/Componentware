@@ -115,7 +115,7 @@ export class ChatMessageComponent extends React.Component<DefaultComponentProps,
                 <div className="messages col-md-12">
                     {
                         this.state.chat && this.state.chat.messages.map(m => {
-                            return <div className="row">
+                            return <div className="row" key={m.id}>
                                 <div className="message">
                                     <div className={"bubble" + (m.isAnswer ? " reply" : " receive")}>
                                         <div className="content">
