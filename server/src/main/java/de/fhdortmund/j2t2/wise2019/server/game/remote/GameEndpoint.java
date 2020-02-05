@@ -146,13 +146,12 @@ public class GameEndpoint implements Serializable {
 
     public void sendGameOverCommand() {
         send(new GameOverWebSocketCommand());
-        userDao.delete(sessionManager.getSession(token).getUser());
+        /*userDao.delete(sessionManager.getSession(token).getUser());
         try {
             onClose(session);
         } catch (IOException e) {
             e.printStackTrace();
-        }
-
+        }*/
     }
 
     private void handleReadMessageCommand(String messageId, long chatId) {
