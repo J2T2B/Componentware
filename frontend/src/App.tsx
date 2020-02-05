@@ -16,6 +16,7 @@ import ReconnectingComponent from "./components/ReconnectingComponent";
 import {GameOverPage} from "./components/gameover/GameOverPage";
 import {ErrorComponent} from "./components/globals/ErrorComponent";
 import {IGameOverListener} from "./logic/IGameOverListener";
+import GetServiceURL from "./GetServiceURL";
 
 interface AppStates {
     isChatListOpen: boolean;
@@ -31,7 +32,7 @@ export class App extends React.Component<{}, AppStates> implements IConnectionLi
 
         this.state = {
             isChatListOpen: true,
-            connector: new Connector("http://localhost:8080/server-1.0-SNAPSHOT", this, false),
+            connector: new Connector(GetServiceURL(), this, false),
             mode: AppStateMode.LOGIN
         };
 
